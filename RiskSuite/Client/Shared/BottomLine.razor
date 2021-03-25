@@ -1,0 +1,17 @@
+﻿<nav class="navbar navbar-expand-sm fixed-bottom navbar-dark bg-dark p-0">
+    <p>Some status staff and pagination area</p>
+</nav>
+
+@code {
+    [Parameter]
+    public int CurrentPage { get; set; }
+    [Parameter]
+    public int TotalPages { get; set; }
+    [Parameter]
+    public int PageSize { get; set; }
+    [Parameter]
+    public int TotalCount { get; set; }
+    //[Parameter]
+    //public bool HasPrevious => CurrentPage > 1;
+    public bool HasNext => CurrentPage < TotalPages;
+}

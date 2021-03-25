@@ -1,0 +1,17 @@
+﻿@page "/"
+
+@if (IsProcessing)
+{
+    <div style="position:fixed;top:50%;left:50%;margin-top:-50px;margin-left:-100px;">
+        <img src="images/ajax-loader.gif" />
+    </div>
+}
+else
+{
+
+}
+
+@code{
+    public bool IsProcessing { get; set; } = false;
+
+}

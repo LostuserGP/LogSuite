@@ -1,0 +1,70 @@
+﻿@page "/department"
+@inject ILocalStorageService localStorage
+@inject IJSRuntime jsRuntime
+@inject IDepartmentService departmentService
+
+<div class="row mt-4">
+    <div class="col-8">
+        <h4 class="card-title text-info">Departments</h4>
+    </div>
+    <div class="col-3 offset-1">
+        <NavLink href="department/create" class="btn btn-info form-controle">Create</NavLink>
+    </div>
+</div>
+
+@if (Departments != null && Departments.Any())
+{
+    <div class="col-md-12" style="font-size: small;">
+        <table class="table table-bordered table-sm">
+            <thead>
+                <tr class="m-0 p-1">
+                    <th>ID</th>
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Short Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var dep in Departments)
+                {
+                <tr>
+                    <td>@dep.Id</td>
+                    <td>@dep.Code</td>
+                    <td>@dep.Name</td>
+                    <td>@dep.ShortName</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div style="position:fixed;top:50%;left:50%;margin-top:-50px;margin-left:-100px;">
+        <img src="images/ajax-loader.gif" />
+    </div>
+}
+
+@code {
+    public IEnumerable<DepartmentDTO> Departments { get; set; } = new List<DepartmentDTO>();
+    private bool IsProcessing { get; set; } = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await LoadDepartments();
+        }
+        catch (Exception e)
+        {
+            await jsRuntime.ToastrError(e.Message);
+        }
+    }
+
+    private async Task LoadDepartments()
+    {
+        Departments = await departmentService.Getall();
+
+    }
+
+}

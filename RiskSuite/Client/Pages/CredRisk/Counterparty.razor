@@ -1,0 +1,203 @@
+﻿@page "/counterparty"
+@inject ILocalStorageService localStorage
+@inject IJSRuntime jsRuntime
+@inject ICounterpartyService counterpartyService
+
+<style>
+    .sort-th {
+        cursor: pointer;
+    }
+
+    .oi {
+        float: right;
+    }
+</style>
+
+<div class="m-2">
+    <h3>Counterparties</h3>
+    <div class="mt-2" style="font-size: small;">
+        @if (IsProcessing)
+        {
+            <div style="position:fixed;top:50%;left:50%;margin-top:-50px;margin-left:-100px;">
+                <img src="images/ajax-loader.gif" />
+            </div>
+        }
+        else
+        {
+            @if (Counterparties != null && Counterparties.Any())
+            {
+                <table class="table table-sm table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th class="sort-th" @onclick="@(() => SortTable("Id"))">
+                                #
+                                <i class="oi @(SetSortIcon("Id"))"></i>
+                            </th>
+                            <th class="sort-th" @onclick="@(() => SortTable("Name"))">
+                                Name
+                                <i class="oi @(SetSortIcon("Name"))"></i>
+                            </th>
+                            <th class="sort-th" @onclick="@(() => SortTable("ShortName"))">
+                                Short Name
+                                <i class="oi @(SetSortIcon("ShortName"))"></i>
+                            </th>
+                            <th class="sort-th" @onclick="@(() => SortTable("FinancialSector"))">
+                                Sector
+                                <i class="oi @(SetSortIcon("FinancialSector"))"></i>
+                            </th>
+                            <th class="sort-th" @onclick="@(() => SortTable("CountryRisk"))">
+                                Country of Risk
+                                <i class="oi @(SetSortIcon("CountryRisk"))"></i>
+                            </th>
+                            <th class="sort-th" @onclick="@(() => SortTable("Country"))">
+                                Country of Domicile
+                                <i class="oi @(SetSortIcon("Country"))"></i>
+                            </th>
+                            <th>Portfolio</th>
+                            <th>Donor</th>
+                            <th>DUNS</th>
+                            <th>Reason</th>
+                            <th>SRK</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var counterparty in Counterparties)
+                        {
+                            <tr>
+                                <td>@counterparty.Id</td>
+                                <td>@counterparty.Name</td>
+                                <td>@counterparty.ShortName</td>
+                                <td>
+                                    @if (counterparty.FinancialSector != null)
+                                    {
+                                        @counterparty.FinancialSector.NameEn
+                                    }
+                                </td>
+                                <td>
+                                    @if (counterparty.CountryRisk != null)
+                                    {
+                                        @counterparty.CountryRisk.NameEn
+                                    }
+                                </td>
+                                <td>
+                                    @if (counterparty.Country != null)
+                                    {
+                                        @counterparty.Country.NameEn
+                                    }
+                                </td>
+                                <td>
+                                    @if (counterparty.CounterpartyPortfolios != null && counterparty.CounterpartyPortfolios.Any())
+                                    {
+                                        @foreach (var portfolio in counterparty.CounterpartyPortfolios)
+                                        {
+                                            <span>@portfolio.Name</span>
+                                        }
+                                    }
+                                </td>
+                                <td>
+                                    @if (counterparty.RatingDonor != null)
+                                    {
+                                        @counterparty.RatingDonor.Name
+                                    }
+                                </td>
+                                <td>@counterparty.Duns</td>
+                                <td>@counterparty.Causes</td>
+                                <td>@counterparty.IsSrk</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>no counterparties to show</p>
+            }
+        }
+    </div>
+</div>
+
+<Pagination MetaData="MetaData" Spread="2" SelectedPage="SelectedPage" />
+
+
+@code {
+    public IEnumerable<CounterpartyDTO> Counterparties { get; set; } = new List<CounterpartyDTO>();
+    public MetaData MetaData { get; set; } = new MetaData();
+    private Params _parameters = new Params();
+    private bool IsProcessing { get; set; } = true;
+    private bool isSortedAscending;
+    private string activeSortColumn;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await LoadCounterparties();
+        }
+        catch (Exception e)
+        {
+            await jsRuntime.ToastrError(e.Message);
+        }
+    }
+
+    private async Task LoadCounterparties()
+    {
+        IsProcessing = true;
+        var pagingResponse = await counterpartyService.Getall(_parameters);
+        Counterparties = pagingResponse.Items;
+        MetaData = pagingResponse.MetaData;
+        IsProcessing = false;
+    }
+
+    private async Task SelectedPage(int page)
+    {
+        _parameters.PageNumber = page;
+        await LoadCounterparties();
+    }
+
+    private void SortTable(string columnName)
+    {
+        if (columnName != activeSortColumn)
+        {
+            if (columnName == "FinancialSector")
+            {
+                Counterparties = Counterparties.OrderBy(x => x.FinancialSector.NameEn).ToList();
+            }
+            else
+            {
+                Counterparties = Counterparties.OrderBy(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
+            }
+            isSortedAscending = true;
+            activeSortColumn = columnName;
+        }
+        else
+        {
+            if (isSortedAscending)
+            {
+                Counterparties = Counterparties.OrderByDescending(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
+            }
+            else
+            {
+                Counterparties = Counterparties.OrderBy(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
+            }
+
+            isSortedAscending = !isSortedAscending;
+        }
+    }
+
+    private string SetSortIcon(string columnName)
+    {
+        if (activeSortColumn != columnName)
+        {
+            return string.Empty;
+        }
+        if (isSortedAscending)
+        {
+            return "oi-sort-ascending";
+        }
+        else
+        {
+            return "oi-sort-descending";
+        }
+    }
+
+}
