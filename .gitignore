@@ -3,7 +3,7 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
-RiskSuite\RiskSuite\Server\appsettings.json
+RiskSuite\Server\appsettings.json
 
 # User-specific files
 *.rsuser
