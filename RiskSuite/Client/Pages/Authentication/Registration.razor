@@ -33,7 +33,8 @@
                         </div>
                         <div class="py-2">
                             <InputSelect @bind-Value="UserForRegistration.DepartmentId" class="form-control" placeholder="Department">
-                                <option value="-1">Choose your department</option>
+                                @*<option value="-1">Choose your department</option>*@
+                                <option selected>Choose your department</option>
                                 @foreach (var dep in Departments)
                                 {
                                     <option value="@dep.Id">@dep.Name</option>

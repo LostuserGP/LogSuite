@@ -28,20 +28,10 @@ namespace RiskSuite.Server.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCounterparties([FromQuery] Params parameters)
         {
-            //if (parameters == null)
-            //{
-            //    var counterparties = await _counterpartyRepository.GetAll();
-            //    return Ok(counterparties);
-            //}
-            //else
-            //{
             var pagedCounterparties = await _counterpartyRepository.GetPaged(parameters);
-            //var counterparties = _mapper.Map<IEnumerable<CounterpartyDTO>>(pagedCounterparties);
             var counterparties = pagedCounterparties.ToList();
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(pagedCounterparties.MetaData));
-            //Response.AddPagination(pagedCounterparties.CurrentPage, pagedCounterparties.PageSize, pagedCounterparties.TotalCount, pagedCounterparties.TotalPages);
             return Ok(counterparties);
-            //}
         }
     }
 }

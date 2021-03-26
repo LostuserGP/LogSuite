@@ -1,7 +1,4 @@
 ﻿@page "/counterparty"
-@inject ILocalStorageService localStorage
-@inject IJSRuntime jsRuntime
-@inject ICounterpartyService counterpartyService
 
 <style>
     .sort-th {
@@ -14,7 +11,15 @@
 </style>
 
 <div class="m-2">
-    <h3>Counterparties</h3>
+    <div class="d-flex">
+        <div class="justify-content-start">
+            <a href="counterparty/create" class="btn btn-primary">Create</a>
+        </div>
+        <div class="mx-auto justify-content-center">
+            <h3>Counterparties</h3>
+        </div>
+    </div>
+    
     <div class="mt-2" style="font-size: small;">
         @if (IsProcessing)
         {
@@ -29,27 +34,27 @@
                 <table class="table table-sm table-bordered table-hover">
                     <thead>
                         <tr>
-                            <th class="sort-th" @onclick="@(() => SortTable("Id"))">
+                            <th class="sort-th" @onclick="@(() => OnSortChanged("Id"))">
                                 #
                                 <i class="oi @(SetSortIcon("Id"))"></i>
                             </th>
-                            <th class="sort-th" @onclick="@(() => SortTable("Name"))">
+                            <th class="sort-th" @onclick="@(() => OnSortChanged("Name"))">
                                 Name
                                 <i class="oi @(SetSortIcon("Name"))"></i>
                             </th>
-                            <th class="sort-th" @onclick="@(() => SortTable("ShortName"))">
+                            <th class="sort-th" @onclick="@(() => OnSortChanged("ShortName"))">
                                 Short Name
                                 <i class="oi @(SetSortIcon("ShortName"))"></i>
                             </th>
-                            <th class="sort-th" @onclick="@(() => SortTable("FinancialSector"))">
+                            <th class="sort-th" @onclick="@(() => OnSortChanged("Sector"))">
                                 Sector
-                                <i class="oi @(SetSortIcon("FinancialSector"))"></i>
+                                <i class="oi @(SetSortIcon("Sector"))"></i>
                             </th>
-                            <th class="sort-th" @onclick="@(() => SortTable("CountryRisk"))">
+                            <th class="sort-th" @onclick="@(() => OnSortChanged("CountryRisk"))">
                                 Country of Risk
                                 <i class="oi @(SetSortIcon("CountryRisk"))"></i>
                             </th>
-                            <th class="sort-th" @onclick="@(() => SortTable("Country"))">
+                            <th class="sort-th" @onclick="@(() => OnSortChanged("Country"))">
                                 Country of Domicile
                                 <i class="oi @(SetSortIcon("Country"))"></i>
                             </th>
@@ -64,28 +69,30 @@
                         @foreach (var counterparty in Counterparties)
                         {
                             <tr>
-                                <td>@counterparty.Id</td>
-                                <td>@counterparty.Name</td>
-                                <td>@counterparty.ShortName</td>
-                                <td>
+                                <td class="py-0">@counterparty.Id</td>
+                                <td class="py-0">
+                                    <a href="counterparty/@counterparty.Id">@counterparty.Name</a>
+                                </td>
+                                <td class="py-0">@counterparty.ShortName</td>
+                                <td class="py-0">
                                     @if (counterparty.FinancialSector != null)
                                     {
                                         @counterparty.FinancialSector.NameEn
                                     }
                                 </td>
-                                <td>
+                                <td class="py-0">
                                     @if (counterparty.CountryRisk != null)
                                     {
                                         @counterparty.CountryRisk.NameEn
                                     }
                                 </td>
-                                <td>
+                                <td class="py-0">
                                     @if (counterparty.Country != null)
                                     {
                                         @counterparty.Country.NameEn
                                     }
                                 </td>
-                                <td>
+                                <td class="py-0">
                                     @if (counterparty.CounterpartyPortfolios != null && counterparty.CounterpartyPortfolios.Any())
                                     {
                                         @foreach (var portfolio in counterparty.CounterpartyPortfolios)
@@ -94,15 +101,15 @@
                                         }
                                     }
                                 </td>
-                                <td>
+                                <td class="py-0">
                                     @if (counterparty.RatingDonor != null)
                                     {
                                         @counterparty.RatingDonor.Name
                                     }
                                 </td>
-                                <td>@counterparty.Duns</td>
-                                <td>@counterparty.Causes</td>
-                                <td>@counterparty.IsSrk</td>
+                                <td class="py-0">@counterparty.Duns</td>
+                                <td class="py-0">@counterparty.Causes</td>
+                                <td class="py-0">@counterparty.IsSrk</td>
                             </tr>
                         }
                     </tbody>
@@ -116,88 +123,4 @@
     </div>
 </div>
 
-<Pagination MetaData="MetaData" Spread="2" SelectedPage="SelectedPage" />
-
-
-@code {
-    public IEnumerable<CounterpartyDTO> Counterparties { get; set; } = new List<CounterpartyDTO>();
-    public MetaData MetaData { get; set; } = new MetaData();
-    private Params _parameters = new Params();
-    private bool IsProcessing { get; set; } = true;
-    private bool isSortedAscending;
-    private string activeSortColumn;
-
-    protected override async Task OnInitializedAsync()
-    {
-        try
-        {
-            await LoadCounterparties();
-        }
-        catch (Exception e)
-        {
-            await jsRuntime.ToastrError(e.Message);
-        }
-    }
-
-    private async Task LoadCounterparties()
-    {
-        IsProcessing = true;
-        var pagingResponse = await counterpartyService.Getall(_parameters);
-        Counterparties = pagingResponse.Items;
-        MetaData = pagingResponse.MetaData;
-        IsProcessing = false;
-    }
-
-    private async Task SelectedPage(int page)
-    {
-        _parameters.PageNumber = page;
-        await LoadCounterparties();
-    }
-
-    private void SortTable(string columnName)
-    {
-        if (columnName != activeSortColumn)
-        {
-            if (columnName == "FinancialSector")
-            {
-                Counterparties = Counterparties.OrderBy(x => x.FinancialSector.NameEn).ToList();
-            }
-            else
-            {
-                Counterparties = Counterparties.OrderBy(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
-            }
-            isSortedAscending = true;
-            activeSortColumn = columnName;
-        }
-        else
-        {
-            if (isSortedAscending)
-            {
-                Counterparties = Counterparties.OrderByDescending(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
-            }
-            else
-            {
-                Counterparties = Counterparties.OrderBy(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
-            }
-
-            isSortedAscending = !isSortedAscending;
-        }
-    }
-
-    private string SetSortIcon(string columnName)
-    {
-        if (activeSortColumn != columnName)
-        {
-            return string.Empty;
-        }
-        if (isSortedAscending)
-        {
-            return "oi-sort-ascending";
-        }
-        else
-        {
-            return "oi-sort-descending";
-        }
-    }
-
-}
+<Pagination MetaData="MetaData" Spread="2" SelectedPage="SelectedPage" OnFilterChanged="FilterChanged" />

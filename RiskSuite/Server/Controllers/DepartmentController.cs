@@ -1,6 +1,7 @@
 ﻿using Business.Repositories.IRepository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using RiskSuite.Shared;
 using RiskSuite.Shared.Models;
 using System;
@@ -21,10 +22,20 @@ namespace RiskSuite.Server.Controllers
             _departmentRepository = departmentRepository;
         }
 
+        [Route("all")]
         [HttpGet]
         public async Task<IActionResult> GetDepartments()
         {
             var departments = await _departmentRepository.GetAll();
+            return Ok(departments);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetCounterparties([FromQuery] Params parameters)
+        {
+            var pagedDepartments = await _departmentRepository.GetPaged(parameters);
+            var departments = pagedDepartments.ToList();
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(pagedDepartments.MetaData));
             return Ok(departments);
         }
 

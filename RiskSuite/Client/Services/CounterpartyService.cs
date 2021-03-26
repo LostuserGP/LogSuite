@@ -38,7 +38,11 @@ namespace RiskSuite.Client.Services
         {
             var queryStringParam = new Dictionary<string, string>
             {
-                ["pageNumber"] = parameters.PageNumber.ToString()
+                ["pageNumber"] = parameters.PageNumber.ToString(),
+                ["pageSize"] = parameters.PageSize.ToString(),
+                ["filter"] = parameters.Filter == null ? "" : parameters.Filter,
+                ["order"] = parameters.Order == null ? "" : parameters.Order,
+                ["orderAsc"] = parameters.OrderAsc.ToString()
             };
             var response = await _client.GetAsync(QueryHelpers.AddQueryString("api/counterparty", queryStringParam));
             var content = await response.Content.ReadAsStringAsync();

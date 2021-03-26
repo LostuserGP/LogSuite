@@ -1,4 +1,6 @@
-﻿using RiskSuite.Shared.Models;
+﻿using RiskSuite.Business;
+using RiskSuite.Shared;
+using RiskSuite.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +17,6 @@ namespace Business.Repositories.IRepository
         public Task<int> Delete(int departmentId);
         public Task<IEnumerable<DepartmentDTO>> GetAll();
         public Task<DepartmentDTO> IsUnique(string name, int departmentId = 0);
+        public Task<PagedList<DepartmentDTO>> GetPaged(Params parameters);
     }
 }

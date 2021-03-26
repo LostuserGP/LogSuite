@@ -1,6 +1,10 @@
 ﻿using AutoMapper;
 using Business.Repositories.IRepository;
+using Microsoft.EntityFrameworkCore;
+using RiskSuite.Business;
+using RiskSuite.Business.Repositories;
 using RiskSuite.DataAccess;
+using RiskSuite.Shared;
 using RiskSuite.Shared.Models;
 using System;
 using System.Collections.Generic;
@@ -52,6 +56,19 @@ namespace Business.Repositories
             {
                 return null;
             }
+        }
+
+        public async Task<PagedList<DepartmentDTO>> GetPaged(Params parameters)
+        {
+            var source = _db.Departments
+                    .Include(x => x.ApplicationUsers)
+                    .AsQueryable();
+            source = source.Search(parameters.Filter);
+            source = source.Sort(parameters.Order, parameters.OrderAsc);
+            var result = await PagedList<Department>.ToPagedListAsync(source, parameters.PageNumber, parameters.PageSize);
+            var departments = _mapper.Map<List<DepartmentDTO>>(result);
+
+            return new PagedList<DepartmentDTO>(departments, result.MetaData);
         }
 
         public Task<DepartmentDTO> IsUnique(string name, int departmentId = 0)

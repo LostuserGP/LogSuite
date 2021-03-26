@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.WebUtilities;
+using Newtonsoft.Json;
+using RiskSuite.Client.Helpers;
 using RiskSuite.Client.Services.IServices;
 using RiskSuite.Shared;
 using RiskSuite.Shared.Models;
@@ -7,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace RiskSuite.Client.Services
@@ -61,6 +64,31 @@ namespace RiskSuite.Client.Services
             var content = await response.Content.ReadAsStringAsync();
             var departments = JsonConvert.DeserializeObject<IEnumerable<DepartmentDTO>>(content);
             return departments;
+        }
+
+        public async Task<PagingResponse<DepartmentDTO>> Getall(Params parameters)
+        {
+            var queryStringParam = new Dictionary<string, string>
+            {
+                ["pageNumber"] = parameters.PageNumber.ToString(),
+                ["pageSize"] = parameters.PageSize.ToString(),
+                ["filter"] = parameters.Filter == null ? "" : parameters.Filter,
+                ["order"] = parameters.Order == null ? "" : parameters.Order,
+                ["orderAsc"] = parameters.OrderAsc.ToString()
+            };
+            var response = await _client.GetAsync(QueryHelpers.AddQueryString("api/department", queryStringParam));
+            var content = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new ApplicationException(content);
+            }
+            var pagingResponse = new PagingResponse<DepartmentDTO>
+            {
+                Items = System.Text.Json.JsonSerializer.Deserialize<List<DepartmentDTO>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }),
+                MetaData = System.Text.Json.JsonSerializer.Deserialize<MetaData>(response.Headers.GetValues("X-Pagination").First(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true })
+            };
+
+            return pagingResponse;
         }
     }
 }

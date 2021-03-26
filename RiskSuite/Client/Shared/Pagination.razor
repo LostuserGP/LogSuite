@@ -1,5 +1,5 @@
 ﻿<nav class="navbar fixed-bottom navbar-dark bg-dark p-0">
-    <ul class="pagination justify-content-center m-2 p-0">
+    <ul class="pagination justify-content-center mx-2 my-2 p-0">
         @foreach (var link in _links)
         {
             <li @onclick="() => OnSelectedPage(link)" style="cursor: pointer;" class="page-item @(link.Enabled ? null : "disabled") @(link.Active ? "active" : null)">
@@ -7,4 +7,15 @@
             </li>
         }
     </ul>
+    <ul class="pagination justify-content-center mx-auto my-2 p-0">
+        <li @onclick="() => OnSetPageSize(10)" style="cursor: pointer;" class="mx-2 page-item @((MetaData.PageSize == 10) ? "text-primary" : "text-light")">10</li>
+        <span class="text-light"> | </span>
+        <li @onclick="() => OnSetPageSize(20)" style="cursor: pointer;" class="mx-2 page-item @((MetaData.PageSize == 20) ? "text-primary" : "text-light")">20</li>
+        <span class="text-light"> | </span>
+        <li @onclick="() => OnSetPageSize(35)" style="cursor: pointer;" class="mx-2 page-item @((MetaData.PageSize == 35) ? "text-primary" : "text-light")">35</li>
+    </ul>
+    <section class="d-flex mr-2">
+        <input type="text" class="form-control" placeholder="Search..."
+               @bind-value="@Filter" @bind-value:event="oninput" @onkeyup="FilterChanged" />
+    </section>
 </nav>
