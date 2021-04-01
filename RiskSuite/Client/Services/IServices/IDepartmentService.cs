@@ -14,5 +14,6 @@ namespace RiskSuite.Client.Services.IServices
         public Task<DepartmentDTO> Get(int departmentId);
         public Task<DepartmentDTO> Create(DepartmentDTO departmentDTO);
         public Task<PagingResponse<DepartmentDTO>> Getall(Params parameters);
+        Task<DepartmentDTO> Update(DepartmentDTO departmentDTO);
     }
 }

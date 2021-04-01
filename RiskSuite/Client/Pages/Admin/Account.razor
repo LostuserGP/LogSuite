@@ -1,5 +1,5 @@
-﻿@page "/admin/department"
-@page "/admin/department/{Id:int}"
+﻿@page "/admin/account"
+@page "/admin/account/{Id:int}"
 
 <style>
     .sort-th {
@@ -38,7 +38,7 @@
             }
             else
             {
-                @if (Departments != null && Departments.Any())
+                @if (Accounts != null && Accounts.Any())
                 {
                     <table class="table table-sm table-bordered table-hover">
                         <thead>
@@ -52,25 +52,25 @@
                                     <i class="oi @(SetSortIcon("Name"))"></i>
                                 </th>
                                 <th class="sort-th" @onclick="@(() => OnSortChanged("ShortName"))">
-                                    Short Name
+                                    Email
                                     <i class="oi @(SetSortIcon("ShortName"))"></i>
                                 </th>
                                 <th class="sort-th" @onclick="@(() => OnSortChanged("Code"))">
-                                    Code
+                                    Department
                                     <i class="oi @(SetSortIcon("Code"))"></i>
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var dep in Departments)
+                            @foreach (var acc in Accounts)
                             {
                                 <tr>
-                                    <td class="py-0">@dep.Id</td>
+                                    <td class="py-0">@acc.Id</td>
                                     <td class="py-0">
-                                        <a href="admin/department/@dep.Id">@dep.Name</a>
+                                        <a href="admin/account/@acc.Id">@acc.Name</a>
                                     </td>
-                                    <td class="py-0">@dep.ShortName</td>
-                                    <td class="py-0">@dep.Code</td>
+                                    <td class="py-0">@acc.Email</td>
+                                    <td class="py-0">@acc.Department.Name</td>
                                 </tr>
                             }
                         </tbody>
@@ -78,7 +78,7 @@
                 }
                 else
                 {
-                    <p>no departments to show</p>
+                    <p>no accounts to show</p>
                 }
             }
         </div>

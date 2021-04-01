@@ -3,7 +3,7 @@
 <EditForm Model="UserForRegistration" OnValidSubmit="RegisterUser" class="pt-4">
     <DataAnnotationsValidator />
     <div class="py-4">
-        <div class=" row form-group ">
+        <div class="row form-group ">
             <div class="col-6 offset-3 ">
                 <div class="card border">
                     <div class="card-body px-lg-5 pt-4">
@@ -61,11 +61,10 @@
                             }
                             else
                             {
-                                <button type="submit" class="btn btn-success btn-block"><i class="fas fa-sign-in-alt"></i> Register</button>
+                                <button type="submit" class="btn btn-success btn-block">Register</button>
+                                <button type="button" class="btn btn-success btn-block" @onclick="RegisterWithInvite">Register with invite</button>
                             }
                         </div>
-
-
                     </div>
                 </div>
             </div>

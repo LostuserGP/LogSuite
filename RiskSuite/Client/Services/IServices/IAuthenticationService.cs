@@ -15,5 +15,7 @@ namespace RiskSuite.Client.Services.IServices
         Task Logout();
 
         Task<AuthenticationResponseDTO> LoginWA();
+
+        Task<RegistrationResponseDTO> RegisterWithInvite(UserRequestDTO userForRegisteration);
     }
 }

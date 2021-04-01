@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using RiskSuite.Shared;
@@ -26,5 +27,6 @@ namespace RiskSuite.Server.Helpers
         //    response.Headers.Add("Pagination", JsonConvert.SerializeObject(paginationHeader, camelCaseFormatter));
         //    response.Headers.Add("Access-Control-Expose-Headers", "Pagination");
         //}
+
     }
 }

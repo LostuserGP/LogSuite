@@ -71,14 +71,51 @@ namespace Business.Repositories
             return new PagedList<DepartmentDTO>(departments, result.MetaData);
         }
 
-        public Task<DepartmentDTO> IsUnique(string name, int departmentId = 0)
+        public async Task<DepartmentDTO> IsUnique(DepartmentDTO departmentDTO, int departmentId = 0)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (departmentId == 0)
+                {
+                    var departmentFromDb = await _db.Departments
+                        .FirstOrDefaultAsync(x => (x.Name.ToLower() == departmentDTO.Name.ToLower()
+                        || x.ShortName.ToLower() == departmentDTO.ShortName.ToLower()
+                        || x.Code == departmentDTO.Code));
+                    var result = _mapper.Map<Department, DepartmentDTO>(departmentFromDb);
+                    return result;
+                }
+                else
+                {
+                    var departmentFromDb = await _db.Departments
+                        .FirstOrDefaultAsync(x => (x.Name.ToLower() == departmentDTO.Name.ToLower()
+                        || x.ShortName.ToLower() == departmentDTO.ShortName.ToLower()
+                        || x.Code == departmentDTO.Code)
+                        && x.Id != departmentId);
+                    var result = _mapper.Map<Department, DepartmentDTO>(departmentFromDb);
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
 
-        public Task<DepartmentDTO> Update(int departmentId, CounterpartyDTO departmentDTO)
+        public async Task<DepartmentDTO> Update(DepartmentDTO departmentDTO)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Department departmentFromDb = await _db.Departments.FindAsync(departmentDTO.Id);
+                Department departmentToUpdate = _mapper.Map(departmentDTO, departmentFromDb);
+                var updatedDepartment = _db.Departments.Update(departmentToUpdate);
+                await _db.SaveChangesAsync();
+                var result = _mapper.Map<Department, DepartmentDTO>(updatedDepartment.Entity);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
     }
 }

@@ -98,6 +98,7 @@ namespace RiskSuite.Server
             services.AddScoped<IDbInitializer, DbInitializer>();
             services.AddScoped<ICounterpartyRepository, CounterpartyRepository>();
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            services.AddScoped<IMailService, MailService>();
 
             services.AddCors(o => o.AddPolicy("RiskSuite", builder =>
             {

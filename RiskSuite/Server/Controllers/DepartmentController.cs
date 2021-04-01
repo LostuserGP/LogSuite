@@ -31,7 +31,7 @@ namespace RiskSuite.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCounterparties([FromQuery] Params parameters)
+        public async Task<IActionResult> GetDepartments([FromQuery] Params parameters)
         {
             var pagedDepartments = await _departmentRepository.GetPaged(parameters);
             var departments = pagedDepartments.ToList();
@@ -72,6 +72,45 @@ namespace RiskSuite.Server.Controllers
             {
                 var result = await _departmentRepository.Create(departmentDTO);
                 return Ok(result);
+            }
+            else
+            {
+                return BadRequest(new ErrorModel()
+                {
+                    ErrorMessage = "Error while creating new department"
+                });
+            }
+        }
+
+        [HttpPut("{departmentId}")]
+        public async Task<IActionResult> Update([FromBody] DepartmentDTO departmentDTO, int? departmentId)
+        {
+            if (departmentId == null || departmentId != departmentDTO.Id)
+            {
+                return BadRequest(new ErrorModel()
+                {
+                    Title = "",
+                    ErrorMessage = "Invalid Department Id",
+                    StatusCode = StatusCodes.Status400BadRequest
+                });
+            }
+            if (ModelState.IsValid)
+            {
+                var isUnique = await _departmentRepository.IsUnique(departmentDTO, departmentDTO.Id);
+                if (isUnique == null)
+                {
+                    var result = await _departmentRepository.Update(departmentDTO);
+                    return Ok(result);
+                }
+                else
+                {
+                    return BadRequest(new ErrorModel()
+                    {
+                        Title = "",
+                        ErrorMessage = "Department with such fields already exist",
+                        StatusCode = StatusCodes.Status406NotAcceptable
+                    });
+                }
             }
             else
             {

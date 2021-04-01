@@ -3,6 +3,7 @@ using Microsoft.JSInterop;
 using RiskSuite.Client.Helpers;
 using RiskSuite.Client.Services.IServices;
 using RiskSuite.Shared;
+using RiskSuite.Shared.Authorization;
 using RiskSuite.Shared.Models;
 using System;
 using System.Collections.Generic;
@@ -11,15 +12,15 @@ using System.Threading.Tasks;
 
 namespace RiskSuite.Client.Pages.Admin
 {
-    public partial class Department
+    public partial class Account
     {
-        public IEnumerable<DepartmentDTO> Departments { get; set; } = new List<DepartmentDTO>();
+        public IEnumerable<UserDTO> Accounts { get; set; } = new List<UserDTO>();
         [Parameter]
         public MetaData MetaData { get; set; } = new MetaData();
         [Inject]
         public IJSRuntime jsRuntime { get; set; }
         [Inject]
-        public IDepartmentService departmentService { get; set; }
+        public IAccountService accountService { get; set; }
         private Params _parameters = new Params();
         private bool IsProcessing { get; set; } = true;
         private bool ShowDetail { get; set; } = false;
@@ -39,7 +40,7 @@ namespace RiskSuite.Client.Pages.Admin
                 _parameters.Order = "Name";
                 _parameters.OrderAsc = true;
                 _parameters.PageSize = 35;
-                await LoadDepartments();
+                await LoadAccounts();
             }
             catch (Exception e)
             {
@@ -55,11 +56,11 @@ namespace RiskSuite.Client.Pages.Admin
             }
         }
 
-        private async Task LoadDepartments()
+        private async Task LoadAccounts()
         {
             IsProcessing = true;
-            var pagingResponse = await departmentService.Getall(_parameters);
-            Departments = pagingResponse.Items;
+            var pagingResponse = await accountService.Getall(_parameters);
+            Accounts = pagingResponse.Items;
             MetaData = pagingResponse.MetaData;
             IsProcessing = false;
         }
@@ -68,7 +69,7 @@ namespace RiskSuite.Client.Pages.Admin
         {
             _parameters.PageNumber = page;
             _parameters.PageSize = MetaData.PageSize;
-            await LoadDepartments();
+            await LoadAccounts();
         }
 
         private string SetSortIcon(string columnName)
@@ -99,14 +100,14 @@ namespace RiskSuite.Client.Pages.Admin
             {
                 _parameters.OrderAsc = !_parameters.OrderAsc;
             }
-            await LoadDepartments();
+            await LoadAccounts();
         }
 
         private async Task FilterChanged(string filter)
         {
             _parameters.PageNumber = 1;
             _parameters.Filter = filter;
-            await LoadDepartments();
+            await LoadAccounts();
         }
 
         protected void DepartmentSubmitEvent()

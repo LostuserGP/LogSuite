@@ -20,7 +20,7 @@ namespace RiskSuite.Client.Pages.Authentication
         public bool IsProcessing { get; set; } = false;
         public bool ShowRegistrationErrors { get; set; }
         public IEnumerable<string> Errors { get; set; }
-
+        public string ResponseUrl { get; set; } = "";
         [Inject]
         public IAuthenticationService authenticationService { get; set; }
         [Inject]
@@ -61,6 +61,25 @@ namespace RiskSuite.Client.Pages.Authentication
                 Errors = result.Errors;
                 ShowRegistrationErrors = true;
             }
+        }
+
+        public async Task RegisterWithInvite()
+        {
+            ShowRegistrationErrors = false;
+            IsProcessing = true;
+            var result = await authenticationService.RegisterWithInvite(UserForRegistration);
+            if (result.IsRegistrationSuccessful)
+            {
+                IsProcessing = false;
+                navigationManager.NavigateTo("/login");
+            }
+            else
+            {
+                IsProcessing = false;
+                Errors = result.Errors;
+                ShowRegistrationErrors = true;
+            }
+
         }
     }
 }

@@ -12,11 +12,11 @@ namespace Business.Repositories.IRepository
     public interface IDepartmentRepository
     {
         public Task<DepartmentDTO> Create(DepartmentDTO departmentDTO);
-        public Task<DepartmentDTO> Update(int departmentId, CounterpartyDTO departmentDTO);
+        public Task<DepartmentDTO> Update(DepartmentDTO departmentDTO);
         public Task<DepartmentDTO> Get(int departmentId);
         public Task<int> Delete(int departmentId);
         public Task<IEnumerable<DepartmentDTO>> GetAll();
-        public Task<DepartmentDTO> IsUnique(string name, int departmentId = 0);
+        public Task<DepartmentDTO> IsUnique(DepartmentDTO departmentDTO, int departmentId = 0);
         public Task<PagedList<DepartmentDTO>> GetPaged(Params parameters);
     }
 }

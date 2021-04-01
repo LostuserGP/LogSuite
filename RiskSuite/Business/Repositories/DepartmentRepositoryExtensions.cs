@@ -41,6 +41,9 @@ namespace RiskSuite.Business.Repositories
                         case "ShortName":
                             source = source.OrderBy(s => s.ShortName);
                             break;
+                        case "Code":
+                            source = source.OrderBy(s => s.Code);
+                            break;
                         default:
                             source = source.OrderBy(s => s.Name);
                             break;
@@ -58,6 +61,9 @@ namespace RiskSuite.Business.Repositories
                             break;
                         case "ShortName":
                             source = source.OrderByDescending(s => s.ShortName);
+                            break;
+                        case "Code":
+                            source = source.OrderByDescending(s => s.Code);
                             break;
                         default:
                             source = source.OrderByDescending(s => s.Name);

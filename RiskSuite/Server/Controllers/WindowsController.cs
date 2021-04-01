@@ -79,8 +79,8 @@ namespace RiskSuite.Server.Controllers
                 {
                     Name = user.Name,
                     Id = user.Id,
-                    Email = user.Email,
-                    DepartmentId = user.DepartmentId
+                    Email = user.Email
+                    //Department = user.Department
                 }
             });
         }

@@ -1,0 +1,35 @@
+﻿
+<div class="">
+    <div class="d-flex">
+        <div class="mx-auto justify-content-center">
+            <h3>@Title Department</h3>
+        </div>
+    </div>
+
+    <div class="mt-0">
+        <EditForm Model="DepartmentModel" OnValidSubmit="HandleDepartmentSubmit">
+            <div class="py-2">
+                <InputNumber @bind-Value="DepartmentModel.Code" class="form-control" placeholder="Code..." />
+                <ValidationMessage For="(()=>DepartmentModel.Code)" />
+            </div>
+            <div class="py-2">
+                <InputText @bind-Value="DepartmentModel.Name" class="form-control" placeholder="Name..." />
+                <ValidationMessage For="(()=>DepartmentModel.Name)" />
+            </div>
+            <div class="py-2">
+                <InputText @bind-Value="DepartmentModel.ShortName" class="form-control" placeholder="ShortName..." />
+                <ValidationMessage For="(()=>DepartmentModel.ShortName)" />
+            </div>
+            <div class="py-2">
+                @if (IsProcessing)
+                {
+                    <button type="submit" class="btn btn-success btn-block disabled"><i class="fas fa-sign-in-alt"></i> Please Wait...</button>
+                }
+                else
+                {
+                    <button type="submit" class="btn btn-success btn-block"><i class="fas fa-sign-in-alt"></i>@Title</button>
+                }
+            </div>
+        </EditForm>
+    </div>
+</div>

@@ -96,5 +96,24 @@ namespace RiskSuite.Client.Services
                 return result;
             }
         }
+
+        public async Task<RegistrationResponseDTO> RegisterWithInvite(UserRequestDTO userForRegisteration)
+        {
+            var content = JsonConvert.SerializeObject(userForRegisteration);
+            var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
+            var response = await _client.PostAsync("api/account/create", bodyContent);
+            var contentTemp = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<RegistrationResponseDTO>(contentTemp);
+
+            if (response.IsSuccessStatusCode)
+            {
+
+                return new RegistrationResponseDTO { IsRegistrationSuccessful = true };
+            }
+            else
+            {
+                return result;
+            }
+        }
     }
 }
