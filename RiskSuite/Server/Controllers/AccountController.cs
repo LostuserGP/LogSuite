@@ -19,6 +19,12 @@ using AutoMapper;
 using RiskSuite.Shared.Models;
 using RiskSuite.Server.Services.IServices;
 using System.Text.Encodings.Web;
+using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
+using RiskSuite.Business;
+using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http;
 
 namespace RiskSuite.Server.Controllers
 {
@@ -33,13 +39,15 @@ namespace RiskSuite.Server.Controllers
         private readonly APISettings _apiSettings;
         private readonly IMapper _mapper;
         private readonly IMailService _mailService;
+        private readonly IConfiguration _configuration;
 
         public AccountController(SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager,
             IOptions<APISettings> options,
             IMapper mapper,
-            IMailService mailService)
+            IMailService mailService,
+            IConfiguration configuration)
         {
             _roleManager = roleManager;
             _userManager = userManager;
@@ -47,6 +55,7 @@ namespace RiskSuite.Server.Controllers
             _apiSettings = options.Value;
             _mapper = mapper;
             _mailService = mailService;
+            _configuration = configuration;
         }
 
         [AllowAnonymous]
@@ -160,17 +169,25 @@ namespace RiskSuite.Server.Controllers
             return claims;
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = SD.Role_Admin)]
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] UserRequestDTO accountDTO)
+        public async Task<IActionResult> Create([FromBody] UserDetailDTO accountDTO)
         {
             if (accountDTO == null || !ModelState.IsValid)
             {
                 return BadRequest();
             }
-
+            if (!(await IsUnique(accountDTO)))
+            {
+                return BadRequest(new ErrorModel()
+                {
+                    Title = "",
+                    ErrorMessage = "User is not unique",
+                    StatusCode = StatusCodes.Status400BadRequest
+                });
+            }
             var generatedPassword = GenerateRandomPassword();
-            var user = new ApplicationUser
+            var user = new ApplicationUser()
             {
                 UserName = accountDTO.Email,
                 Email = accountDTO.Email,
@@ -180,7 +197,6 @@ namespace RiskSuite.Server.Controllers
             };
 
             var result = await _userManager.CreateAsync(user, generatedPassword);
-            
 
             if (!result.Succeeded)
             {
@@ -188,16 +204,32 @@ namespace RiskSuite.Server.Controllers
                 return BadRequest(new RegistrationResponseDTO { Errors = errors, IsRegistrationSuccessful = false });
             }
 
-            var roleResult = await _userManager.AddToRoleAsync(user, SD.Role_User);
-            if (!roleResult.Succeeded)
+            if (accountDTO.Roles.Any())
             {
-                var errors = roleResult.Errors.Select(e => e.Description);
-                return BadRequest(new RegistrationResponseDTO { Errors = errors, IsRegistrationSuccessful = false });
+                var roleResult = await _userManager.AddToRolesAsync(user, accountDTO.Roles);
+                if (!roleResult.Succeeded)
+                {
+                    var errors = roleResult.Errors.Select(e => e.Description);
+                    return BadRequest(new RegistrationResponseDTO { Errors = errors, IsRegistrationSuccessful = false });
+                }
             }
+            else
+            {
+                var roleResult = await _userManager.AddToRoleAsync(user, SD.Role_User);
+                if (!roleResult.Succeeded)
+                {
+                    var errors = roleResult.Errors.Select(e => e.Description);
+                    return BadRequest(new RegistrationResponseDTO { Errors = errors, IsRegistrationSuccessful = false });
+                }
+            }            
             var createdUser = await _userManager.FindByNameAsync(user.Name);
-            var token = _userManager.GeneratePasswordResetTokenAsync(createdUser);
-            var callback = Url.Action("/loginwa", "Account", new { token, email = user.Email }, Request.Scheme);
-            var htmlMessage = "You can login by <a href='" + HtmlEncoder.Default.Encode(callback) + "'>clicking here</a>.";
+            var site = _configuration.GetValue<string>("RiskSuite_Client_URL");
+            var link = site + "/loginwa?user=" + accountDTO.Email + "&p=" + generatedPassword;
+            //callback = Url.
+            var htmlMessage = "Have been created account for <a href='" + HtmlEncoder.Default.Encode(site) + "'>Risk Suite</a>.<br/>" + 
+                "Username: " + accountDTO.Email + "<br/>" + 
+                "Password: " + generatedPassword + "<br/>" +
+                "You can login by <a href='" + HtmlEncoder.Default.Encode(link) + "'>clicking here</a>.";
             await _mailService.SendEmailAsync(user.Email, "Link for login", htmlMessage);
 
             return StatusCode(201);
@@ -207,7 +239,7 @@ namespace RiskSuite.Server.Controllers
         {
             if (opts == null) opts = new PasswordOptions()
             {
-                RequiredLength = 8,
+                RequiredLength = 10,
                 RequiredUniqueChars = 4,
                 RequireDigit = true,
                 RequireLowercase = true,
@@ -250,6 +282,152 @@ namespace RiskSuite.Server.Controllers
             }
 
             return new string(chars.ToArray());
+        }
+
+        [Authorize(Roles = SD.Role_Admin)]
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var users = await _userManager.Users.ToListAsync();
+            return Ok(users);
+        }
+
+        [Authorize(Roles = SD.Role_Admin)]
+        [HttpGet]
+        public async Task<IActionResult> GetUsers([FromQuery] Params parameters)
+        {
+
+            var source = _userManager.Users
+                    .Include(x => x.Department)
+                    .AsQueryable();
+            source = source.Search(parameters.Filter);
+            source = source.Sort(parameters.Order, parameters.OrderAsc);
+            var result = await PagedList<ApplicationUser>.ToPagedListAsync(source, parameters.PageNumber, parameters.PageSize);
+            List<UserDetailDTO> users = new List<UserDetailDTO>();
+            foreach (var user in result)
+            {
+                var roles = (await _userManager.GetRolesAsync(user)).ToList();
+                users.Add(new UserDetailDTO()
+                {
+                    Id = user.Id,
+                    Name = user.Name,
+                    Email = user.Email,
+                    Department = _mapper.Map<DepartmentDTO>(user.Department),
+                    Roles = roles
+                });
+            };
+            var pagedUsers = new PagedList<UserDetailDTO>(users, result.MetaData);
+            //var departments = pagedUsers.ToList();
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(pagedUsers.MetaData));
+            
+            return Ok(users);
+        }
+
+        [Authorize(Roles = SD.Role_Admin)]
+        [HttpGet("{accountId}")]
+        public async Task<IActionResult> Get(string accountId)
+        {
+            if (accountId == null)
+            {
+                return BadRequest(new ErrorModel()
+                {
+                    Title = "",
+                    ErrorMessage = "Invalid Account Id",
+                    StatusCode = StatusCodes.Status400BadRequest
+                });
+            }
+            var account = await _userManager.Users
+                .Include(x => x.Department)
+                .FirstOrDefaultAsync(x => x.Id == accountId);
+            if (account == null)
+            {
+                return BadRequest(new ErrorModel()
+                {
+                    Title = "",
+                    ErrorMessage = "Invalid Account Id",
+                    StatusCode = StatusCodes.Status404NotFound
+                });
+            }
+            var accountDTO = new UserDetailDTO()
+            {
+                Id = account.Id,
+                Name = account.Name,
+                Email = account.Email,
+                Roles = (await _userManager.GetRolesAsync(account)).ToList(),
+                DepartmentId = account.DepartmentId,
+                Department = _mapper.Map<Department, DepartmentDTO>(account.Department)
+            };
+            return Ok(accountDTO);
+        }
+
+        [Authorize(Roles = SD.Role_Admin)]
+        [HttpGet]
+        public async Task<IActionResult> Roles()
+        {
+            var identityRoles = await _roleManager.Roles.ToListAsync();
+            List<string> roles = new List<string>();
+            foreach (var role in identityRoles)
+            {
+                roles.Add(role.Name);
+            }
+            return Ok(roles);
+        }
+
+        [Authorize(Roles = SD.Role_Admin)]
+        [HttpPut("{accountId}")]
+        public async Task<IActionResult> Update([FromBody] UserDetailDTO accountDTO, string accountId)
+        {
+            if (accountDTO == null || !ModelState.IsValid || accountId == null)
+            {
+                return BadRequest();
+            }
+            if (accountDTO.Id != accountId)
+            {
+                return BadRequest();
+            }
+            if (!(await IsUnique(accountDTO)))
+            {
+                return BadRequest(new ErrorModel()
+                {
+                    Title = "",
+                    ErrorMessage = "User is not unique",
+                    StatusCode = StatusCodes.Status400BadRequest
+                });
+            }
+            var userFromDB = await _userManager.FindByIdAsync(accountId);
+            var existingRoles = await _userManager.GetRolesAsync(userFromDB);
+            List<string> rolesToDelete = existingRoles
+                .Where(c1 => accountDTO.Roles.All(c2 => c2 != c1)).ToList();
+            List<string> rolesToAdd = accountDTO.Roles
+                .Where(c1 => existingRoles.All(c2 => c2 != c1)).ToList();
+            try
+            {
+                await _userManager.RemoveFromRolesAsync(userFromDB, rolesToDelete);
+                await _userManager.AddToRolesAsync(userFromDB, rolesToAdd);
+                userFromDB.Email = accountDTO.Email;
+                userFromDB.Name = accountDTO.Name;
+                userFromDB.DepartmentId = accountDTO.DepartmentId;
+                await _userManager.UpdateAsync(userFromDB);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        private async Task<bool> IsUnique(UserDetailDTO accountDTO)
+        {
+            var user = await _userManager.Users
+                .Where(x => x.Id != accountDTO.Id && 
+                (x.Name.ToLower() == accountDTO.Name.ToLower() 
+                || x.Email.ToLower() == accountDTO.Email.ToLower()))
+                .FirstOrDefaultAsync();
+            if (user != null)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

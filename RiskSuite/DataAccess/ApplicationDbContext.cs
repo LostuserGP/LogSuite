@@ -18,7 +18,7 @@ namespace RiskSuite.DataAccess
         //    DbContextOptions options) : base(options)
         //{ }
 
-        public DbSet<ApplicationUser> Users { get; set; }
+        //public DbSet<ApplicationUser> Accounts { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Subsidiary> Subsidiaries { get; set; }
         public DbSet<Portfolio> Portfolios { get; set; }

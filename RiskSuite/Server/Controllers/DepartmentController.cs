@@ -70,8 +70,21 @@ namespace RiskSuite.Server.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _departmentRepository.Create(departmentDTO);
-                return Ok(result);
+                var isUnique = await _departmentRepository.IsUnique(departmentDTO);
+                if (isUnique == null)
+                {
+                    var result = await _departmentRepository.Create(departmentDTO);
+                    return Ok(result);
+                }
+                else
+                {
+                    return BadRequest(new ErrorModel()
+                    {
+                        Title = "",
+                        ErrorMessage = "Department with such fields already exist",
+                        StatusCode = StatusCodes.Status406NotAcceptable
+                    });
+                }
             }
             else
             {
@@ -119,6 +132,40 @@ namespace RiskSuite.Server.Controllers
                     ErrorMessage = "Error while creating new department"
                 });
             }
+        }
+
+        [HttpDelete("{departmentId}")]
+        public async Task<IActionResult> DeleteDepartment(int? departmentId)
+        {
+            if (departmentId == null)
+            {
+                return BadRequest(new ErrorModel()
+                {
+                    Title = "",
+                    ErrorMessage = "Invalid Department Id",
+                    StatusCode = StatusCodes.Status400BadRequest
+                });
+            }
+            var result = await _departmentRepository.Delete(departmentId.Value);
+            if (result == 0)
+            {
+                return BadRequest(new ErrorModel()
+                {
+                    Title = "",
+                    ErrorMessage = "Invalid Department Id",
+                    StatusCode = StatusCodes.Status404NotFound
+                });
+            }
+            if (result == -1)
+            {
+                return BadRequest(new ErrorModel()
+                {
+                    Title = "",
+                    ErrorMessage = "Can't delete department with accounts",
+                    StatusCode = StatusCodes.Status409Conflict
+                });
+            }
+            return Ok();
         }
     }
 }

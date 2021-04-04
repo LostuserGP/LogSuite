@@ -11,9 +11,10 @@ namespace RiskSuite.Client.Services.IServices
     public interface IDepartmentService
     {
         public Task<IEnumerable<DepartmentDTO>> Getall();
-        public Task<DepartmentDTO> Get(int departmentId);
+        public Task<DepartmentDTO> Get(int id);
         public Task<DepartmentDTO> Create(DepartmentDTO departmentDTO);
         public Task<PagingResponse<DepartmentDTO>> Getall(Params parameters);
         Task<DepartmentDTO> Update(DepartmentDTO departmentDTO);
+        Task<bool> Delete(int id);
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RiskSuite.Shared.Models
 {
-    public class CounterpartyGroupDTO
+    public class CounterpartyGroupDTO : IReferenceName
     {
         public int Id { get; set; }
         public string Name { get; set; }

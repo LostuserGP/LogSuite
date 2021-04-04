@@ -32,9 +32,25 @@ namespace Business.Repositories
             return _mapper.Map<Department, DepartmentDTO>(newDepartment.Entity);
         }
 
-        public Task<int> Delete(int departmentId)
+        public async Task<int> Delete(int departmentId)
         {
-            throw new NotImplementedException();
+            var department = await _db.Departments
+                .Include(x => x.ApplicationUsers)
+                .Where(x => x.Id == departmentId)
+                .FirstOrDefaultAsync();
+            if (department != null)
+            {
+                if (department.ApplicationUsers.Any())
+                {
+                    return -1;
+                }
+                else
+                {
+                    _db.Departments.Remove(department);
+                    return await _db.SaveChangesAsync();
+                }
+            }
+            return 0;
         }
 
         public async Task<DepartmentDTO> Get(int departmentId)

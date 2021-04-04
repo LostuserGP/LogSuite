@@ -1,0 +1,76 @@
+﻿@page "/references/committeelimit"
+@page "/references/committeelimit/{Id:int}"
+
+<style>
+    .sort-th {
+        cursor: pointer;
+    }
+
+    .oi {
+        float: right;
+    }
+</style>
+
+<div class="row m-2">
+    <div class="@(ShowDetail ? "col-6" : "col-12")">
+        <div class="d-flex">
+            <div class="justify-content-start">
+                @if (ShowDetail)
+                {
+                    <button class="btn btn-sm btn-outline-secondary" @onclick="ShowDetailCancel">Cancel</button>
+                }
+                else
+                {
+                    <button class="btn btn-sm btn-primary" @onclick="@(() => ShowDetail = true)">Create</button>
+                }
+            </div>
+            <div class="mx-auto justify-content-center">
+                <h3>Committee Limits</h3>
+            </div>
+        </div>
+
+        <div class="mt-2" style="font-size: small;">
+            @if (IsProcessing)
+            {
+                <div style="position:fixed;top:50%;left:50%;margin-top:-50px;margin-left:-100px;">
+                    <img src="images/ajax-loader.gif" />
+                </div>
+            }
+            else
+            {
+                @if (Values != null && Values.Any())
+                {
+                    <table class="table table-sm table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th class="sort-th">Id</th>
+                                <th class="sort-th">Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var v in Values)
+                            {
+                                <tr>
+                                    <td class="py-0">@v.Id</td>
+                                    <td class="py-0">
+                                        <a href="references/committeelimit/@v.Id">@v.Name</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p>no committee limit to show</p>
+                }
+            }
+        </div>
+    </div>
+    @if (ShowDetail)
+    {
+        <div class="col-6">
+            <CommitteeLimitDetail Id="Id" OnValueSubmit="ValueSubmitEvent"></CommitteeLimitDetail>
+        </div>
+    }
+</div>

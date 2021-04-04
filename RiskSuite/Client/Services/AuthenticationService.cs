@@ -50,9 +50,9 @@ namespace RiskSuite.Client.Services
             }
         }
 
-        public async Task<AuthenticationResponseDTO> LoginWA()
+        public async Task<AuthenticationResponseDTO> LoginWA(string token)
         {
-            var response = await _client.PostAsync("api/windows/gettoken", null);
+            var response = await _client.PostAsync("api/account/loginwa", null);
             var contentTemp = await response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<AuthenticationResponseDTO>(contentTemp);
 

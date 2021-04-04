@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using RiskSuite.Client.Helpers;
 using RiskSuite.Client.Services.IServices;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace RiskSuite.Client.Pages.Admin
 {
+    [Authorize(Roles = SD.Role_Admin)]
     public partial class Department
     {
         public IEnumerable<DepartmentDTO> Departments { get; set; } = new List<DepartmentDTO>();

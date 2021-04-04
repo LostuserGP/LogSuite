@@ -6,3 +6,11 @@
         toastr.error(message, "Operation Failed", { timeOut: 10000 });
     }
 }
+
+function ShowConfirmationModal() {
+    $('#confirmationModal').modal('show');
+}
+
+function HideConfirmationModal() {
+    $('#confirmationModal').modal('hide');
+}

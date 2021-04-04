@@ -20,9 +20,13 @@ using RiskSuite.Server.Services.IServices;
 using RiskSuite.Server.Services;
 using Business.Repositories.IRepository;
 using Business.Repositories;
-using RiskSuite.Converter;
 using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.AspNetCore.Server.IISIntegration;
+using Business.Repositories.IRepository.References;
+using Business.Repositories.References;
+using RiskSuite.Shared;
+using RiskSuite.DataAccess.CredRisk;
+using RiskSuite.Client.Helpers;
 
 namespace RiskSuite.Server
 {
@@ -44,9 +48,6 @@ namespace RiskSuite.Server
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"))
                 .UseSnakeCaseNamingConvention());
 
-            services.AddDbContext<OldDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("OldDbConnection")));
-
             services.Configure<IdentityOptions>(options =>
             {
                 options.Password.RequiredLength = 6;
@@ -58,7 +59,8 @@ namespace RiskSuite.Server
             });
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
 
             var appSettingsSection = Configuration.GetSection("APISettings");
             services.Configure<APISettings>(appSettingsSection);
@@ -92,12 +94,14 @@ namespace RiskSuite.Server
             //added for WA
             //services.AddAuthentication(IISDefaults.AuthenticationScheme);
             //services.AddHttpContextAccessor();
-            services.AddAuthentication(NegotiateDefaults.AuthenticationScheme).AddNegotiate();
+            //services.AddAuthentication(NegotiateDefaults.AuthenticationScheme).AddNegotiate();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<IDbInitializer, DbInitializer>();
             services.AddScoped<ICounterpartyRepository, CounterpartyRepository>();
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            services.AddScoped<ICommitteeLimitRepository, CommitteeLimitRepository>();
+            //services.AddScoped(typeof(IReferenceRepository<>), typeof(ReferenceRepository<>));
             services.AddScoped<IMailService, MailService>();
 
             services.AddCors(o => o.AddPolicy("RiskSuite", builder =>

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RiskSuite.Shared.Models
 {
-    public class CurrencyDTO
+    public class CurrencyDTO : IReferenceName
     {
         public int Id { get; set; }
         public string Name { get; set; }

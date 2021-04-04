@@ -26,20 +26,9 @@ namespace RiskSuite.Client.Pages.Admin
         [Parameter]
         public EventCallback OnDepartmentSubmit { get; set; }
 
-        protected override async Task OnInitializedAsync()
-        {
-            //if (Id != null)
-            //{
-            //    //updating
-            //    Title = "Update";
-            //    DepartmentModel = await departmentService.Get(Id.Value);
-            //}
-            //else
-            //{
-            //    //create
-            //    DepartmentModel = new DepartmentDTO();
-            //}
-        }
+        //protected override async Task OnInitializedAsync()
+        //{
+        //}
 
         protected override async Task OnParametersSetAsync()
         {

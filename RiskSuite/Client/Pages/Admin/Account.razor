@@ -1,5 +1,6 @@
 ﻿@page "/admin/account"
-@page "/admin/account/{Id:int}"
+@page "/admin/account/{AccId}"
+
 
 <style>
     .sort-th {
@@ -25,7 +26,7 @@
                 }
             </div>
             <div class="mx-auto justify-content-center">
-                <h3>Departments</h3>
+                <h3>Users</h3>
             </div>
         </div>
 
@@ -43,21 +44,24 @@
                     <table class="table table-sm table-bordered table-hover">
                         <thead>
                             <tr>
-                                <th class="sort-th" @onclick="@(() => OnSortChanged("Id"))">
-                                    #
-                                    <i class="oi @(SetSortIcon("Id"))"></i>
-                                </th>
+                                @*<th class="sort-th" @onclick="@(() => OnSortChanged("Id"))">
+                                        #
+                                        <i class="oi @(SetSortIcon("Id"))"></i>
+                                    </th>*@
                                 <th class="sort-th" @onclick="@(() => OnSortChanged("Name"))">
                                     Name
                                     <i class="oi @(SetSortIcon("Name"))"></i>
                                 </th>
-                                <th class="sort-th" @onclick="@(() => OnSortChanged("ShortName"))">
+                                <th class="sort-th" @onclick="@(() => OnSortChanged("Email"))">
                                     Email
-                                    <i class="oi @(SetSortIcon("ShortName"))"></i>
+                                    <i class="oi @(SetSortIcon("Email"))"></i>
                                 </th>
-                                <th class="sort-th" @onclick="@(() => OnSortChanged("Code"))">
+                                <th class="sort-th" @onclick="@(() => OnSortChanged("Department"))">
                                     Department
-                                    <i class="oi @(SetSortIcon("Code"))"></i>
+                                    <i class="oi @(SetSortIcon("Department"))"></i>
+                                </th>
+                                <th class="sort-th">
+                                    Roles
                                 </th>
                             </tr>
                         </thead>
@@ -65,12 +69,20 @@
                             @foreach (var acc in Accounts)
                             {
                                 <tr>
-                                    <td class="py-0">@acc.Id</td>
+                                    @*<td class="py-0">@acc.Id</td>*@
                                     <td class="py-0">
                                         <a href="admin/account/@acc.Id">@acc.Name</a>
                                     </td>
                                     <td class="py-0">@acc.Email</td>
-                                    <td class="py-0">@acc.Department.Name</td>
+                                    <td class="py-0">
+                                        <a href="admin/department/@acc.Department?.Id">@acc.Department?.Name</a>
+                                    </td>
+                                    <td class="py-0">
+                                        @foreach (var role in acc.Roles)
+                                        {
+                                            <span>@role &nbsp;</span>
+                                        }
+                                    </td>
                                 </tr>
                             }
                         </tbody>
@@ -86,7 +98,7 @@
     @if (ShowDetail)
     {
         <div class="col-6">
-            <DepartmentDetail Id="Id" OnDepartmentSubmit="DepartmentSubmitEvent"></DepartmentDetail>
+            <AccountDetail Id="@AccId" OnAccountSubmit="AccountSubmitEvent"></AccountDetail>
         </div>
     }
 </div>

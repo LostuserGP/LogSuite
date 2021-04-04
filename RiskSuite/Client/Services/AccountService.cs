@@ -23,15 +23,15 @@ namespace RiskSuite.Client.Services
         {
             _client = client;
         }
-        public async Task<UserDTO> Create(UserDTO accountDTO)
+        public async Task<UserDetailDTO> Create(UserDetailDTO accountDTO)
         {
             var content = JsonConvert.SerializeObject(accountDTO);
             var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
-            var response = await _client.PostAsync("api/account", bodyContent);
+            var response = await _client.PostAsync("api/account/create", bodyContent);
             if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadAsStringAsync();
-                var account = JsonConvert.DeserializeObject<UserDTO>(result);
+                var account = JsonConvert.DeserializeObject<UserDetailDTO>(result);
                 return account;
             }
             else
@@ -42,13 +42,13 @@ namespace RiskSuite.Client.Services
             }
         }
 
-        public async Task<UserDTO> Get(int accountId)
+        public async Task<UserDetailDTO> Get(string accountId)
         {
-            var response = await _client.GetAsync($"api/account/{accountId}");
+            var response = await _client.GetAsync($"api/account/get/{accountId}");
             var result = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {
-                var account = JsonConvert.DeserializeObject<UserDTO>(result);
+                var account = JsonConvert.DeserializeObject<UserDetailDTO>(result);
                 return account;
             }
             else
@@ -58,15 +58,15 @@ namespace RiskSuite.Client.Services
             }
         }
 
-        public async Task<IEnumerable<UserDTO>> Getall()
+        public async Task<IEnumerable<UserDetailDTO>> Getall()
         {
             var response = await _client.GetAsync($"api/account");
             var content = await response.Content.ReadAsStringAsync();
-            var accounts = JsonConvert.DeserializeObject<IEnumerable<UserDTO>>(content);
+            var accounts = JsonConvert.DeserializeObject<IEnumerable<UserDetailDTO>>(content);
             return accounts;
         }
 
-        public async Task<PagingResponse<UserDTO>> Getall(Params parameters)
+        public async Task<PagingResponse<UserDetailDTO>> Getall(Params parameters)
         {
             var queryStringParam = new Dictionary<string, string>
             {
@@ -76,30 +76,30 @@ namespace RiskSuite.Client.Services
                 ["order"] = parameters.Order == null ? "" : parameters.Order,
                 ["orderAsc"] = parameters.OrderAsc.ToString()
             };
-            var response = await _client.GetAsync(QueryHelpers.AddQueryString("api/account", queryStringParam));
+            var response = await _client.GetAsync(QueryHelpers.AddQueryString("api/account/getusers", queryStringParam));
             var content = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
             {
                 throw new ApplicationException(content);
             }
-            var pagingResponse = new PagingResponse<UserDTO>
+            var pagingResponse = new PagingResponse<UserDetailDTO>
             {
-                Items = System.Text.Json.JsonSerializer.Deserialize<List<UserDTO>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }),
+                Items = System.Text.Json.JsonSerializer.Deserialize<List<UserDetailDTO>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }),
                 MetaData = System.Text.Json.JsonSerializer.Deserialize<MetaData>(response.Headers.GetValues("X-Pagination").First(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true })
             };
 
             return pagingResponse;
         }
 
-        public async Task<UserDTO> Update(UserDTO accountDTO)
+        public async Task<UserDetailDTO> Update(UserDetailDTO accountDTO)
         {
             var content = JsonConvert.SerializeObject(accountDTO);
             var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
-            var response = await _client.PutAsync($"api/account/{accountDTO.Id}", bodyContent);
+            var response = await _client.PutAsync($"api/account/update/{accountDTO.Id}", bodyContent);
             if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadAsStringAsync();
-                var account = JsonConvert.DeserializeObject<UserDTO>(result);
+                var account = JsonConvert.DeserializeObject<UserDetailDTO>(result);
                 return account;
             }
             else
@@ -108,6 +108,14 @@ namespace RiskSuite.Client.Services
                 var errorModel = JsonConvert.DeserializeObject<ErrorModel>(result);
                 throw new Exception(errorModel.ErrorMessage);
             }
+        }
+    
+        public async Task<List<string>> GetRoles()
+        {
+            var response = await _client.GetAsync($"api/account/roles");
+            var content = await response.Content.ReadAsStringAsync();
+            var roles = JsonConvert.DeserializeObject<List<string>>(content);
+            return roles;
         }
     }
 }

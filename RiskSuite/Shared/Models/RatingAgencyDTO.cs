@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RiskSuite.Shared.Models
 {
-    public class RatingAgencyDTO
+    public class RatingAgencyDTO : IReferenceName
     {
         public int Id { get; set; }
         public string Name { get; set; }

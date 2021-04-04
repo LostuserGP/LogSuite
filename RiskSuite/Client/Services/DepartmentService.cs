@@ -108,5 +108,20 @@ namespace RiskSuite.Client.Services
                 throw new Exception(errorModel.ErrorMessage);
             }
         }
+
+        public async Task<bool> Delete(int id)
+        {
+            var response = await _client.DeleteAsync($"api/department/{id}");
+            var result = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                var errorModel = JsonConvert.DeserializeObject<ErrorModel>(result);
+                throw new Exception(errorModel.ErrorMessage);
+            }
+        }
     }
 }

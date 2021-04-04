@@ -24,7 +24,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Business\RiskSuite.Business.csproj" />
     <ProjectReference Include="..\Client\RiskSuite.Client.csproj" />
-    <ProjectReference Include="..\Converter\RiskSuite.Converter.csproj" />
     <ProjectReference Include="..\DataAccess\RiskSuite.DataAccess.csproj" />
     <ProjectReference Include="..\Shared\RiskSuite.Shared.csproj" />
   </ItemGroup>

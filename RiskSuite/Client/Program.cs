@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using RiskSuite.Client.Helpers;
 using RiskSuite.Client.Services;
 using RiskSuite.Client.Services.IServices;
+using RiskSuite.Shared;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -27,11 +29,16 @@ namespace RiskSuite.Client
             //builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme).AddNegotiate();
 
             builder.Services.AddBlazoredLocalStorage();
-            builder.Services.AddAuthorizationCore();
+            //builder.Services.AddAuthorizationCore();
+            builder.Services.AddApiAuthorization()
+                .AddAccountClaimsPrincipalFactory<RolesClaimsPrincipalFactory>();
+
             builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
             builder.Services.AddScoped<ICounterpartyService, CounterpartyService>();
             builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+            builder.Services.AddScoped<IAccountService, AccountService>();
+            builder.Services.AddScoped<ICommitteeLimitService, CommitteeLimitService>();
 
             await builder.Build().RunAsync();
         }

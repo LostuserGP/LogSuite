@@ -13,10 +13,11 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RiskSuite.Shared", "RiskSuite\Shared\RiskSuite.Shared.csproj", "{7042E12F-014E-4B9D-874C-C6092B6CBDE7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RiskSuite.DataAccess", "RiskSuite\DataAccess\RiskSuite.DataAccess.csproj", "{1D16B27C-AFFF-4E40-B236-3B1159257268}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7042E12F-014E-4B9D-874C-C6092B6CBDE7} = {7042E12F-014E-4B9D-874C-C6092B6CBDE7}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RiskSuite.Business", "RiskSuite\Business\RiskSuite.Business.csproj", "{5B0A1D68-D276-464A-B11E-F423D63AC58F}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RiskSuite.Converter", "RiskSuite\Converter\RiskSuite.Converter.csproj", "{4D1C4045-13D2-4101-B420-55F2ECE58CEC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,10 +45,6 @@ Global
 		{5B0A1D68-D276-464A-B11E-F423D63AC58F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B0A1D68-D276-464A-B11E-F423D63AC58F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B0A1D68-D276-464A-B11E-F423D63AC58F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4D1C4045-13D2-4101-B420-55F2ECE58CEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4D1C4045-13D2-4101-B420-55F2ECE58CEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4D1C4045-13D2-4101-B420-55F2ECE58CEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4D1C4045-13D2-4101-B420-55F2ECE58CEC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

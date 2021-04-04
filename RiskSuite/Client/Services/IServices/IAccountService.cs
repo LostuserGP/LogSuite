@@ -11,10 +11,11 @@ namespace RiskSuite.Client.Services.IServices
 {
     public interface IAccountService
     {
-        Task<IEnumerable<UserDTO>> Getall();
-        Task<UserDTO> Get(int accountId);
-        Task<UserDTO> Create(UserDTO accountDTO);
-        Task<PagingResponse<UserDTO>> Getall(Params parameters);
-        Task<UserDTO> Update(UserDTO accountDTO);
+        Task<IEnumerable<UserDetailDTO>> Getall();
+        Task<UserDetailDTO> Get(string accountId);
+        Task<UserDetailDTO> Create(UserDetailDTO accountDTO);
+        Task<PagingResponse<UserDetailDTO>> Getall(Params parameters);
+        Task<UserDetailDTO> Update(UserDetailDTO accountDTO);
+        Task<List<string>> GetRoles();
     }
 }

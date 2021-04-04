@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using RiskSuite.Client.Helpers;
 using RiskSuite.Client.Services.IServices;
@@ -12,9 +13,10 @@ using System.Threading.Tasks;
 
 namespace RiskSuite.Client.Pages.Admin
 {
+    [Authorize(Roles = SD.Role_Admin)]
     public partial class Account
     {
-        public IEnumerable<UserDTO> Accounts { get; set; } = new List<UserDTO>();
+        public IEnumerable<UserDetailDTO> Accounts { get; set; } = new List<UserDetailDTO>();
         [Parameter]
         public MetaData MetaData { get; set; } = new MetaData();
         [Inject]
@@ -25,7 +27,7 @@ namespace RiskSuite.Client.Pages.Admin
         private bool IsProcessing { get; set; } = true;
         private bool ShowDetail { get; set; } = false;
         [Parameter]
-        public int? Id { get; set; }
+        public string AccId { get; set; }
         [Inject]
         public NavigationManager navigationManager { get; set; }
 
@@ -33,7 +35,7 @@ namespace RiskSuite.Client.Pages.Admin
         {
             try
             {
-                if (Id != null)
+                if (AccId != null)
                 {
                     ShowDetail = true;
                 }
@@ -48,9 +50,9 @@ namespace RiskSuite.Client.Pages.Admin
             }
         }
 
-        protected override async Task OnParametersSetAsync()
+        protected override void OnParametersSet()
         {
-            if (Id != null)
+            if (AccId != null)
             {
                 ShowDetail = true;
             }
@@ -110,18 +112,18 @@ namespace RiskSuite.Client.Pages.Admin
             await LoadAccounts();
         }
 
-        protected void DepartmentSubmitEvent()
+        protected async Task AccountSubmitEvent()
         {
             ShowDetail = false;
             //await jsRuntime.ToastrSuccess("Department succesfully updated");
-            navigationManager.NavigateTo("/admin/department");
-            //await LoadDepartments();
+            navigationManager.NavigateTo("/admin/account");
+            await LoadAccounts();
         }
 
         private void ShowDetailCancel()
         {
             ShowDetail = false;
-            navigationManager.NavigateTo("/admin/department");
+            navigationManager.NavigateTo("/admin/account");
         }
     }
 }

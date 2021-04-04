@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using RiskSuite.DataAccess;
 using RiskSuite.DataAccess.CredRisk;
+using RiskSuite.Shared.Authorization;
 using RiskSuite.Shared.Models;
 using System;
 using System.Collections.Generic;
@@ -37,6 +38,12 @@ namespace Business.Mapper
                 .ForMember(dest => dest.Id, opts => opts.MapFrom(src => src.PortfolioId))
                 .ForMember(dest => dest.Name, opts => opts.MapFrom(src => src.Portfolio.Name))
                 .ForMember(dest => dest.NameEn, opts => opts.MapFrom(src => src.Portfolio.NameEn));
+
+            CreateMap<ApplicationUser, UserDTO>()
+                .ForMember(dest => dest.Id, opts => opts.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Name, opts => opts.MapFrom(src => src.Name))
+                .ForMember(dest => dest.Email, opts => opts.MapFrom(src => src.Email))
+                .ForMember(dest => dest.Department, opts => opts.MapFrom(src => src.Department));
         }
     }
 }
