@@ -1,0 +1,85 @@
+﻿@page "/counterparty/{Id:int}"
+
+<div class="">
+    <div class="d-flex">
+        <div class="mx-auto justify-content-center">
+            <h3>Counterparty Detail</h3>
+        </div>
+        @if (Id != null)
+        {
+            <div class="justify-content-end">
+                <button class="btn btn-sm btn-danger" @onclick="@Delete">Delete</button>
+            </div>
+        }
+    </div>
+
+    <div class="">
+        <div class="card mb-2">
+            <div class="card-header font-weight-bolder px-2 py-1">
+                <div class="float-left">
+                    Name
+                </div>
+                <div class="float-right">
+                    <i class="oi oi-pencil" tooltip="edit"></i>
+                </div>
+            </div>
+            <div class="card-body px-2 py-1">
+                <div class="card-text">@Model.Name</div>
+            </div>
+        </div>
+        <div class="card mb-2">
+            <div class="card-header font-weight-bolder px-2 py-1">
+                <div class="float-left">
+                    Short Name
+                </div>
+                <div class="float-right">
+                    <i class="oi oi-pencil" tooltip="edit"></i>
+                </div>
+            </div>
+            <div class="card-body px-2 py-1">
+                <div class="card-text">@Model.ShortName</div>
+            </div>
+        </div>
+        <div class="card mb-2">
+            <div class="card-header font-weight-bolder px-2 py-1">
+                <div class="float-left">
+                    Sector
+                </div>
+                <div class="float-right">
+                    <i class="oi oi-pencil" tooltip="edit"></i>
+                </div>
+            </div>
+            <div class="card-body px-2 py-1">
+                <div class="card-text">@Model.FinancialSector?.NameEn</div>
+            </div>
+        </div>
+        <div class="card mb-2">
+            <div class="card-header font-weight-bolder px-2 py-1">
+                <div class="float-left">
+                    Bloomberg Ticker
+                </div>
+                <div class="float-right">
+                    <i class="oi oi-pencil" tooltip="edit"></i>
+                </div>
+            </div>
+            <div class="card-body px-2 py-1">
+                <div class="card-text">@Model.Ticker</div>
+            </div>
+        </div>
+        <div class="card mb-2">
+            <div class="card-header font-weight-bolder px-2 py-1">
+                <div class="float-left">
+                    Donor Company
+                </div>
+                <div class="float-right">
+                    <i class="oi oi-pencil" tooltip="edit"></i>
+                </div>
+            </div>
+            <div class="card-body px-2 py-1">
+                <div class="card-text">@Model.RatingDonor?.Name</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

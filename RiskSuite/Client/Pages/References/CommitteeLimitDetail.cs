@@ -18,6 +18,7 @@ namespace RiskSuite.Client.Pages.References
         [Inject] public NavigationManager navigationManager { get; set; }
         [Parameter] public int? Id { get; set; }
         [Parameter] public EventCallback OnValueSubmit { get; set; }
+        [Parameter] public EventCallback OnDeleteComfirmEvent { get; set; }
         public bool IsProcessing { get; set; } = false;
         private string Title { get; set; } = "Create";
         private string ConfirmTitle { get; set; } = "Confirm delete";
@@ -45,6 +46,7 @@ namespace RiskSuite.Client.Pages.References
                     await jsRuntime.ToastrSuccess("Committee limit succesfully deleted");
                     await OnValueSubmit.InvokeAsync();
                 }
+                await OnDeleteComfirmEvent.InvokeAsync();
             }
             await jsRuntime.InvokeVoidAsync("HideConfirmationModal");
 

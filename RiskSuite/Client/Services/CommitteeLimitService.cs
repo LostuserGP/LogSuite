@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace RiskSuite.Client.Services
 {
-    public class CommitteeLimitService : ICommitteeLimitService
+    public class CommitteeLimitService : IReferenceService
     {
         private readonly HttpClient _client;
         private readonly string apiUrl = "api/references/committeelimit";
@@ -23,7 +23,8 @@ namespace RiskSuite.Client.Services
         {
             _client = client;
         }
-        public async Task<CommitteeLimitDTO> Create(CommitteeLimitDTO dto)
+
+        public async Task<ReferenceName> Create(ReferenceName dto)
         {
             var content = JsonConvert.SerializeObject(dto);
             var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
@@ -31,7 +32,7 @@ namespace RiskSuite.Client.Services
             if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadAsStringAsync();
-                var committeeLimit = JsonConvert.DeserializeObject<CommitteeLimitDTO>(result);
+                var committeeLimit = JsonConvert.DeserializeObject<ReferenceName>(result);
                 return committeeLimit;
             }
             else
@@ -42,13 +43,13 @@ namespace RiskSuite.Client.Services
             }
         }
 
-        public async Task<CommitteeLimitDTO> Get(int id)
+        public async Task<ReferenceName> Get(int id)
         {
             var response = await _client.GetAsync($"{apiUrl}/{id}");
             var result = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {
-                var answer = JsonConvert.DeserializeObject<CommitteeLimitDTO>(result);
+                var answer = JsonConvert.DeserializeObject<ReferenceName>(result);
                 return answer;
             }
             else
@@ -58,15 +59,15 @@ namespace RiskSuite.Client.Services
             }
         }
 
-        public async Task<IEnumerable<CommitteeLimitDTO>> Getall()
+        public async Task<IEnumerable<ReferenceName>> Getall()
         {
             var response = await _client.GetAsync(apiUrl);
             var content = await response.Content.ReadAsStringAsync();
-            var answers = JsonConvert.DeserializeObject<IEnumerable<CommitteeLimitDTO>>(content);
+            var answers = JsonConvert.DeserializeObject<IEnumerable<ReferenceName>>(content);
             return answers;
         }
 
-        public async Task<PagingResponse<CommitteeLimitDTO>> Getall(Params parameters)
+        public async Task<PagingResponse<ReferenceName>> Getall(Params parameters)
         {
             var queryStringParam = new Dictionary<string, string>
             {
@@ -82,16 +83,16 @@ namespace RiskSuite.Client.Services
             {
                 throw new ApplicationException(content);
             }
-            var pagingResponse = new PagingResponse<CommitteeLimitDTO>
+            var pagingResponse = new PagingResponse<ReferenceName>
             {
-                Items = System.Text.Json.JsonSerializer.Deserialize<List<CommitteeLimitDTO>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }),
+                Items = System.Text.Json.JsonSerializer.Deserialize<List<ReferenceName>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }),
                 MetaData = System.Text.Json.JsonSerializer.Deserialize<MetaData>(response.Headers.GetValues("X-Pagination").First(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true })
             };
 
             return pagingResponse;
         }
 
-        public async Task<CommitteeLimitDTO> Update(CommitteeLimitDTO dto)
+        public async Task<ReferenceName> Update(ReferenceName dto)
         {
             var content = JsonConvert.SerializeObject(dto);
             var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
@@ -99,7 +100,7 @@ namespace RiskSuite.Client.Services
             if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadAsStringAsync();
-                var answer = JsonConvert.DeserializeObject<CommitteeLimitDTO>(result);
+                var answer = JsonConvert.DeserializeObject<ReferenceName>(result);
                 return answer;
             }
             else

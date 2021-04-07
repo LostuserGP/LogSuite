@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.JSInterop;
 using Newtonsoft.Json;
 using RiskSuite.Client.Helpers;
 using RiskSuite.Client.Services.IServices;
@@ -16,14 +17,28 @@ namespace RiskSuite.Client.Services
     public class CounterpartyService : ICounterpartyService
     {
         private readonly HttpClient _client;
+        private readonly IJSRuntime _js;
 
-        public CounterpartyService(HttpClient client)
+        public CounterpartyService(HttpClient client, IJSRuntime jsRuntime)
         {
             _client = client;
+            _js = jsRuntime;
         }
-        public Task<CounterpartyDTO> Get(int counterpartyId)
+        public async Task<CounterpartyDTO> Get(int counterpartyId)
         {
-            throw new NotImplementedException();
+            var response = await _client.GetAsync($"api/counterparty/{counterpartyId}");
+            var result = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                var counterparty = JsonConvert.DeserializeObject<CounterpartyDTO>(result);
+                return counterparty;
+            }
+            else
+            {
+                var errorModel = JsonConvert.DeserializeObject<ErrorModel>(result);
+                await _js.ToastrError(errorModel.ErrorMessage);
+                return null;
+            }
         }
 
         public async Task<IEnumerable<CounterpartyDTO>> Getall()

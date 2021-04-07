@@ -35,9 +35,18 @@ namespace Business.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<CounterpartyDTO> Get(int counterpartyId)
+        public async Task<CounterpartyDTO> Get(int counterpartyId)
         {
-            throw new NotImplementedException();
+            var counterparty = await _db.Counterparties
+                .Include(x => x.FinancialSector)
+                .Include(x => x.Country)
+                .Include(x => x.CountryRisk)
+                .Include(x => x.CounterpartyPortfolios).ThenInclude(p => p.Portfolio)
+                .Include(x => x.RatingDonor)
+                .Include(x => x.CounterpartyGroup)
+                .FirstOrDefaultAsync(x => x.Id == counterpartyId);
+            var counterpartyDTO = _mapper.Map<Counterparty, CounterpartyDTO>(counterparty);
+            return counterpartyDTO;
         }
 
         public async Task<IEnumerable<CounterpartyDTO>> GetAll()

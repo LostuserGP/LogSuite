@@ -41,9 +41,9 @@ namespace RiskSuite.Server.Services
 
             var department = new Department()
             {
-                Code = 1000000,
-                Name = "Тестовое подразделение",
-                ShortName = "ТП"
+                Code = 10000002,
+                Name = "Тестовое подразделение 2",
+                ShortName = "ТП2"
             };
             var newDepartment = _db.Departments.Add(department);
             _db.SaveChanges();
@@ -59,7 +59,9 @@ namespace RiskSuite.Server.Services
             _userManager.CreateAsync(new ApplicationUser
             {
                 UserName = "lostuser@lostuser.ru",
+                Name = "lostuser@lostuser.ru",
                 Email = "lostuser@lostuser.ru",
+                CustomClaim = "AdminClaim",
                 DepartmentId = newDepartment.Entity.Id,
                 EmailConfirmed = true
             }, "basi1isk").GetAwaiter().GetResult();

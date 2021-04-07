@@ -1,9 +1,9 @@
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using RiskSuite.Client.Helpers;
 using RiskSuite.Client.Services;
 using RiskSuite.Client.Services.IServices;
@@ -30,15 +30,22 @@ namespace RiskSuite.Client
 
             builder.Services.AddBlazoredLocalStorage();
             //builder.Services.AddAuthorizationCore();
-            builder.Services.AddApiAuthorization()
-                .AddAccountClaimsPrincipalFactory<RolesClaimsPrincipalFactory>();
+            builder.Services.AddScoped(typeof(AccountClaimsPrincipalFactory<RemoteUserAccount>), typeof(RolesAccountClaimsPrincipalFactory));
+            //builder.Services.AddAuthorizationCore(opt =>
+            //{
+            //    opt.AddPolicy("RequireAdmin", policy => policy.RequireRole("[\"Admin\",\"RiskManager\"]"));
+            //    opt.AddPolicy("RequireAdminTest", policy => policy.RequireRole("Admin"));
+            //});
+
+            builder.Services.AddApiAuthorization().AddAccountClaimsPrincipalFactory<RolesAccountClaimsPrincipalFactory>();
 
             builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
             builder.Services.AddScoped<ICounterpartyService, CounterpartyService>();
             builder.Services.AddScoped<IDepartmentService, DepartmentService>();
             builder.Services.AddScoped<IAccountService, AccountService>();
-            builder.Services.AddScoped<ICommitteeLimitService, CommitteeLimitService>();
+            builder.Services.AddScoped<IReferenceService, ReferenceService>();
+            //builder.Services.AddScoped<IReferenceService, CommitteeStatusService>();
 
             await builder.Build().RunAsync();
         }

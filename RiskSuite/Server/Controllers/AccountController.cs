@@ -122,6 +122,7 @@ namespace RiskSuite.Server.Controllers
                     expires: DateTime.Now.AddDays(_apiSettings.ExpirationDays),
                     signingCredentials: signingCredentials);
 
+                //JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("role");
                 var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
 
                 return Ok(new AuthenticationResponseDTO
@@ -161,11 +162,29 @@ namespace RiskSuite.Server.Controllers
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim("Id", user.Id),
             };
-            var roles = await _userManager.GetRolesAsync(await _userManager.FindByEmailAsync(user.Email));
-            foreach (var role in roles)
-            {
-                claims.Add(new Claim(ClaimTypes.Role, role));
-            }
+            //var roles = await _userManager.GetRolesAsync(await _userManager.FindByEmailAsync(user.Email));
+            //foreach (var role in roles)
+            //{
+            //    claims.Add(new Claim(ClaimTypes.Role, role));
+            //}
+            var roles = await _userManager.GetRolesAsync(user);
+
+            claims.AddRange(roles.Select(role => new Claim(ClaimsIdentity.DefaultRoleClaimType, role)));
+
+            //var userRoles = await _userManager.GetRolesAsync(await _userManager.FindByEmailAsync(user.Email));
+            //foreach (var userRole in userRoles)
+            //{
+            //    claims.Add(new Claim(ClaimTypes.Role, userRole));
+            //    var role = await _roleManager.FindByNameAsync(userRole);
+            //    if (role != null)
+            //    {
+            //        var roleClaims = await _roleManager.GetClaimsAsync(role);
+            //        foreach (Claim roleClaim in roleClaims)
+            //        {
+            //            claims.Add(roleClaim);
+            //        }
+            //    }
+            //}
             return claims;
         }
 
@@ -284,7 +303,7 @@ namespace RiskSuite.Server.Controllers
             return new string(chars.ToArray());
         }
 
-        [Authorize(Roles = SD.Role_Admin)]
+        //[Authorize(Roles = SD.Role_Admin)]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {

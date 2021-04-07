@@ -26,7 +26,7 @@ using Business.Repositories.IRepository.References;
 using Business.Repositories.References;
 using RiskSuite.Shared;
 using RiskSuite.DataAccess.CredRisk;
-using RiskSuite.Client.Helpers;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace RiskSuite.Server
 {
@@ -59,8 +59,24 @@ namespace RiskSuite.Server
             });
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddClaimsPrincipalFactory<RolesClaimsPrincipalFactory>();
+
+            //services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+            //    .AddRoles<IdentityRole>() // For Roles, see (client side) /RolesClaimsPrincipalFactory.cs
+            //    .AddEntityFrameworkStores<ApplicationDbContext>();
+            //    //.AddClaimsPrincipalFactory<RolesClaimsPrincipalFactory>(); // To add a custom claim for the user, see: /Models/ApplicationUser.cs
+
+            //services.AddIdentityServer()
+            //    .AddApiAuthorization<ApplicationUser, ApplicationDbContext>(options =>
+            //    {
+            //        options.IdentityResources["openid"].UserClaims.Add("role"); // Roles
+            //        options.ApiResources.Single().UserClaims.Add("role");
+            //        options.IdentityResources["openid"].UserClaims.Add("custom_claim"); // Custom Claim
+            //        options.ApiResources.Single().UserClaims.Add("custom_claim");
+            //    });
+            //JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("role");
+
 
             var appSettingsSection = Configuration.GetSection("APISettings");
             services.Configure<APISettings>(appSettingsSection);
@@ -78,6 +94,7 @@ namespace RiskSuite.Server
             {
                 x.RequireHttpsMetadata = false;
                 x.SaveToken = true;
+                //x.MapInboundClaims = true;
                 x.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidateIssuerSigningKey = true,
@@ -89,6 +106,7 @@ namespace RiskSuite.Server
                     ClockSkew = TimeSpan.Zero
                 };
             });
+            
 
 
             //added for WA
@@ -101,6 +119,13 @@ namespace RiskSuite.Server
             services.AddScoped<ICounterpartyRepository, CounterpartyRepository>();
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             services.AddScoped<ICommitteeLimitRepository, CommitteeLimitRepository>();
+            services.AddScoped<ICommitteeStatusRepository, CommitteeStatusRepository>();
+            services.AddScoped<ICurrencyRepository, CurrencyRepository>();
+            services.AddScoped<IFinancialStatementStandardRepository, FinancialStatementStandardRepository>();
+            services.AddScoped<IGuaranteeApprovalDocTypeRepository, GuaranteeApprovalDocTypeRepository>();
+            services.AddScoped<IGuaranteeTypeRepository, GuaranteeTypeRepository>();
+            services.AddScoped<IRatingAgencyRepository, RatingAgencyRepository>();
+            services.AddScoped<IRiskClassRepository, RiskClassRepository>();
             //services.AddScoped(typeof(IReferenceRepository<>), typeof(ReferenceRepository<>));
             services.AddScoped<IMailService, MailService>();
 

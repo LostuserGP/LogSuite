@@ -5,7 +5,7 @@ using System.Text;
 
 namespace RiskSuite.DataAccess.CredRisk
 {
-    public class CounterpartyGroup : IReferenceName
+    public class CounterpartyGroup
     {
         public int Id { get; set; }
         public string Name { get; set; }

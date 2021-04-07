@@ -5,7 +5,7 @@ using System.Text;
 
 namespace RiskSuite.DataAccess.CredRisk
 {
-    public class GuaranteeType : IReferenceName
+    public class GuaranteeType
     {
         public int Id { get; set; }
         public string Name { get; set; }

@@ -24,7 +24,6 @@
 </div>
 @code {
 
-    public bool IsProcessStart { get; set; } = false;
 
     [Parameter] public EventCallback<bool> ConfirmationChanged { get; set; }
 
@@ -32,17 +31,9 @@
     [Parameter] public string Title { get; set; } = "Title";
     [Parameter] public string Message { get; set; } = "Message";
 
-    protected override void OnParametersSet()
-    {
-        IsProcessStart = IsParentComponentProcessing;
-    }
 
     protected async Task OnConfirmationChange(bool value)
     {
-        if (value)
-        {
-            IsProcessStart = true;
-        }
         await ConfirmationChanged.InvokeAsync(value);
     }
 }

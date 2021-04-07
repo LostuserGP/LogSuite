@@ -18,6 +18,7 @@ namespace Business.Mapper
             CreateMap<CounterpartyGroup, CounterpartyGroupDTO>().ReverseMap();
             CreateMap<CommitteeStatus, CommitteeStatusDTO>().ReverseMap();
             CreateMap<CommitteeLimit, CommitteeLimitDTO>().ReverseMap();
+            CreateMap<GuaranteeApprovalDocType, GuaranteeApprovalDocTypeDTO>().ReverseMap();
             CreateMap<Committee, CommitteeDTO>().ReverseMap();
             CreateMap<FinancialStatementStandard, FinancialStatementStandardDTO>().ReverseMap();
             CreateMap<FinancialStatement, FinancialStatementDTO>().ReverseMap();

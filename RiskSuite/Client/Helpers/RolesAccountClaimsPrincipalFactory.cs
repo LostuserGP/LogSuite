@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace RiskSuite.Client.Helpers
 {
-    public class RolesClaimsPrincipalFactory : AccountClaimsPrincipalFactory<RemoteUserAccount>
+    public class RolesAccountClaimsPrincipalFactory : AccountClaimsPrincipalFactory<RemoteUserAccount>
     {
-        public RolesClaimsPrincipalFactory(IAccessTokenProviderAccessor accessor) : base(accessor)
+        public RolesAccountClaimsPrincipalFactory(IAccessTokenProviderAccessor accessor) : base(accessor)
         {
         }
 
