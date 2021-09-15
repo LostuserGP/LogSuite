@@ -1,19 +1,19 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using CurrieTechnologies.Razor.SweetAlert2;
+using LogSuite.Client.Helpers;
+using LogSuite.Client.Serices;
+using LogSuite.Client.Services.IServices;
+using LogSuite.Shared.Models;
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using RiskSuite.Client.Helpers;
-using RiskSuite.Client.Services.IServices;
-using RiskSuite.Client.Shared;
-using RiskSuite.Shared.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace RiskSuite.Client.Pages.References
+namespace LogSuite.Client.Pages.References
 {
     public partial class CommitteeLimitDetail
     {
-        [Inject] public IJSRuntime jsRuntime { get; set; }
+        [Inject] public ToastService toastrService { get; set; }
+        [Inject] public SweetAlertService Swal { get; set; }
         [Inject] public ICommitteeLimitService service { get; set; }
         [Inject] public NavigationManager navigationManager { get; set; }
         [Parameter] public int? Id { get; set; }
@@ -29,27 +29,28 @@ namespace RiskSuite.Client.Pages.References
 
         public async Task Delete()
         {
-            if (Id != null)
+            if (Model != null)
             {
-                ConfirmMessage = ConfirmMessage + Model.Name;
-                await jsRuntime.InvokeVoidAsync("ShowConfirmationModal");
-            }
-        }
-
-        public async Task ConfirmDelete(bool isConfirmed)
-        {
-            if (isConfirmed)
-            {
-                var result = await service.Delete(Id.Value);
-                if (result)
+                SweetAlertResult result = await Swal.FireAsync(new SweetAlertOptions
                 {
-                    await jsRuntime.ToastrSuccess("Committee limit succesfully deleted");
-                    await OnValueSubmit.InvokeAsync();
+                    Title = "Вы уверены?",
+                    Text = $"Ограниения комитета {Model.Name} будет удалено",
+                    Icon = SweetAlertIcon.Warning,
+                    ShowCancelButton = true,
+                    ConfirmButtonText = "Удалить",
+                    CancelButtonText = "Отмена"
+                });
+                if (result.IsConfirmed)
+                {
+                    var delResult = await service.Delete(Id.Value);
+                    if (delResult)
+                    {
+                        toastrService.ShowToast("Ограничение комитета удалено", ToastLevel.Info);
+                        await OnValueSubmit.InvokeAsync();
+                    }
+                    await OnDeleteComfirmEvent.InvokeAsync();
                 }
-                await OnDeleteComfirmEvent.InvokeAsync();
             }
-            await jsRuntime.InvokeVoidAsync("HideConfirmationModal");
-
         }
 
         protected override async Task OnParametersSetAsync()
@@ -76,12 +77,12 @@ namespace RiskSuite.Client.Pages.References
                 if (Id != null && Title == "Update")
                 {
                     result = await service.Update(Model);
-                    await jsRuntime.ToastrSuccess("Committee limit succesfully updated");
+                    //await jsRuntime.ToastrSuccess("Committee limit succesfully updated");
                 }
                 else
                 {
                     result = await service.Create(Model);
-                    await jsRuntime.ToastrSuccess("Committee limit succesfully created");
+                    //await jsRuntime.ToastrSuccess("Committee limit succesfully created");
                 }
                 IsProcessing = false;
                 await OnValueSubmit.InvokeAsync();
@@ -89,7 +90,7 @@ namespace RiskSuite.Client.Pages.References
             catch (Exception e)
             {
                 IsProcessing = false;
-                await jsRuntime.ToastrError(e.Message);
+                //await jsRuntime.ToastrError(e.Message);
             }
         }
     }

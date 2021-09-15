@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RiskSuite.Shared;
+using LogSuite.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RiskSuite.Business
+namespace LogSuite.Business
 {
     public class PagedList<T> : List<T>
     {

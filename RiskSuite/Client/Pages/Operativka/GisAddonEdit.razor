@@ -1,0 +1,29 @@
+﻿<tr>
+	<td class="p-0">
+		<span class="form-control form-control-sm">@GisAddonModel.Id</span>
+	</td>
+	<td class="p-0">
+		<InputSelect @bind-Value="GisAddonModel.GisId" class="form-control form-control-sm">
+			@foreach (var gis in Gises)
+			{
+				<option value="@gis.Id">@gis.Name</option>
+			}
+		</InputSelect>
+		<ValidationMessage For="(()=>GisAddonModel.Gis)" />
+	</td>
+	<td class="p-0">
+		<InputText @bind-Value="GisAddonModel.Name" class="form-control form-control-sm" placeholder="наименование..." />
+		<ValidationMessage For="(()=>GisAddonModel.Name)" />
+	</td>
+	<td class="p-0">
+		<InputCheckbox @bind-Value="GisAddonModel.IsCalculated" class="form-control form-control-sm" style="height: 1.3rem;" />
+	</td>
+	<td class="p-0">
+		<InputNumber @bind-Value="GisAddonModel.Multiplicator" class="form-control form-control-sm" />
+	</td>
+	<td class="align-middle py-0" style="width: 50px;">
+		<button class="far fa-save text-success p-0" style="background-color: transparent; border: 0;" type="submit" tooltip="save" />
+		<button class="fas fa-ban text-danger p-0" style="background-color: transparent; border: 0;" type="button" tooltip="cancel" @onclick="()=> Cancel()" />
+	</td>
+</tr>
+

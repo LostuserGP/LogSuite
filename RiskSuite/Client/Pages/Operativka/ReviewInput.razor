@@ -1,0 +1,54 @@
+﻿@page "/reviewinput"
+
+<div class="m-2">
+    <div class="row">
+        <div class="m-2">
+            <InputFile OnChange="@LoadExcelFiles" accept=".xlsx, .xlsm, .xls" multiple />
+        </div>
+    </div>
+    @if (isLoading == false)
+    {
+        <div>
+            <span>готово</span>
+        </div>
+    }
+
+    <div class="row">
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        Файл
+                    </th>
+                    <th>
+                        Ошибки
+                    </th>
+                    <th>
+                        Отправлено
+                    </th>
+                    <th>
+                        Создано
+                    </th>
+                    <th>
+                        Обновлено
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var m in messages)
+                {
+                    <tr>
+                        <td>@m.Filename</td>
+                        <td>@m.Message</td>
+                        <td>@m.SendedCount</td>
+                        <td>@m.SavedCount</td>
+                        <td>@m.UpdatedCount</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+
+</div>
+

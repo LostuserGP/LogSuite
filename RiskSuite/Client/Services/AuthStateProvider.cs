@@ -1,7 +1,7 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
-using RiskSuite.Client.Helpers;
-using RiskSuite.Shared;
+using LogSuite.Client.Helpers;
+using LogSuite.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace RiskSuite.Client.Services
+namespace LogSuite.Client.Services
 {
     public class AuthStateProvider : AuthenticationStateProvider
     {

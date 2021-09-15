@@ -1,35 +1,28 @@
-﻿using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
-using RiskSuite.Client.Helpers;
-using RiskSuite.Client.Services.IServices;
-using RiskSuite.Shared.Authorization;
-using RiskSuite.Shared.Models;
+﻿using LogSuite.Client.Helpers;
+using LogSuite.Client.Serices;
+using LogSuite.Client.Services.IServices;
+using LogSuite.Shared.Authorization;
+using LogSuite.Shared.Models;
+using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace RiskSuite.Client.Pages.Admin
+namespace LogSuite.Client.Pages.Admin
 {
     public partial class AccountDetail
     {
-        [Parameter]
-        public string Id { get; set; }
+        [Parameter] public string Id { get; set; }
         public bool IsProcessing { get; set; } = false;
         private string Title { get; set; } = "Create";
         private UserDetailDTO AccountModel { get; set; } = new UserDetailDTO();
         public IEnumerable<DepartmentDTO> Departments = new List<DepartmentDTO>();
         public List<RoleModel> RoleModels = new List<RoleModel>();
-        [Inject]
-        public IJSRuntime jsRuntime { get; set; }
-        [Inject]
-        public IDepartmentService departmentService { get; set; }
-        [Inject]
-        public IAccountService accountService { get; set; }
-        [Inject]
-        public NavigationManager navigationManager { get; set; }
-        [Parameter]
-        public EventCallback OnAccountSubmit { get; set; }
+        [Inject] public IDepartmentService departmentService { get; set; }
+        [Inject] public IAccountService accountService { get; set; }
+        [Inject] public NavigationManager navigationManager { get; set; }
+        [Parameter] public EventCallback OnAccountSubmit { get; set; }
+        [Inject] public ToastService toastService { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -43,6 +36,7 @@ namespace RiskSuite.Client.Pages.Admin
                     IsSelected = false
                 });
             }
+            toastService.ShowToast("Тостер работает", ToastLevel.Warning);
         }
 
         protected override async Task OnParametersSetAsync()
@@ -99,12 +93,12 @@ namespace RiskSuite.Client.Pages.Admin
                 if (Id != null && Title == "Update")
                 {
                     await accountService.Update(AccountModel);
-                    await jsRuntime.ToastrSuccess("Account succesfully updated");
+                    toastService.ToastrSuccess("Account succesfully updated");
                 }
                 else
                 {
                     await accountService.Create(AccountModel);
-                    await jsRuntime.ToastrSuccess("Account succesfully created");
+                    toastService.ToastrSuccess("Account succesfully created");
                 }
                 IsProcessing = false;
                 await OnAccountSubmit.InvokeAsync();
@@ -113,7 +107,7 @@ namespace RiskSuite.Client.Pages.Admin
             catch (Exception e)
             {
                 IsProcessing = false;
-                await jsRuntime.ToastrError(e.Message);
+                toastService.ToastrError(e.Message);
             }
         }
     }

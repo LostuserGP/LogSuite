@@ -1,10 +1,10 @@
-﻿using RiskSuite.Shared;
+﻿using LogSuite.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RiskSuite.Client.Helpers
+namespace LogSuite.Client.Helpers
 {
     public class PagingResponse<T> where T : class
     {

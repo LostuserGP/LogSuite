@@ -2,13 +2,13 @@
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using RiskSuite.Shared;
+using LogSuite.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RiskSuite.Server.Helpers
+namespace LogSuite.Server.Helpers
 {
     public static class Extensions
     {

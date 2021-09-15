@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
-using RiskSuite.Client.Helpers;
-using RiskSuite.Client.Services.IServices;
-using RiskSuite.Shared;
-using RiskSuite.Shared.Authorization;
-using RiskSuite.Shared.Models;
+using LogSuite.Client.Helpers;
+using LogSuite.Client.Services.IServices;
+using LogSuite.Shared;
+using LogSuite.Shared.Authorization;
+using LogSuite.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +13,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace RiskSuite.Client.Services
+namespace LogSuite.Client.Services
 {
     public class AccountService : IAccountService
     {

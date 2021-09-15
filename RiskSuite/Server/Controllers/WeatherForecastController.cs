@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using RiskSuite.Shared;
+using LogSuite.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RiskSuite.Server.Controllers
+namespace LogSuite.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]

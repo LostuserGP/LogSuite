@@ -1,7 +1,7 @@
-﻿using RiskSuite.Business;
-using RiskSuite.Shared;
-using RiskSuite.Shared.Authorization;
-using RiskSuite.Shared.Models;
+﻿using LogSuite.Business;
+using LogSuite.Shared;
+using LogSuite.Shared.Authorization;
+using LogSuite.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

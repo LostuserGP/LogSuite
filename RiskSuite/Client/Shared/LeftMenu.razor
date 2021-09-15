@@ -1,0 +1,49 @@
+﻿<style>
+    .vertical-nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 250px;
+        height: 100%;
+        background-color: #f8f8f8;
+        overflow-y: auto;
+        padding-top: 3rem;
+        align-content: baseline;
+    }
+</style>
+
+<nav class="vertical-nav navbar navbar-dark bg-dark">
+    <ul class="navbar-nav px-0">
+        <li class="nav-item px-0">
+            <NavLink class="nav-link" href="/references/country">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Страны
+            </NavLink>
+        </li>
+        <li class="nav-item px-0">
+            <NavLink class="nav-link" href="/gis">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> ГИСы
+            </NavLink>
+        </li>
+        <li class="nav-item px-0">
+            <NavLink class="nav-link" href="/gisaddon">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> ПХГ услуги
+            </NavLink>
+        </li>
+        <li class="nav-item px-0">
+            <NavLink class="nav-link" href="/references/filetypesetting">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Типы файлов
+            </NavLink>
+        </li>
+    </ul>
+</nav>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

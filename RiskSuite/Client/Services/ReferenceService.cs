@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
-using RiskSuite.Client.Helpers;
-using RiskSuite.Client.Services.IServices;
-using RiskSuite.Shared;
-using RiskSuite.Shared.Models;
+using LogSuite.Client.Helpers;
+using LogSuite.Client.Services.IServices;
+using LogSuite.Shared;
+using LogSuite.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,20 +13,21 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using LogSuite.Client.Serices;
 
-namespace RiskSuite.Client.Services
+namespace LogSuite.Client.Services
 {
     public class ReferenceService : IReferenceService
     {
         private readonly HttpClient _client;
         private readonly NavigationManager _nMan;
-        private readonly IJSRuntime _js;
+        private readonly ToastService _toastService;
 
-        public ReferenceService(HttpClient client, NavigationManager navigationManager, IJSRuntime jsRuntime)
+        public ReferenceService(HttpClient client, NavigationManager navigationManager, ToastService toastService)
         {
             _client = client;
             _nMan = navigationManager;
-            _js = jsRuntime;
+            _toastService = toastService;
         }
 
         private string LoadUrl()
@@ -51,7 +52,8 @@ namespace RiskSuite.Client.Services
             {
                 var result = await response.Content.ReadAsStringAsync();
                 var errorModel = JsonConvert.DeserializeObject<ErrorModel>(result);
-                throw new Exception(errorModel.ErrorMessage);
+                _toastService.ToastrError(errorModel.ErrorMessage);
+                return null;
             }
         }
 
@@ -67,7 +69,7 @@ namespace RiskSuite.Client.Services
             else
             {
                 var errorModel = JsonConvert.DeserializeObject<ErrorModel>(result);
-                await _js.ToastrError(errorModel.ErrorMessage);
+                _toastService.ToastrError(errorModel.ErrorMessage);
                 return null;
                 //throw new Exception(errorModel.ErrorMessage);
             }
@@ -121,7 +123,7 @@ namespace RiskSuite.Client.Services
             {
                 var result = await response.Content.ReadAsStringAsync();
                 var errorModel = JsonConvert.DeserializeObject<ErrorModel>(result);
-                await _js.ToastrError(errorModel.ErrorMessage);
+                _toastService.ToastrError(errorModel.ErrorMessage);
                 return null;
             }
         }
@@ -137,7 +139,7 @@ namespace RiskSuite.Client.Services
             else
             {
                 var errorModel = JsonConvert.DeserializeObject<ErrorModel>(result);
-                await _js.ToastrError(errorModel.ErrorMessage);
+                _toastService.ToastrError(errorModel.ErrorMessage);
                 return false;
             }
         }

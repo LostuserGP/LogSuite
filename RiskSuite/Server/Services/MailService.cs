@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
-using RiskSuite.Server.Services.IServices;
+using LogSuite.Server.Services.IServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RiskSuite.Server.Services
+namespace LogSuite.Server.Services
 {
     public class MailService : IMailService
     {

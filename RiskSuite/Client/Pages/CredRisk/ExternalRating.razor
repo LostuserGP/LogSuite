@@ -1,0 +1,109 @@
+﻿<div class="modal fade" data-backdrop="static" data-keyboard="false" id="confirmationModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog  modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">@Title External Rating</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                        @onclick="()=>OnConfirmationChange(false)">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <EditForm Model="Model" OnValidSubmit="HandleSubmit">
+                    <div class="py-2">
+                        <InputSelect @bind-Value="Model.RatingId" class="form-control" placeholder="Rating">
+                            <option value="-1" hidden disabled>-- Choose rating --</option>
+                            @foreach (var r in Ratings)
+                            {
+                                <option value="@r.Id">@r.Name</option>
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="(()=>Model.RatingId)" />
+                    </div>
+                    <div class="py-2">
+                        <InputSelect @bind-Value="Model.RatingAgencyId" class="form-control" placeholder="Agency">
+                            <option value="-1" hidden disabled>-- Choose rating agency --</option>
+                            @foreach (var r in Agencies)
+                            {
+                                <option value="@r.Id">@r.Name</option>
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="(()=>Model.RatingAgencyId)" />
+                    </div>
+                    <div class="form-group py-2">
+                        <InputDate @bind-Value="Model.DateStart" class="form-control" placeholder="Date"></InputDate>
+                        <ValidationMessage For="(()=>Model.DateStart)" />
+                    </div>
+                </EditForm>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="()=>OnConfirmationChange(false)">
+                    Cancel
+                </button>
+                <button type="submit" class="btn btn-danger">
+                    @Title
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Inject] public IJSRuntime jsRuntime { get; set; }
+    [Parameter] public EventCallback<bool> ConfirmationChanged { get; set; }
+    [Parameter] public bool IsParentComponentProcessing { get; set; }
+    [Parameter] public string Title { get; set; } = "Title";
+    [Parameter] public string Message { get; set; } = "Message";
+    [Parameter] public RatingExternalDTO Model { get; set; } = new RatingExternalDTO();
+    [Parameter] public int? Id { get; set; }
+    public IRatingExternalService service { get; set; }
+    public IRatingAgencyService agencyService { get; set; }
+    public IRatingService ratingService { get; set; }
+    public IEnumerable<RatingAgencyDTO> Agencies = new List<RatingAgencyDTO>();
+    public IEnumerable<RatingDTO> Ratings = new List<RatingDTO>();
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        Agencies = await agencyService.Getall();
+        Ratings = await ratingService.Getall();
+        if (Id != null)
+        {
+            Model = await service.Get(Id.Value);
+        }
+        else
+        {
+            Model = new RatingExternalDTO();
+        }
+    }
+
+    protected async Task OnConfirmationChange(bool value)
+    {
+        await ConfirmationChanged.InvokeAsync(value);
+    }
+
+    protected async Task HandleSubmit()
+    {
+        try
+        {
+            RatingExternalDTO result = null;
+            if (Id != null && Title == "Update")
+            {
+                result = await service.Update(Model);
+                await jsRuntime.ToastrSuccess("External Rating succesfully updated");
+            }
+            else
+            {
+                result = await service.Create(Model);
+                await jsRuntime.ToastrSuccess("External Rating succesfully created");
+            }
+            await ConfirmationChanged.InvokeAsync();
+            //navigationManager.NavigateTo("/admin/department");
+        }
+        catch (Exception e)
+        {
+            await jsRuntime.ToastrError(e.Message);
+        }
+    }
+}

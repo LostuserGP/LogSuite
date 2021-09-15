@@ -1,23 +1,20 @@
 ﻿using Microsoft.AspNetCore.Components;
-using RiskSuite.Client.Helpers;
-using RiskSuite.Shared;
+using LogSuite.Client.Helpers;
+using LogSuite.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace RiskSuite.Client.Shared
+namespace LogSuite.Client.Shared
 {
     public partial class Pagination
     {
         private Timer _timer;
-        [Parameter]
-        public MetaData MetaData { get; set; }
-        [Parameter]
-        public int Spread { get; set; }
-        [Parameter]
-        public EventCallback<int> SelectedPage { get; set; }
+        [Parameter] public MetaData MetaData { get; set; }
+        [Parameter] public int Spread { get; set; }
+        [Parameter] public EventCallback<int> SelectedPage { get; set; }
         public string Filter { get; set; }
         [Parameter]
         public EventCallback<string> OnFilterChanged { get; set; }

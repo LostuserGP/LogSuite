@@ -1,78 +1,91 @@
 ﻿<nav class="navbar navbar-expand-sm fixed-top navbar-dark bg-dark p-0">
-    <a class="navbar-brand mx-4" href="#">Risk Suite</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+	<a class="navbar-brand mx-4" href="#">Log Suite <i class="fas fa-user"></i></a>
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
 
-    <div class="collapse navbar-collapse pr-2" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item p-0">
-                <NavLink class="nav-link" href="/counterparty">
-                    <span class="p-2">
-                        Counterparties
-                    </span>
-                </NavLink>
-            </li>
-            <AuthorizeView Roles=@SD.Role_Admin>
-                <Authorized>
-                    <li class="nav-item dropdown p-0">
-                        <a class="nav-link dropdown-toggle" href="/admin" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Admin
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item text-dark" href="/admin/department">Departments</a>
-                            <a class="dropdown-item text-dark" href="/admin/account">Accounts</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item text-dark" href="/admin/logs">Logs</a>
-                        </div>
-                    </li>
-                </Authorized>
-            </AuthorizeView>
-            <li class="nav-item p-0">
-                <NavLink class="nav-link" href="/references">
-                    <span class="p-2">
-                        References
-                    </span>
-                </NavLink>
-            </li>
-        </ul>
+	<div class="collapse navbar-collapse pr-2" id="navbarSupportedContent">
+		<ul class="navbar-nav mr-auto">
+			<li class="nav-item dropdown p-0">
+				<NavLink class="nav-link dropdown-toggle" href="/review" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					Оперативка
+				</NavLink>
+				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+					<NavLink class="dropdown-item text-dark" href="/reviewdata">Показатели</NavLink>
+					<NavLink class="dropdown-item text-dark" href="/reviewinput">Загрузка</NavLink>
+					<NavLink class="dropdown-item text-dark" href="/reviewexport">Экспорт</NavLink>
+					<div class="dropdown-divider"></div>
+					<NavLink class="dropdown-item text-dark" href="/review">Обзор</NavLink>
+				</div>
+			</li>
+			<li class="nav-item p-0">
+				<NavLink class="nav-link" href="/counterparty">
+					<span class="p-2">
+						Контрагенты
+					</span>
+				</NavLink>
+			</li>
+			<AuthorizeView Roles=@SD.Role_Admin>
+				<Authorized>
+					<li class="nav-item dropdown p-0">
+						<a class="nav-link dropdown-toggle" href="/admin" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Админ
+						</a>
+						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+							<a class="dropdown-item text-dark" href="/admin/department">Подразделения</a>
+							<a class="dropdown-item text-dark" href="/admin/account">Пользователи</a>
+							<a class="dropdown-item text-dark" href="/admin/claims">Куки</a>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item text-dark" href="/admin/logs">Логи</a>
+						</div>
+					</li>
+				</Authorized>
+			</AuthorizeView>
+			<li class="nav-item p-0">
+				<NavLink class="nav-link" href="/references">
+					<span class="p-2">
+						Справочники
+					</span>
+				</NavLink>
+			</li>
+		</ul>
 
-        <ul class="my-0 navbar-nav">
-            <AuthorizeView>
-                <Authorized>
-                    <li class="nav-item p-0">
-                        <NavLink class="nav-link" href="#">
-                            <span class="p-2">
-                                Hello, @context.User.Identity.Name!
-                            </span>
-                        </NavLink>
-                    </li>
-                    <li class="nav-item p-0">
-                        <NavLink class="nav-link" href="logout">
-                            <span class="p-2">
-                                Logout
-                            </span>
-                        </NavLink>
-                    </li>
-                </Authorized>
-                <NotAuthorized>
-                    <li class="nav-item p-0">
-                        <NavLink class="nav-link" href="registration">
-                            <span class="p-2">
-                                Register
-                            </span>
-                        </NavLink>
-                    </li>
-                    <li class="nav-item p-0">
-                        <NavLink class="nav-link" href="login">
-                            <span class="p-2">
-                                Login
-                            </span>
-                        </NavLink>
-                    </li>
-                </NotAuthorized>
-            </AuthorizeView>
+		<ul class="my-0 navbar-nav">
+			<AuthorizeView>
+				<Authorized>
+					<li class="nav-item p-0">
+						<NavLink class="nav-link" href="#">
+							<span class="p-2">
+								Hello, @context.User.Identity.Name!
+							</span>
+						</NavLink>
+					</li>
+					<li class="nav-item p-0">
+						<NavLink class="nav-link" href="logout">
+							<span class="p-2">
+								Logout
+							</span>
+						</NavLink>
+					</li>
+				</Authorized>
+				<NotAuthorized>
+					<li class="nav-item p-0">
+						<NavLink class="nav-link" href="registration">
+							<span class="p-2">
+								Register
+							</span>
+						</NavLink>
+					</li>
+					<li class="nav-item p-0">
+						<NavLink class="nav-link" href="login">
+							<span class="p-2">
+								Login
+							</span>
+						</NavLink>
+					</li>
+				</NotAuthorized>
+			</AuthorizeView>
 
-        </ul>
-    </div>
+		</ul>
+	</div>
 </nav>

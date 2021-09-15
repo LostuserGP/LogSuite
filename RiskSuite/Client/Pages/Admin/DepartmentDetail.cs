@@ -1,30 +1,23 @@
-﻿using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
-using RiskSuite.Client.Helpers;
-using RiskSuite.Client.Services.IServices;
-using RiskSuite.Shared.Models;
+﻿using LogSuite.Client.Helpers;
+using LogSuite.Client.Serices;
+using LogSuite.Client.Services.IServices;
+using LogSuite.Shared.Models;
+using Microsoft.AspNetCore.Components;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace RiskSuite.Client.Pages.Admin
+namespace LogSuite.Client.Pages.Admin
 {
     public partial class DepartmentDetail
     {
-        [Parameter]
-        public int? Id { get; set; }
+        [Parameter] public int? Id { get; set; }
         public bool IsProcessing { get; set; } = false;
         private string Title { get; set; } = "Create";
         private DepartmentDTO DepartmentModel { get; set; } = new DepartmentDTO();
-        [Inject]
-        public IJSRuntime jsRuntime { get; set; }
-        [Inject]
-        public IDepartmentService departmentService { get; set; }
-        [Inject]
-        public NavigationManager navigationManager { get; set; }
-        [Parameter]
-        public EventCallback OnDepartmentSubmit { get; set; }
+        [Inject] public ToastService toastService { get; set; }
+        [Inject] public IDepartmentService departmentService { get; set; }
+        [Inject] public NavigationManager navigationManager { get; set; }
+        [Parameter] public EventCallback OnDepartmentSubmit { get; set; }
 
         //protected override async Task OnInitializedAsync()
         //{
@@ -54,12 +47,12 @@ namespace RiskSuite.Client.Pages.Admin
                 if (Id != null && Title == "Update")
                 {
                     result = await departmentService.Update(DepartmentModel);
-                    await jsRuntime.ToastrSuccess("Department succesfully updated");
+                    toastService.ToastrSuccess("Department succesfully updated");
                 }
                 else
                 {
                     result = await departmentService.Create(DepartmentModel);
-                    await jsRuntime.ToastrSuccess("Department succesfully created");
+                    toastService.ToastrSuccess("Department succesfully created");
                 }
                 IsProcessing = false;
                 await OnDepartmentSubmit.InvokeAsync();
@@ -68,7 +61,7 @@ namespace RiskSuite.Client.Pages.Admin
             catch (Exception e)
             {
                 IsProcessing = false;
-                await jsRuntime.ToastrError(e.Message);
+                toastService.ToastrError(e.Message);
             }
         }
     }

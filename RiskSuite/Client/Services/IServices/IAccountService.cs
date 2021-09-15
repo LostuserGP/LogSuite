@@ -1,13 +1,13 @@
-﻿using RiskSuite.Client.Helpers;
-using RiskSuite.Shared;
-using RiskSuite.Shared.Authorization;
-using RiskSuite.Shared.Models;
+﻿using LogSuite.Client.Helpers;
+using LogSuite.Shared;
+using LogSuite.Shared.Authorization;
+using LogSuite.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RiskSuite.Client.Services.IServices
+namespace LogSuite.Client.Services.IServices
 {
     public interface IAccountService
     {

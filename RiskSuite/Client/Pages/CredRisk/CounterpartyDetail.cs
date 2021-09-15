@@ -1,18 +1,18 @@
-﻿using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
-using RiskSuite.Client.Helpers;
-using RiskSuite.Client.Services.IServices;
-using RiskSuite.Shared.Models;
+﻿using CurrieTechnologies.Razor.SweetAlert2;
+using LogSuite.Client.Helpers;
+using LogSuite.Client.Serices;
+using LogSuite.Client.Services.IServices;
+using LogSuite.Shared.Models;
+using Microsoft.AspNetCore.Components;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace RiskSuite.Client.Pages.CredRisk
+namespace LogSuite.Client.Pages.CredRisk
 {
     public partial class CounterpartyDetail
     {
-        [Inject] public IJSRuntime jsRuntime { get; set; }
+        [Inject] public ToastService toastrService { get; set; }
+        [Inject] public SweetAlertService Swal { get; set; }
         [Inject] public ICounterpartyService service { get; set; }
         [Inject] public NavigationManager navigationManager { get; set; }
         [Parameter] public int? Id { get; set; }
@@ -23,27 +23,29 @@ namespace RiskSuite.Client.Pages.CredRisk
         private string ConfirmTitle { get; set; } = "Confirm delete";
         private string ConfirmMessage { get; set; } = "Do you really want delete ";
         public CounterpartyDTO Model { get; set; } = new CounterpartyDTO();
-
-
+        private bool ShowRatingInternal { get; set; } = false;
+        private bool ShowRatingExternal { get; set; } = false;
+        private bool ShowFS { get; set; } = false;
+        private bool ShowCommittee { get; set; } = false;
 
         public async Task Delete()
         {
-            if (Id != null)
+            if (Model != null)
             {
-                ConfirmMessage = ConfirmMessage + Model.Name;
-                await jsRuntime.InvokeVoidAsync("ShowConfirmationModal");
+                SweetAlertResult result = await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Title = "Вы уверены?",
+                    Text = $"Контрагент {Model.Name} будет удалён",
+                    Icon = SweetAlertIcon.Warning,
+                    ShowCancelButton = true,
+                    ConfirmButtonText = "Удалить",
+                    CancelButtonText = "Отмена"
+                });
+                if (result.IsConfirmed)
+                {
+                    await OnDeleteComfirmEvent.InvokeAsync();
+                }
             }
-        }
-
-        public async Task ConfirmDelete(bool isConfirmed)
-        {
-            await jsRuntime.InvokeVoidAsync("HideConfirmationModal");
-            if (isConfirmed)
-            {
-                await OnDeleteComfirmEvent.InvokeAsync();
-            }
-            //await jsRuntime.InvokeVoidAsync("HideConfirmationModal");
-
         }
 
         protected override async Task OnInitializedAsync()
@@ -56,7 +58,7 @@ namespace RiskSuite.Client.Pages.CredRisk
             }
             catch (Exception e)
             {
-                await jsRuntime.ToastrError(e.Message);
+                toastrService.ShowToast(e.Message, ToastLevel.Error);
             }
         }
 
@@ -82,7 +84,6 @@ namespace RiskSuite.Client.Pages.CredRisk
             catch (Exception e)
             {
                 IsProcessing = false;
-                await jsRuntime.ToastrError(e.Message);
             }
         }
     }

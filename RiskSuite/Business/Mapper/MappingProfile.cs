@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
-using RiskSuite.DataAccess;
-using RiskSuite.DataAccess.CredRisk;
-using RiskSuite.Shared.Authorization;
-using RiskSuite.Shared.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using LogSuite.DataAccess;
+using LogSuite.DataAccess.CredRisk;
+using LogSuite.DataAccess.Operativka;
+using LogSuite.DataAccess.References;
+using LogSuite.Shared.Authorization;
+using LogSuite.Shared.Models;
+using LogSuite.Shared.Models.Operativka;
+using LogSuite.Shared.Models.References;
 
 namespace Business.Mapper
 {
@@ -14,6 +15,7 @@ namespace Business.Mapper
         public MappingProfile()
         {
             CreateMap<Country, CountryDTO>().ReverseMap();
+            CreateMap<CountryName, CountryNameDTO>().ReverseMap();
             CreateMap<FinancialSector, FinancialSectorDTO>().ReverseMap();
             CreateMap<CounterpartyGroup, CounterpartyGroupDTO>().ReverseMap();
             CreateMap<CommitteeStatus, CommitteeStatusDTO>().ReverseMap();
@@ -45,6 +47,32 @@ namespace Business.Mapper
                 .ForMember(dest => dest.Name, opts => opts.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Email, opts => opts.MapFrom(src => src.Email))
                 .ForMember(dest => dest.Department, opts => opts.MapFrom(src => src.Department));
+            CreateMap<UserDTO, ApplicationUser>()
+                .ForMember(dest => dest.Id, opts => opts.MapFrom(src => src.Id));
+
+            CreateMap<InputFileLog, InputFileLogDTO>();
+            CreateMap<InputFileLogDTO, InputFileLog>()
+                .ForMember(dest => dest.Id, opts => opts.MapFrom(src => src.Id))
+                .ForMember(dest => dest.UserId, opts => opts.MapFrom(src => src.UserId))
+                .ForMember(dest => dest.Filename, opts => opts.MapFrom(src => src.Filename))
+                .ForMember(dest => dest.TimeFile, opts => opts.MapFrom(src => src.TimeFile))
+                .ForMember(dest => dest.TimeInput, opts => opts.MapFrom(src => src.TimeInput))
+                .ForMember(dest => dest.DateFile, opts => opts.MapFrom(src => src.DateFile));
+
+            CreateMap<Gis, GisDTO>().ReverseMap();
+            CreateMap<GisAddon, GisAddonDTO>().ReverseMap();
+            CreateMap<GisAddonName, GisAddonNameDTO>().ReverseMap();
+            CreateMap<GisAddonValue, GisAddonValueDTO>().ReverseMap();
+            CreateMap<GisCountry, GisCountryDTO>().ReverseMap();
+            CreateMap<GisCountryResource, GisCountryResourceDTO>().ReverseMap();
+            CreateMap<GisCountryValue, GisCountryValueDTO>().ReverseMap();
+            CreateMap<GisName, GisNameDTO>().ReverseMap();
+            
+            CreateMap<GisInputName, GisInputNameDTO>().ReverseMap();
+            CreateMap<GisOutputName, GisOutputNameDTO>().ReverseMap();
+            CreateMap<GisInputValue, GisInputValueDTO>().ReverseMap();
+            CreateMap<GisOutputValue, GisOutputValueDTO>().ReverseMap();
+            CreateMap<FileTypeSetting, FileTypeSettingDTO>().ReverseMap();
         }
     }
 }

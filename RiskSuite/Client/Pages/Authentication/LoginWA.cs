@@ -1,13 +1,11 @@
-﻿using Microsoft.AspNetCore.Components;
-using RiskSuite.Client.Services.IServices;
-using RiskSuite.Shared.Authorization;
+﻿using LogSuite.Client.Services.IServices;
+using LogSuite.Shared.Authorization;
+using Microsoft.AspNetCore.Components;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace RiskSuite.Client.Pages.Authentication
+namespace LogSuite.Client.Pages.Authentication
 {
     public partial class LoginWA
     {
@@ -15,14 +13,10 @@ namespace RiskSuite.Client.Pages.Authentication
         public bool ShowAuthenticationErrors { get; set; }
         public string Errors { get; set; }
 
-        [Inject]
-        public IAuthenticationService authenticationService { get; set; }
-        [Inject]
-        public NavigationManager navigationManager { get; set; }
-        [Parameter]
-        public string User { get; set; }
-        [Parameter]
-        public string P { get; set; }
+        [Inject] public IAuthenticationService authenticationService { get; set; }
+        [Inject] public NavigationManager navigationManager { get; set; }
+        [Parameter] public string User { get; set; }
+        [Parameter] public string P { get; set; }
 
         protected async override Task OnInitializedAsync()
         {

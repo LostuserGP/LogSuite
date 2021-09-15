@@ -1,9 +1,9 @@
-﻿using RiskSuite.Shared;
+﻿using LogSuite.Shared;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace RiskSuite.DataAccess.CredRisk
+namespace LogSuite.DataAccess.CredRisk
 {
     public class CounterpartyGroup
     {

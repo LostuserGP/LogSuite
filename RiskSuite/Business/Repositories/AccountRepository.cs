@@ -2,17 +2,18 @@
 using Business.Repositories.IRepository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using RiskSuite.Business;
-using RiskSuite.Business.Repositories;
-using RiskSuite.DataAccess;
-using RiskSuite.Shared;
-using RiskSuite.Shared.Authorization;
-using RiskSuite.Shared.Models;
+using LogSuite.Business;
+using LogSuite.Business.Repositories;
+using LogSuite.DataAccess;
+using LogSuite.Shared;
+using LogSuite.Shared.Authorization;
+using LogSuite.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LogSuite.DataAccess.References;
 
 namespace Business.Repositories
 {

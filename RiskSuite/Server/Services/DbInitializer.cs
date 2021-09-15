@@ -1,14 +1,15 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using RiskSuite.DataAccess;
+using LogSuite.DataAccess;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using RiskSuite.Shared;
-using RiskSuite.Server.Services.IServices;
+using LogSuite.Shared;
+using LogSuite.Server.Services.IServices;
+using LogSuite.DataAccess.References;
 
-namespace RiskSuite.Server.Services
+namespace LogSuite.Server.Services
 {
     public class DbInitializer : IDbInitializer
     {
@@ -42,8 +43,8 @@ namespace RiskSuite.Server.Services
             var department = new Department()
             {
                 Code = 10000002,
-                Name = "Тестовое подразделение 2",
-                ShortName = "ТП2"
+                Name = "Департамент логистики и хранения газа",
+                ShortName = "ДЛиХГ"
             };
             var newDepartment = _db.Departments.Add(department);
             _db.SaveChanges();
@@ -51,8 +52,7 @@ namespace RiskSuite.Server.Services
 
             _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin)).GetAwaiter().GetResult();
             _roleManager.CreateAsync(new IdentityRole(SD.Role_User)).GetAwaiter().GetResult();
-            _roleManager.CreateAsync(new IdentityRole(SD.Role_Risk_Coordinator)).GetAwaiter().GetResult();
-            _roleManager.CreateAsync(new IdentityRole(SD.Role_Risk_Manager)).GetAwaiter().GetResult();
+            _roleManager.CreateAsync(new IdentityRole(SD.Role_Power_User)).GetAwaiter().GetResult();
             _roleManager.CreateAsync(new IdentityRole(SD.Role_Front_Office)).GetAwaiter().GetResult();
             _roleManager.CreateAsync(new IdentityRole(SD.Role_Security)).GetAwaiter().GetResult();
 

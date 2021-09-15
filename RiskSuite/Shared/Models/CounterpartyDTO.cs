@@ -1,11 +1,12 @@
-﻿using System;
+﻿using LogSuite.Shared.Models.References;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RiskSuite.Shared.Models
+namespace LogSuite.Shared.Models
 {
     public class CounterpartyDTO
     {

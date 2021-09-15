@@ -1,28 +1,29 @@
 ﻿using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
-using RiskSuite.Client.Helpers;
-using RiskSuite.Client.Services.IServices;
-using RiskSuite.Shared;
-using RiskSuite.Shared.Models;
+using LogSuite.Client.Helpers;
+using LogSuite.Client.Services.IServices;
+using LogSuite.Shared;
+using LogSuite.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using LogSuite.Client.Serices;
 
-namespace RiskSuite.Client.Services
+namespace LogSuite.Client.Services
 {
     public class CounterpartyService : ICounterpartyService
     {
         private readonly HttpClient _client;
-        private readonly IJSRuntime _js;
+        private readonly ToastService _toastService;
 
-        public CounterpartyService(HttpClient client, IJSRuntime jsRuntime)
+        public CounterpartyService(HttpClient client, ToastService toastService)
         {
             _client = client;
-            _js = jsRuntime;
+            _toastService = toastService;
         }
         public async Task<CounterpartyDTO> Get(int counterpartyId)
         {
@@ -36,7 +37,7 @@ namespace RiskSuite.Client.Services
             else
             {
                 var errorModel = JsonConvert.DeserializeObject<ErrorModel>(result);
-                await _js.ToastrError(errorModel.ErrorMessage);
+                _toastService.ToastrError(errorModel.ErrorMessage);
                 return null;
             }
         }

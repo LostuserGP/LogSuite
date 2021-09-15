@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using LogSuite.DataAccess.References;
+using Microsoft.AspNetCore.Identity;
 
-namespace RiskSuite.DataAccess
+namespace LogSuite.DataAccess
 {
     public class ApplicationUser : IdentityUser
     {

@@ -1,33 +1,28 @@
-﻿using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
-using RiskSuite.Client.Helpers;
-using RiskSuite.Client.Services.IServices;
-using RiskSuite.Shared.Authorization;
-using RiskSuite.Shared.Models;
+﻿using LogSuite.Client.Helpers;
+using LogSuite.Client.Serices;
+using LogSuite.Client.Services.IServices;
+using LogSuite.Shared.Authorization;
+using LogSuite.Shared.Models;
+using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace RiskSuite.Client.Pages.Authentication
+namespace LogSuite.Client.Pages.Authentication
 {
     public partial class Registration
     {
         private UserRequestDTO UserForRegistration = new UserRequestDTO();
         public IEnumerable<DepartmentDTO> Departments = new List<DepartmentDTO>();
-        [Inject]
-        public IJSRuntime jsRuntime { get; set; }
+        [Inject] public ToastService toastService { get; set; }
         public bool IsProcessing { get; set; } = false;
         public bool ShowRegistrationErrors { get; set; }
         public IEnumerable<string> Errors { get; set; }
         public string ResponseUrl { get; set; } = "";
-        [Inject]
-        public IAuthenticationService authenticationService { get; set; }
-        [Inject]
-        public IDepartmentService departmentService { get; set; }
+        [Inject] public IAuthenticationService authenticationService { get; set; }
+        [Inject] public IDepartmentService departmentService { get; set; }
+        [Inject] public NavigationManager navigationManager { get; set; }
 
-        [Inject]
-        public NavigationManager navigationManager { get; set; }
         protected override async Task OnInitializedAsync()
         {
             try
@@ -36,7 +31,7 @@ namespace RiskSuite.Client.Pages.Authentication
             }
             catch (Exception e)
             {
-                await jsRuntime.ToastrError(e.Message);
+                toastService.ToastrError(e.Message);
             }
         }
 

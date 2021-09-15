@@ -5,7 +5,7 @@ using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace RiskSuite.Client.Helpers
+namespace LogSuite.Client.Helpers
 {
     public static class JwtParser
     {

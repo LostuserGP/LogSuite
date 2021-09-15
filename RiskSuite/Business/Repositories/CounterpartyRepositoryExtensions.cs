@@ -1,11 +1,11 @@
-﻿using RiskSuite.DataAccess.CredRisk;
+﻿using LogSuite.DataAccess.CredRisk;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RiskSuite.Business.Repositories
+namespace LogSuite.Business.Repositories
 {
     public static class CounterpartyRepositoryExtensions
     {

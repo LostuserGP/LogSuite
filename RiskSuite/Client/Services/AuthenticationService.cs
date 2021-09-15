@@ -1,9 +1,9 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 using Newtonsoft.Json;
-using RiskSuite.Client.Services.IServices;
-using RiskSuite.Shared;
-using RiskSuite.Shared.Authorization;
+using LogSuite.Client.Services.IServices;
+using LogSuite.Shared;
+using LogSuite.Shared.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +12,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RiskSuite.Client.Services
+namespace LogSuite.Client.Services
 {
     public class AuthenticationService : IAuthenticationService
     {

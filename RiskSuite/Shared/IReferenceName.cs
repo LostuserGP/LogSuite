@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace RiskSuite.Shared
+namespace LogSuite.Shared
 {
     public class ReferenceName
     {

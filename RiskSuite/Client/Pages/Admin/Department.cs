@@ -1,34 +1,28 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using LogSuite.Client.Helpers;
+using LogSuite.Client.Serices;
+using LogSuite.Client.Services.IServices;
+using LogSuite.Shared;
+using LogSuite.Shared.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
-using RiskSuite.Client.Helpers;
-using RiskSuite.Client.Services.IServices;
-using RiskSuite.Shared;
-using RiskSuite.Shared.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace RiskSuite.Client.Pages.Admin
+namespace LogSuite.Client.Pages.Admin
 {
     [Authorize(Roles = SD.Role_Admin)]
     public partial class Department
     {
         public IEnumerable<DepartmentDTO> Departments { get; set; } = new List<DepartmentDTO>();
-        [Parameter]
-        public MetaData MetaData { get; set; } = new MetaData();
-        [Inject]
-        public IJSRuntime jsRuntime { get; set; }
-        [Inject]
-        public IDepartmentService departmentService { get; set; }
+        [Parameter] public MetaData MetaData { get; set; } = new MetaData();
+        [Inject] public ToastService toastService { get; set; }
+        [Inject] public IDepartmentService departmentService { get; set; }
         private Params _parameters = new Params();
         private bool IsProcessing { get; set; } = true;
         private bool ShowDetail { get; set; } = false;
-        [Parameter]
-        public int? Id { get; set; }
-        [Inject]
-        public NavigationManager navigationManager { get; set; }
+        [Parameter] public int? Id { get; set; }
+        [Inject] public NavigationManager navigationManager { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -45,7 +39,7 @@ namespace RiskSuite.Client.Pages.Admin
             }
             catch (Exception e)
             {
-                await jsRuntime.ToastrError(e.Message);
+                toastService.ToastrError(e.Message);
             }
         }
 

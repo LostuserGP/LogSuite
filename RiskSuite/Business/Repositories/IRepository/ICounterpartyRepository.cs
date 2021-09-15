@@ -1,7 +1,7 @@
-﻿using RiskSuite.Business;
-using RiskSuite.DataAccess.CredRisk;
-using RiskSuite.Shared;
-using RiskSuite.Shared.Models;
+﻿using LogSuite.Business;
+using LogSuite.DataAccess.CredRisk;
+using LogSuite.Shared;
+using LogSuite.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;

@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
-using RiskSuite.Client.Helpers;
-using RiskSuite.Client.Services.IServices;
-using RiskSuite.Shared;
-using RiskSuite.Shared.Models;
+using LogSuite.Client.Helpers;
+using LogSuite.Client.Services.IServices;
+using LogSuite.Shared;
+using LogSuite.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +12,9 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace RiskSuite.Client.Services
+namespace LogSuite.Client.Services
 {
-    public class CommitteeStatusService : IReferenceService
+    public class CommitteeStatusService : ICommitteeStatusService
     {
         private readonly HttpClient _client;
         private readonly string apiUrl = "api/references/committeestatus";
@@ -23,7 +23,7 @@ namespace RiskSuite.Client.Services
         {
             _client = client;
         }
-        public async Task<ReferenceName> Create(ReferenceName dto)
+        public async Task<CommitteeStatusDTO> Create(CommitteeStatusDTO dto)
         {
             var content = JsonConvert.SerializeObject(dto);
             var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
@@ -31,7 +31,7 @@ namespace RiskSuite.Client.Services
             if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadAsStringAsync();
-                var answer = JsonConvert.DeserializeObject<ReferenceName>(result);
+                var answer = JsonConvert.DeserializeObject<CommitteeStatusDTO>(result);
                 return answer;
             }
             else
@@ -42,13 +42,13 @@ namespace RiskSuite.Client.Services
             }
         }
 
-        public async Task<ReferenceName> Get(int id)
+        public async Task<CommitteeStatusDTO> Get(int id)
         {
             var response = await _client.GetAsync($"{apiUrl}/{id}");
             var result = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {
-                var answer = JsonConvert.DeserializeObject<ReferenceName>(result);
+                var answer = JsonConvert.DeserializeObject<CommitteeStatusDTO>(result);
                 return answer;
             }
             else
@@ -58,15 +58,15 @@ namespace RiskSuite.Client.Services
             }
         }
 
-        public async Task<IEnumerable<ReferenceName>> Getall()
+        public async Task<IEnumerable<CommitteeStatusDTO>> Getall()
         {
             var response = await _client.GetAsync(apiUrl);
             var content = await response.Content.ReadAsStringAsync();
-            var answers = JsonConvert.DeserializeObject<IEnumerable<ReferenceName>>(content);
+            var answers = JsonConvert.DeserializeObject<IEnumerable<CommitteeStatusDTO>>(content);
             return answers;
         }
 
-        public async Task<PagingResponse<ReferenceName>> Getall(Params parameters)
+        public async Task<PagingResponse<CommitteeStatusDTO>> Getall(Params parameters)
         {
             var queryStringParam = new Dictionary<string, string>
             {
@@ -82,16 +82,16 @@ namespace RiskSuite.Client.Services
             {
                 throw new ApplicationException(content);
             }
-            var pagingResponse = new PagingResponse<ReferenceName>
+            var pagingResponse = new PagingResponse<CommitteeStatusDTO>
             {
-                Items = System.Text.Json.JsonSerializer.Deserialize<List<ReferenceName>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }),
+                Items = System.Text.Json.JsonSerializer.Deserialize<List<CommitteeStatusDTO>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }),
                 MetaData = System.Text.Json.JsonSerializer.Deserialize<MetaData>(response.Headers.GetValues("X-Pagination").First(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true })
             };
 
             return pagingResponse;
         }
 
-        public async Task<ReferenceName> Update(ReferenceName dto)
+        public async Task<CommitteeStatusDTO> Update(CommitteeStatusDTO dto)
         {
             var content = JsonConvert.SerializeObject(dto);
             var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
@@ -99,7 +99,7 @@ namespace RiskSuite.Client.Services
             if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadAsStringAsync();
-                var answer = JsonConvert.DeserializeObject<ReferenceName>(result);
+                var answer = JsonConvert.DeserializeObject<CommitteeStatusDTO>(result);
                 return answer;
             }
             else

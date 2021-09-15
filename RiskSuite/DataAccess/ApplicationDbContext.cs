@@ -4,22 +4,25 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using RiskSuite.DataAccess.CredRisk;
+using LogSuite.DataAccess.CredRisk;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using LogSuite.DataAccess.References;
+using LogSuite.DataAccess.Operativka;
 
-namespace RiskSuite.DataAccess
+namespace LogSuite.DataAccess
 {
-    public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationDbContext(
-            DbContextOptions<ApplicationDbContext> options, IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
-        { }
 
         //public ApplicationDbContext(
-        //    DbContextOptions options) : base(options)
+        //    DbContextOptions<ApplicationDbContext> options, IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         //{ }
+
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options)
+        { }
 
         //public DbSet<ApplicationUser> Accounts { get; set; }
         public DbSet<Department> Departments { get; set; }
@@ -27,6 +30,7 @@ namespace RiskSuite.DataAccess
         public DbSet<Portfolio> Portfolios { get; set; }
         public DbSet<FinancialSector> FinancialSectors { get; set; }
         public DbSet<Country> Countries { get; set; }
+        public DbSet<CountryName> CountryNames { get; set; }
         public DbSet<CounterpartyGroup> CounterpartyGroups { get; set; }
         public DbSet<Counterparty> Counterparties { get; set; }
         public DbSet<CounterpartyPortfolio> CounterpartyPortfolios { get; set; }
@@ -50,6 +54,21 @@ namespace RiskSuite.DataAccess
         public DbSet<GuaranteeLimit> GuaranteeLimits { get; set; }
         public DbSet<GuaranteeApprovalDocType> GuaranteeApprovalDocTypes { get; set; }
         public DbSet<GuaranteeApprovalDoc> GuaranteeApprovalDocs { get; set; }
+
+        public DbSet<Gis> Gises { get; set; }
+        public DbSet<GisInputName> GisInputNames { get; set; }
+        public DbSet<GisOutputName> GisOutputNames { get; set; }
+        public DbSet<GisInputValue> GisInputValues { get; set; }
+        public DbSet<GisOutputValue> GisOutputValues { get; set; }
+        public DbSet<GisAddon> GisAddons { get; set; }
+        public DbSet<GisAddonName> GisAddonNames { get; set; }
+        public DbSet<GisAddonValue> GisAddonValues { get; set; }
+        public DbSet<GisCountry> GisCountries { get; set; }
+        public DbSet<GisCountryResource> GisCountryResources { get; set; }
+        public DbSet<GisCountryValue> GisCountryValues { get; set; }
+        public DbSet<GisName> GisNames { get; set; }
+        public DbSet<InputFileLog> InputFileLogs { get; set; }
+        public DbSet<FileTypeSetting> FileTypeSettings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

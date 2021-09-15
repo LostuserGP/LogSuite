@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RiskSuite.Shared.Authorization
+namespace LogSuite.Shared.Authorization
 {
     public static class RoleExtensions
     {

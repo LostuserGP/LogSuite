@@ -1,10 +1,10 @@
-﻿using RiskSuite.DataAccess;
+﻿using LogSuite.DataAccess;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RiskSuite.Server.Helpers
+namespace LogSuite.Server.Helpers
 {
     public static class AccountExtensions
     {

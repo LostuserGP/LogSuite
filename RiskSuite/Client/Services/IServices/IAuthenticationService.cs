@@ -1,10 +1,10 @@
-﻿using RiskSuite.Shared.Authorization;
+﻿using LogSuite.Shared.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RiskSuite.Client.Services.IServices
+namespace LogSuite.Client.Services.IServices
 {
     public interface IAuthenticationService
 {

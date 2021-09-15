@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RiskSuite.Shared.Models
+namespace LogSuite.Shared.Models
 {
     public class RatingDTO
     {

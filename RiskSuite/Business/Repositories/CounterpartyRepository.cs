@@ -1,19 +1,19 @@
 ﻿using AutoMapper;
 using Business.Repositories.IRepository;
 using Microsoft.EntityFrameworkCore;
-using RiskSuite.Business;
-using RiskSuite.Business.Repositories;
-using RiskSuite.DataAccess;
-using RiskSuite.DataAccess.CredRisk;
-using RiskSuite.Shared;
-using RiskSuite.Shared.Models;
+using LogSuite.Business;
+using LogSuite.Business.Repositories;
+using LogSuite.DataAccess;
+using LogSuite.DataAccess.CredRisk;
+using LogSuite.Shared;
+using LogSuite.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Business.Repositories
+namespace LogSuite.Business.Repositories
 {
     public class CounterpartyRepository : ICounterpartyRepository
     {

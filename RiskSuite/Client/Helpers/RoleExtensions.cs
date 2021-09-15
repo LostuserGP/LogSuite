@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RiskSuite.Client.Helper
+namespace LogSuite.Client.Helper
 {
     public static class RoleExtensions
     {

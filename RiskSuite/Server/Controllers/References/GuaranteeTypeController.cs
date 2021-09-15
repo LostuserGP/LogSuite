@@ -4,15 +4,15 @@ using Business.Repositories.References;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using RiskSuite.DataAccess.CredRisk;
-using RiskSuite.Shared;
-using RiskSuite.Shared.Models;
+using LogSuite.DataAccess.CredRisk;
+using LogSuite.Shared;
+using LogSuite.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RiskSuite.Server.Controllers.References
+namespace LogSuite.Server.Controllers.References
 {
     [ApiController]
     [Route("api/references/[controller]")]

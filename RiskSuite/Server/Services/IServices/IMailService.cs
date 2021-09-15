@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RiskSuite.Server.Services.IServices
+namespace LogSuite.Server.Services.IServices
 {
     public interface IMailService
     {

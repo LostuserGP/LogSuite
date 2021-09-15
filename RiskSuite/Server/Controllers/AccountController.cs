@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using RiskSuite.DataAccess;
-using RiskSuite.Server.Helpers;
-using RiskSuite.Shared;
-using RiskSuite.Shared.Authorization;
+using LogSuite.DataAccess;
+using LogSuite.Server.Helpers;
+using LogSuite.Shared;
+using LogSuite.Shared.Authorization;
 using System;
 using System.Security.Claims;
 using System.Collections.Generic;
@@ -16,17 +16,18 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.Negotiate;
 using AutoMapper;
-using RiskSuite.Shared.Models;
-using RiskSuite.Server.Services.IServices;
+using LogSuite.Shared.Models;
+using LogSuite.Server.Services.IServices;
 using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
-using RiskSuite.Business;
+using LogSuite.Business;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
+using LogSuite.DataAccess.References;
 
-namespace RiskSuite.Server.Controllers
+namespace LogSuite.Server.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]

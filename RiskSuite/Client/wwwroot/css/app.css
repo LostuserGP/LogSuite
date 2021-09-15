@@ -1,4 +1,5 @@
 ﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+@import url('fontawesome/css/all.min.css');
 /*@import url('all.min.css');*/
 
 html, body {
@@ -67,3 +68,52 @@ a {
         right: 0.75rem;
         top: 0.5rem;
     }
+
+.lost-toast {
+    display: none;
+    padding: 0;
+    color: #fff;
+    z-index: 1;
+    position: absolute;
+    width: 25rem;
+    /*top: 2rem;*/
+    border-radius: 1rem;
+    /*left: 50%;*/
+    bottom: 10px;
+    right: 10px;
+}
+
+.toast-icon {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 1rem;
+    font-size: 2.5rem;
+}
+
+.toast-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding-left: 1rem;
+}
+
+    .toast-body p {
+        margin-bottom: 0;
+    }
+
+.toast-visible {
+    display: flex;
+    flex-direction: row;
+    animation: fadein 2s;
+}
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

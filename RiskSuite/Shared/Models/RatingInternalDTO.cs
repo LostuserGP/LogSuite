@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RiskSuite.Shared.Models
+namespace LogSuite.Shared.Models
 {
     public class RatingInternalDTO
     {
@@ -13,10 +13,15 @@ namespace RiskSuite.Shared.Models
         public bool IsConservative { get; set; }
         public string Analyst { get; set; }
         public string Comment { get; set; }
+        public int CounterpartyId { get; set; }
         public CounterpartyDTO Counterparty { get; set; }
+        public int RatingId { get; set; }
         public RatingDTO Rating { get; set; }
+        public int? RatingWcId { get; set; }
         public RatingDTO RatingWc { get; set; }
+        public int? RiskClassId { get; set; }
         public RiskClassDTO RiskClass { get; set; }
+        public int? FinancialStatementId { get; set; }
         public FinancialStatementDTO FinancialStatement { get; set; }
     }
 }

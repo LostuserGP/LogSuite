@@ -1,6 +1,21 @@
 ﻿@page "/counterparty/{Id:int}"
 
-<div class="">
+<style>
+    .sort-th {
+        cursor: pointer;
+    }
+
+    .far {
+        /*float: right;*/
+        cursor: pointer;
+    }
+
+    .fas {
+        cursor: pointer;
+    }
+</style>
+
+<div class="m-2">
     <div class="d-flex">
         <div class="mx-auto justify-content-center">
             <h3>Counterparty Detail</h3>
@@ -13,73 +28,180 @@
         }
     </div>
 
-    <div class="">
-        <div class="card mb-2">
-            <div class="card-header font-weight-bolder px-2 py-1">
-                <div class="float-left">
-                    Name
+    <div class="row">
+        <div class="col-xl-3 col-lg-6 col-md-12">
+            <div class="card mt-2">
+                <div class="card-header font-weight-bolder p-1">
+                    <div class="float-left">
+                        Name
+                    </div>
+                    <div class="float-right">
+                        <i class="fas fa-edit" tooltip="edit"></i>
+                    </div>
                 </div>
-                <div class="float-right">
-                    <i class="oi oi-pencil" tooltip="edit"></i>
+                <div class="card-body p-1">
+                    <div class="card-text">@Model.Name</div>
                 </div>
-            </div>
-            <div class="card-body px-2 py-1">
-                <div class="card-text">@Model.Name</div>
             </div>
         </div>
-        <div class="card mb-2">
-            <div class="card-header font-weight-bolder px-2 py-1">
-                <div class="float-left">
-                    Short Name
+        <div class="col-xl-3 col-lg-6 col-md-12">
+            <div class="card mt-2">
+                <div class="card-header font-weight-bolder p-1">
+                    <div class="float-left">
+                        Short Name
+                    </div>
+                    <div class="float-right">
+                        <i class="fas fa-edit" tooltip="edit"></i>
+                    </div>
                 </div>
-                <div class="float-right">
-                    <i class="oi oi-pencil" tooltip="edit"></i>
+                <div class="card-body p-1">
+                    <div class="card-text">@Model.ShortName</div>
                 </div>
-            </div>
-            <div class="card-body px-2 py-1">
-                <div class="card-text">@Model.ShortName</div>
             </div>
         </div>
-        <div class="card mb-2">
-            <div class="card-header font-weight-bolder px-2 py-1">
-                <div class="float-left">
-                    Sector
+        <div class="col-xl-3 col-lg-6 col-md-12">
+            <div class="card mt-2">
+                <div class="card-header font-weight-bolder p-1">
+                    <div class="float-left">
+                        Sector
+                    </div>
+                    <div class="float-right">
+                        <i class="fas fa-edit" tooltip="edit"></i>
+                    </div>
                 </div>
-                <div class="float-right">
-                    <i class="oi oi-pencil" tooltip="edit"></i>
+                <div class="card-body p-1">
+                    <div class="card-text">@Model.FinancialSector?.NameEn</div>
                 </div>
-            </div>
-            <div class="card-body px-2 py-1">
-                <div class="card-text">@Model.FinancialSector?.NameEn</div>
             </div>
         </div>
-        <div class="card mb-2">
-            <div class="card-header font-weight-bolder px-2 py-1">
-                <div class="float-left">
-                    Bloomberg Ticker
+        <div class="col-xl-3 col-lg-6 col-md-12">
+            <div class="card mt-2">
+                <div class="card-header font-weight-bolder p-1">
+                    <div class="float-left">
+                        Date
+                    </div>
+                    <div class="float-right">
+                        <i class="fas fa-edit" tooltip="edit"></i>
+                    </div>
                 </div>
-                <div class="float-right">
-                    <i class="oi oi-pencil" tooltip="edit"></i>
+                <div class="card-body p-1">
+                    <div class="card-text">@Model.DateStart.ToString("dd.MM.yyyy")</div>
                 </div>
-            </div>
-            <div class="card-body px-2 py-1">
-                <div class="card-text">@Model.Ticker</div>
             </div>
         </div>
-        <div class="card mb-2">
-            <div class="card-header font-weight-bolder px-2 py-1">
-                <div class="float-left">
-                    Donor Company
+        <div class="col-xl-3 col-lg-6 col-md-12">
+            <div class="card mt-2">
+                <div class="card-header font-weight-bolder p-1">
+                    <div class="float-left">
+                        Bloomberg Ticker
+                    </div>
+                    <div class="float-right">
+                        <i class="fas fa-edit" tooltip="edit"></i>
+                    </div>
                 </div>
-                <div class="float-right">
-                    <i class="oi oi-pencil" tooltip="edit"></i>
+                <div class="card-body p-1">
+                    <div class="card-text">@Model.Ticker</div>
                 </div>
             </div>
-            <div class="card-body px-2 py-1">
-                <div class="card-text">@Model.RatingDonor?.Name</div>
+
+        </div>
+        <div class="col-xl-3 col-lg-6 col-md-12">
+            <div class="card mt-2">
+                <div class="card-header font-weight-bolder p-1">
+                    <div class="float-left">
+                        Donor Company
+                    </div>
+                    <div class="float-right">
+                        <i class="fas fa-edit" tooltip="edit"></i>
+                    </div>
+                </div>
+                <div class="card-body p-1">
+                    <div class="card-text">@Model.RatingDonor?.Name</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-6 col-lg-12 col-md-12">
+            <div class="card mt-2">
+                <div class="card-header font-weight-bolder p-1">
+                    <div class="float-left">
+                        <span class="far @(ShowRatingInternal == true ? "fa-minus-square" : "fa-plus-square")"
+                              tooltip="open"
+                              style="width: 20px;"
+                              @onclick="@(() => ShowRatingInternal = !ShowRatingInternal)"></span>
+                    </div>
+                    <span>Rating Internal</span>
+                    <div class="float-right">
+                        @*<button type="button" class="btn btn-sm badge-primary">Add</button>*@
+                    </div>
+                </div>
+                @if (ShowRatingInternal)
+                {
+                    <CounterpartyInternalRating Id="@Model.Id" />
+                }
+            </div>
+        </div>
+        <div class="col-xl-6 col-lg-12 col-md-12">
+            <div class="card mt-2">
+                <div class="card-header font-weight-bolder p-1">
+                    <div class="float-left">
+                        <span class="far @(ShowCommittee == true ? "fa-minus-square" : "fa-plus-square")"
+                              tooltip="open"
+                              style="width: 20px;"
+                              @onclick="@(() => ShowCommittee = !ShowCommittee)"></span>
+                    </div>
+                    <span>Committees</span>
+                    <div class="float-right">
+                        @*<button type="button" class="btn btn-sm badge-primary">Add</button>*@
+                    </div>
+                </div>
+                @if (ShowCommittee)
+                {
+                    <CounterpartyCommittee Id="@Model.Id" />
+                }
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-6 col-md-6">
+            <div class="card mt-2">
+                <div class="card-header font-weight-bolder p-1">
+                    <div class="float-left">
+                        <span class="far @(ShowRatingExternal == true ? "fa-minus-square" : "fa-plus-square")"
+                              tooltip="open"
+                              style="width: 20px;"
+                              @onclick="@(() => ShowRatingExternal = !ShowRatingExternal)"></span>
+                    </div>
+                    <span>Rating External</span>
+                    <div class="float-right">
+                        @*<span type="button" class="btn btn-sm btn-outline-success">Add</span>*@
+                    </div>
+                </div>
+                @if (ShowRatingExternal)
+                {
+                    <CounterpartyExternalRating Id="@Model.Id" />
+                }
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-6 col-md-6">
+            <div class="card mt-2">
+                <div class="card-header font-weight-bolder p-1">
+                    <div class="float-left">
+                        <span class="far @(ShowFS == true ? "fa-minus-square" : "fa-plus-square")"
+                              tooltip="open"
+                              style="width: 20px;"
+                              @onclick="@(() => ShowFS = !ShowFS)"></span>
+                    </div>
+                    <span>Financial Statements</span>
+                    <div class="float-right">
+                        @*<button type="button" class="badge badge-primary">Add</button>*@
+                    </div>
+                </div>
+                @if (ShowFS)
+                {
+                    <CounterpartyFinancialStatement Id="@Model.Id" />
+                }
             </div>
         </div>
     </div>
+
 </div>
 
 

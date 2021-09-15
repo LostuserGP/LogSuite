@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RiskSuite.Shared
+namespace LogSuite.Shared
 {
     public class Params
     {
-        private const int MaxPageSize = 50;
+        private const int MaxPageSize = 100;
         public int PageNumber { get; set; } = 1;
-        private int pageSize = 40;
+        private int pageSize = 50;
         public int PageSize
         {
             get { return pageSize; }

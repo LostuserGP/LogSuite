@@ -2,14 +2,14 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using RiskSuite.Shared;
-using RiskSuite.Shared.Models;
+using LogSuite.Shared;
+using LogSuite.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RiskSuite.Server.Controllers
+namespace LogSuite.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

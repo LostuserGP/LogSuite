@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RiskSuite.Client.Helpers
+namespace LogSuite.Client.Helpers
 {
     public class PagingLink
     {

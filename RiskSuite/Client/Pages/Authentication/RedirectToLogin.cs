@@ -1,20 +1,13 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace RiskSuite.Client.Pages.Authentication
+namespace LogSuite.Client.Pages.Authentication
 {
     public partial class RedirectToLogin
     {
-        [Inject]
-        private NavigationManager navigationManager { get; set; }
-
-        [CascadingParameter]
-        private Task<AuthenticationState> authenticationState { get; set; }
-
+        [Inject] private NavigationManager navigationManager { get; set; }
+        [CascadingParameter] private Task<AuthenticationState> authenticationState { get; set; }
         bool notAuthorized { get; set; } = false;
 
         protected override async Task OnInitializedAsync()

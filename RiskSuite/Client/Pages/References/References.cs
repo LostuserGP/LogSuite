@@ -1,22 +1,20 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using LogSuite.Client.Helpers;
+using LogSuite.Client.Serices;
+using LogSuite.Client.Services.IServices;
+using LogSuite.Shared;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
-using RiskSuite.Client.Helpers;
-using RiskSuite.Client.Services;
-using RiskSuite.Client.Services.IServices;
-using RiskSuite.Shared;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace RiskSuite.Client.Pages.References
+namespace LogSuite.Client.Pages.References
 {
-    [Authorize(Roles = SD.Role_Risk_Manager + ", " + SD.Role_Admin)]
+    [Authorize(Roles = SD.Role_Power_User + ", " + SD.Role_Admin)]
     public partial class References
     {
         public IEnumerable<ReferenceName> Values { get; set; } = new List<ReferenceName>();
-        [Inject] public IJSRuntime jsRuntime { get; set; }
+        [Inject] public ToastService toastrService { get; set; }
         [Inject] public IReferenceService service { get; set; }
         private bool IsProcessing { get; set; } = true;
         private bool ShowDetail { get; set; }
@@ -139,7 +137,7 @@ namespace RiskSuite.Client.Pages.References
             {
                 navigationManager.NavigateTo($"/references/{referenceName}");
                 await Load();
-                await jsRuntime.ToastrSuccess("Reference succesfully deleted");
+                //await jsRuntime.ToastrSuccess("Reference succesfully deleted");
             }
         }
     }

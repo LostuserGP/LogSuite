@@ -1,18 +1,13 @@
-﻿using Microsoft.AspNetCore.Components;
-using RiskSuite.Client.Services.IServices;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using LogSuite.Client.Services.IServices;
+using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 
-namespace RiskSuite.Client.Pages.Authentication
+namespace LogSuite.Client.Pages.Authentication
 {
     public partial class Logout
     {
-        [Inject]
-        public IAuthenticationService authenticationService { get; set; }
-        [Inject]
-        public NavigationManager navigationManager { get; set; }
+        [Inject] public IAuthenticationService authenticationService { get; set; }
+        [Inject] public NavigationManager navigationManager { get; set; }
 
         protected async override Task OnInitializedAsync()
         {

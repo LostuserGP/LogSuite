@@ -1,21 +1,47 @@
-﻿<nav class="navbar fixed-bottom navbar-dark bg-dark p-0">
-    <ul class="pagination justify-content-center mx-2 my-2 p-0">
-        @foreach (var link in _links)
-        {
-            <li @onclick="() => OnSelectedPage(link)" style="cursor: pointer;" class="page-item @(link.Enabled ? null : "disabled") @(link.Active ? "active" : null)">
-                <span class="page-link" href="#">@link.Text</span>
-            </li>
-        }
-    </ul>
-    <ul class="pagination justify-content-center mx-auto my-2 p-0">
-        <li @onclick="() => OnSetPageSize(10)" style="cursor: pointer;" class="mx-2 page-item @((MetaData.PageSize == 10) ? "text-primary" : "text-light")">10</li>
-        <span class="text-light"> | </span>
-        <li @onclick="() => OnSetPageSize(20)" style="cursor: pointer;" class="mx-2 page-item @((MetaData.PageSize == 20) ? "text-primary" : "text-light")">20</li>
-        <span class="text-light"> | </span>
-        <li @onclick="() => OnSetPageSize(35)" style="cursor: pointer;" class="mx-2 page-item @((MetaData.PageSize == 35) ? "text-primary" : "text-light")">35</li>
-    </ul>
-    <section class="d-flex mr-2">
-        <input type="text" class="form-control" placeholder="Search..."
-               @bind-value="@Filter" @bind-value:event="oninput" @onkeyup="FilterChanged" />
-    </section>
-</nav>
+﻿@*<div class="navbar fixed-bottom navbar-dark bg-dark p-0">
+	<ul class="pagination justify-content-center mx-2 my-2 p-0">
+	@foreach (var link in _links)
+	{
+	<li @onclick="() => OnSelectedPage(link)" style="cursor: pointer;" class="page-item @(link.Enabled ? null : "disabled") @(link.Active ? "active" : null)">
+	<span class="page-link" href="#">@link.Text</span>
+	</li>
+	}
+	</ul>
+	<ul class="pagination justify-content-center mx-auto my-2 p-0">
+	<li @onclick="() => OnSetPageSize(10)" style="cursor: pointer;" class="mx-2 page-item @((MetaData.PageSize == 10) ? "text-primary" : "text-light")">10</li>
+	<span class="text-light"> | </span>
+	<li @onclick="() => OnSetPageSize(20)" style="cursor: pointer;" class="mx-2 page-item @((MetaData.PageSize == 20) ? "text-primary" : "text-light")">20</li>
+	<span class="text-light"> | </span>
+	<li @onclick="() => OnSetPageSize(35)" style="cursor: pointer;" class="mx-2 page-item @((MetaData.PageSize == 35) ? "text-primary" : "text-light")">35</li>
+	</ul>
+	<ul class="pagination justify-content-center mr-2 p-0">
+	<input type="text" class="form-control" placeholder="Search..."
+	@bind-value="@Filter" @bind-value:event="oninput" @onkeyup="FilterChanged" />
+	</ul>
+	<section class="d-flex mr-2">
+	<input type="text" class="form-control" placeholder="Search..."
+	@bind-value="@Filter" @bind-value:event="oninput" @onkeyup="FilterChanged" />
+	</section>
+	</div>*@
+
+<div class="navbar p-0">
+	<ul class="pagination justify-content-center mx-2 my-2 p-0">
+		@foreach (var link in _links)
+		{
+			<li @onclick="() => OnSelectedPage(link)" style="cursor: pointer;" class="page-item @(link.Enabled ? null : "disabled") @(link.Active ? "active" : null)">
+				<span class="page-link" href="#">@link.Text</span>
+			</li>
+		}
+	</ul>
+	<ul class="pagination justify-content-center mx-auto my-2 p-0">
+		<li @onclick="() => OnSetPageSize(25)" style="cursor: pointer;" class="mx-2 page-item @((MetaData.PageSize == 25) ? "text-primary" : "text-dark")">25</li>
+		<span class="text-dark"> | </span>
+		<li @onclick="() => OnSetPageSize(50)" style="cursor: pointer;" class="mx-2 page-item @((MetaData.PageSize == 50) ? "text-primary" : "text-dark")">50</li>
+		<span class="text-dark"> | </span>
+		<li @onclick="() => OnSetPageSize(100)" style="cursor: pointer;" class="mx-2 page-item @((MetaData.PageSize == 100) ? "text-primary" : "text-dark")">100</li>
+	</ul>
+	<ul class="pagination justify-content-center mr-2 my-2 p-0">
+		<input type="text" class="form-control" placeholder="Search..."
+			   @bind-value="@Filter" @bind-value:event="oninput" @onkeyup="FilterChanged" />
+	</ul>
+</div>

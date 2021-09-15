@@ -1,11 +1,11 @@
-﻿using RiskSuite.Shared.Models;
+﻿using LogSuite.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RiskSuite.Shared.Authorization
+namespace LogSuite.Shared.Authorization
 {
     public class UserDTO
     {

@@ -1,34 +1,28 @@
+using Business.Repositories;
+using Business.Repositories.IRepository;
+using Business.Repositories.IRepository.References;
+using Business.Repositories.References;
+using LogSuite.Business.Repositories;
+using LogSuite.Business.Repositories.References;
+using LogSuite.DataAccess;
+using LogSuite.Server.Helpers;
+using LogSuite.Server.Services;
+using LogSuite.Server.Services.IServices;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
-using System.Linq;
-using Microsoft.AspNetCore.Identity;
-using System;
-using RiskSuite.DataAccess;
-using Microsoft.EntityFrameworkCore;
-using RiskSuite.Server.Helpers;
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
-using RiskSuite.Server.Services.IServices;
-using RiskSuite.Server.Services;
-using Business.Repositories.IRepository;
-using Business.Repositories;
-using Microsoft.AspNetCore.Authentication.Negotiate;
-using Microsoft.AspNetCore.Server.IISIntegration;
-using Business.Repositories.IRepository.References;
-using Business.Repositories.References;
-using RiskSuite.Shared;
-using RiskSuite.DataAccess.CredRisk;
-using System.IdentityModel.Tokens.Jwt;
+using System;
+using System.Text;
 
-namespace RiskSuite.Server
+namespace LogSuite.Server
 {
     public class Startup
     {
@@ -61,22 +55,6 @@ namespace RiskSuite.Server
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddClaimsPrincipalFactory<RolesClaimsPrincipalFactory>();
-
-            //services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
-            //    .AddRoles<IdentityRole>() // For Roles, see (client side) /RolesClaimsPrincipalFactory.cs
-            //    .AddEntityFrameworkStores<ApplicationDbContext>();
-            //    //.AddClaimsPrincipalFactory<RolesClaimsPrincipalFactory>(); // To add a custom claim for the user, see: /Models/ApplicationUser.cs
-
-            //services.AddIdentityServer()
-            //    .AddApiAuthorization<ApplicationUser, ApplicationDbContext>(options =>
-            //    {
-            //        options.IdentityResources["openid"].UserClaims.Add("role"); // Roles
-            //        options.ApiResources.Single().UserClaims.Add("role");
-            //        options.IdentityResources["openid"].UserClaims.Add("custom_claim"); // Custom Claim
-            //        options.ApiResources.Single().UserClaims.Add("custom_claim");
-            //    });
-            //JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("role");
-
 
             var appSettingsSection = Configuration.GetSection("APISettings");
             services.Configure<APISettings>(appSettingsSection);
@@ -118,6 +96,7 @@ namespace RiskSuite.Server
             services.AddScoped<IDbInitializer, DbInitializer>();
             services.AddScoped<ICounterpartyRepository, CounterpartyRepository>();
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            services.AddScoped<ICommitteeRepository, CommitteeRepository>();
             services.AddScoped<ICommitteeLimitRepository, CommitteeLimitRepository>();
             services.AddScoped<ICommitteeStatusRepository, CommitteeStatusRepository>();
             services.AddScoped<ICurrencyRepository, CurrencyRepository>();
@@ -126,10 +105,33 @@ namespace RiskSuite.Server
             services.AddScoped<IGuaranteeTypeRepository, GuaranteeTypeRepository>();
             services.AddScoped<IRatingAgencyRepository, RatingAgencyRepository>();
             services.AddScoped<IRiskClassRepository, RiskClassRepository>();
+            services.AddScoped<IRatingRepository, RatingRepository>();
+            services.AddScoped<IRatingInternalRepository, RatingInternalRepository>();
+            services.AddScoped<IRatingExternalRepository, RatingExternalRepository>();
+            services.AddScoped<IFinancialStatementRepository, FinancialStatementRepository>();
             //services.AddScoped(typeof(IReferenceRepository<>), typeof(ReferenceRepository<>));
             services.AddScoped<IMailService, MailService>();
 
-            services.AddCors(o => o.AddPolicy("RiskSuite", builder =>
+
+            services.AddScoped<ICountryRepository, CountryRepository>();
+            services.AddScoped<ICountryNameRepository, CountryNameRepository>();
+            services.AddScoped<IGisAddonRepository, GisAddonRepository>();
+            services.AddScoped<IGisAddonNameRepository, GisAddonNameRepository>();
+            services.AddScoped<IGisAddonValueRepository, GisAddonValueRepository>();
+            services.AddScoped<IGisCountryRepository, GisCountryRepository>();
+            services.AddScoped<IGisCountryResourceRepository, GisCountryResourceRepository>();
+            services.AddScoped<IGisCountryValueRepository, GisCountryValueRepository>();
+            services.AddScoped<IGisNameRepository, GisNameRepository>();
+            services.AddScoped<IGisRepository, GisRepository>();
+            services.AddScoped<IFileTypeSettingRepository, FileTypeSettingRepository>();
+            services.AddScoped<IGisInputNameRepository, GisInputNameRepository>();
+            services.AddScoped<IGisInputValueRepository, GisInputValueRepository>();
+            services.AddScoped<IGisOutputNameRepository, GisOutputNameRepository>();
+            services.AddScoped<IGisOutputValueRepository, GisOutputValueRepository>();
+            services.AddScoped<IInputFileLogRepository, InputFileLogRepository>();
+
+
+            services.AddCors(o => o.AddPolicy("LogSuite", builder =>
             {
                 builder
                 .AllowAnyOrigin()
@@ -148,7 +150,7 @@ namespace RiskSuite.Server
                 });
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "RiskSuite_Api", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "LogSuite_Api", Version = "v1" });
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     In = ParameterLocation.Header,
@@ -181,11 +183,11 @@ namespace RiskSuite.Server
                 app.UseDeveloperExceptionPage();
                 app.UseWebAssemblyDebugging();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "RiskSuite_Api v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "LogSuite_Api v1"));
             }
 
 
-            app.UseCors("RiskSuite");
+            app.UseCors("LogSuite");
 
             app.UseRouting();
 

@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RiskSuite.Shared
+﻿namespace LogSuite.Shared
 {
     public class SD
     {
         public const string Role_Admin = "Admin";
         public const string Role_User = "User";
-        public const string Role_Risk_Coordinator = "RiskCoodrinator";
-        public const string Role_Risk_Manager = "RiskManager";
+        public const string Role_Power_User = "RiskPowerUser";
         public const string Role_Front_Office = "FrontOffice";
         public const string Role_Security = "Security";
 

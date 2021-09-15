@@ -1,24 +1,21 @@
-﻿using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
-using RiskSuite.Client.Helpers;
-using RiskSuite.Client.Services.IServices;
-using RiskSuite.Shared;
-using RiskSuite.Shared.Models;
+﻿using LogSuite.Client.Helpers;
+using LogSuite.Client.Serices;
+using LogSuite.Client.Services.IServices;
+using LogSuite.Shared;
+using LogSuite.Shared.Models;
+using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace RiskSuite.Client.Pages.CredRisk
+namespace LogSuite.Client.Pages.CredRisk
 {
     public partial class Counterparty
     {
         public IEnumerable<CounterpartyDTO> Counterparties { get; set; } = new List<CounterpartyDTO>();
-        [Parameter]
-        public MetaData MetaData { get; set; } = new MetaData();
-        [Inject]
-        public IJSRuntime jsRuntime { get; set; }
-        [Inject]
-        public ICounterpartyService counterpartyService { get; set; }
+        [Parameter] public MetaData MetaData { get; set; } = new MetaData();
+        [Inject] public ToastService toastService { get; set; }
+        [Inject] public ICounterpartyService counterpartyService { get; set; }
         private Params _parameters = new Params();
         private bool IsProcessing { get; set; } = true;
 
@@ -33,7 +30,7 @@ namespace RiskSuite.Client.Pages.CredRisk
             }
             catch (Exception e)
             {
-                await jsRuntime.ToastrError(e.Message);
+                toastService.ToastrError(e.Message);
             }
         }
 
