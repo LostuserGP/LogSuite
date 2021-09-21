@@ -1,5 +1,5 @@
 ﻿using LogSuite.Client.Helpers;
-using LogSuite.Client.Serices;
+using LogSuite.Client.Services;
 using LogSuite.Client.Services.IServices;
 using LogSuite.Shared.Models;
 using Microsoft.AspNetCore.Components;
@@ -47,12 +47,12 @@ namespace LogSuite.Client.Pages.Admin
                 if (Id != null && Title == "Update")
                 {
                     result = await departmentService.Update(DepartmentModel);
-                    toastService.ToastrSuccess("Department succesfully updated");
+                    toastService.ToastSuccess("Department succesfully updated");
                 }
                 else
                 {
                     result = await departmentService.Create(DepartmentModel);
-                    toastService.ToastrSuccess("Department succesfully created");
+                    toastService.ToastSuccess("Department succesfully created");
                 }
                 IsProcessing = false;
                 await OnDepartmentSubmit.InvokeAsync();
@@ -61,7 +61,7 @@ namespace LogSuite.Client.Pages.Admin
             catch (Exception e)
             {
                 IsProcessing = false;
-                toastService.ToastrError(e.Message);
+                toastService.ToastError(e.Message);
             }
         }
     }

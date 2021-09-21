@@ -13,7 +13,7 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using LogSuite.Client.Serices;
+using LogSuite.Client.Services;
 
 namespace LogSuite.Client.Services
 {
@@ -44,7 +44,7 @@ namespace LogSuite.Client.Services
             {
                 var result = await response.Content.ReadAsStringAsync();
                 var errorModel = JsonConvert.DeserializeObject<ErrorModel>(result);
-                _toastService.ToastrError(errorModel.ErrorMessage);
+                _toastService.ToastError(errorModel.ErrorMessage);
                 return null;
             }
         }
@@ -61,7 +61,7 @@ namespace LogSuite.Client.Services
             else
             {
                 var errorModel = JsonConvert.DeserializeObject<ErrorModel>(result);
-                _toastService.ToastrError(errorModel.ErrorMessage);
+                _toastService.ToastError(errorModel.ErrorMessage);
                 return null;
                 //throw new Exception(errorModel.ErrorMessage);
             }
@@ -90,7 +90,7 @@ namespace LogSuite.Client.Services
             {
                 var result = await response.Content.ReadAsStringAsync();
                 var errorModel = JsonConvert.DeserializeObject<ErrorModel>(result);
-                _toastService.ToastrError(errorModel.ErrorMessage);
+                _toastService.ToastError(errorModel.ErrorMessage);
                 return null;
             }
         }
@@ -106,7 +106,7 @@ namespace LogSuite.Client.Services
             else
             {
                 var errorModel = JsonConvert.DeserializeObject<ErrorModel>(result);
-                _toastService.ToastrError(errorModel.ErrorMessage);
+                _toastService.ToastError(errorModel.ErrorMessage);
                 return false;
             }
         }

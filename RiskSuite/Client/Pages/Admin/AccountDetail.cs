@@ -1,5 +1,5 @@
 ﻿using LogSuite.Client.Helpers;
-using LogSuite.Client.Serices;
+using LogSuite.Client.Services;
 using LogSuite.Client.Services.IServices;
 using LogSuite.Shared.Authorization;
 using LogSuite.Shared.Models;
@@ -93,12 +93,12 @@ namespace LogSuite.Client.Pages.Admin
                 if (Id != null && Title == "Update")
                 {
                     await accountService.Update(AccountModel);
-                    toastService.ToastrSuccess("Account succesfully updated");
+                    toastService.ToastSuccess("Account succesfully updated");
                 }
                 else
                 {
                     await accountService.Create(AccountModel);
-                    toastService.ToastrSuccess("Account succesfully created");
+                    toastService.ToastSuccess("Account succesfully created");
                 }
                 IsProcessing = false;
                 await OnAccountSubmit.InvokeAsync();
@@ -107,7 +107,7 @@ namespace LogSuite.Client.Pages.Admin
             catch (Exception e)
             {
                 IsProcessing = false;
-                toastService.ToastrError(e.Message);
+                toastService.ToastError(e.Message);
             }
         }
     }

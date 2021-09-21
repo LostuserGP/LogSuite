@@ -1,7 +1,6 @@
 using Blazored.LocalStorage;
 using CurrieTechnologies.Razor.SweetAlert2;
 using LogSuite.Client.Helpers;
-using LogSuite.Client.Serices;
 using LogSuite.Client.Services;
 using LogSuite.Client.Services.IServices;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -69,10 +68,19 @@ namespace LogSuite.Client
             builder.Services.AddScoped<IGisAddonNameService, GisAddonNameService>();
             builder.Services.AddScoped<IFileTypeSettingService, FileTypeSettingService>();
             builder.Services.AddScoped<IReviewValueService, ReviewValueService>();
+            builder.Services.AddScoped<IGisCountryValueService, GisCountryValueService>();
+            builder.Services.AddScoped<IGisAddonValueService, GisAddonValueService>();
+            builder.Services.AddScoped<IGisInputValueService, GisInputValueService>();
+            builder.Services.AddScoped<IGisOutputValueService, GisOutputValueService>();
 
             //builder.Services.AddScoped<IReferenceService, CommitteeStatusService>();
 
             await builder.Build().RunAsync();
+        }
+
+        public class ThemeState
+        {
+            public string CurrentTheme { get; set; } = "default";
         }
     }
 }

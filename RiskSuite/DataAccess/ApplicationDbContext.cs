@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using LogSuite.DataAccess.References;
-using LogSuite.DataAccess.Operativka;
+using LogSuite.DataAccess.DailyReview;
 
 namespace LogSuite.DataAccess
 {

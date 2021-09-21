@@ -1,6 +1,6 @@
 ﻿using LogSuite.Client.Helpers;
 using LogSuite.Shared;
-using LogSuite.Shared.Models.Operativka;
+using LogSuite.Shared.Models.DailyReview;
 using LogSuite.Shared.Models.References;
 using System.Collections.Generic;
 using System.Threading.Tasks;

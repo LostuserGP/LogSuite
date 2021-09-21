@@ -1,7 +1,7 @@
-﻿using LogSuite.Client.Serices;
+﻿using LogSuite.Client.Services;
 using LogSuite.Shared.Helpers;
 using LogSuite.Shared.Models;
-using LogSuite.Shared.Models.Operativka;
+using LogSuite.Shared.Models.DailyReview;
 using LogSuite.Shared.Models.References;
 using Microsoft.AspNetCore.Components.Forms;
 using OfficeOpenXml;
@@ -46,7 +46,7 @@ namespace LogSuite.Client.Parsers
         private async Task Parse()
         {
             var excelPackage = new ExcelPackage();
-            var stream = _file.OpenReadStream(10000000);
+            var stream = _file.OpenReadStream(_file.Size);
             await excelPackage.LoadAsync(stream);
             sheet = excelPackage.Workbook.Worksheets.FirstOrDefault();
             filename = _file.Name;
@@ -332,6 +332,7 @@ namespace LogSuite.Client.Parsers
                 }
             }
             return 0;
+            
         }
     }
 }

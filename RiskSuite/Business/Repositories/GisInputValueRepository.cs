@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Business.Repositories.IRepository;
 using LogSuite.DataAccess;
-using LogSuite.DataAccess.Operativka;
+using LogSuite.DataAccess.DailyReview;
 using LogSuite.Shared;
-using LogSuite.Shared.Models.Operativka;
+using LogSuite.Shared.Models.DailyReview;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -61,7 +61,7 @@ namespace LogSuite.Business.Repositories
             return dto;
         }
 
-        public async Task<PagedList<GisInputValueDTO>> GetByGisId(int gisId, Params parameters)
+        public async Task<PagedList<GisInputValueDTO>> GetPagedByGisId(int gisId, Params parameters)
         {
             var source = _db.GisInputValues
                     .Include(x => x.RequestedValueTime)
@@ -91,9 +91,9 @@ namespace LogSuite.Business.Repositories
             return dto;
         }
 
-        public async Task<PagedList<GisInputValueDTO>> GetOnDateRangeByGisId(int gisId, DateTime dateStart, DateTime dateEnd, Params parameters)
+        public async Task<List<GisInputValueDTO>> GetOnDateRangeByGisId(int gisId, DateTime dateStart, DateTime dateEnd)
         {
-            var source = _db.GisInputValues
+            var source = await _db.GisInputValues
                     .Include(x => x.RequestedValueTime).ThenInclude(t => t.User)
                     .Include(x => x.AllocatedValueTime).ThenInclude(t => t.User)
                     .Include(x => x.EstimatedValueTime).ThenInclude(t => t.User)
@@ -101,12 +101,10 @@ namespace LogSuite.Business.Repositories
                     .Where(x => x.GisId == gisId
                         && x.DateReport.Date >= dateStart.Date
                         && x.DateReport.Date <= dateEnd.Date)
-                    .AsQueryable();
-            source = source.Search(parameters.Filter);
-            source = source.Sort(parameters.Order, parameters.OrderAsc);
-            var result = await PagedList<GisInputValue>.ToPagedListAsync(source, parameters.PageNumber, parameters.PageSize);
-            var entities = _mapper.Map<List<GisInputValueDTO>>(result);
-            return new PagedList<GisInputValueDTO>(entities, result.MetaData);
+                    .OrderByDescending(x => x.DateReport)
+                    .ToListAsync();
+            var entities = _mapper.Map<List<GisInputValueDTO>>(source);
+            return entities;
         }
 
         public async Task<GisInputValueDTO> IsUnique(GisInputValueDTO dto, int id = 0)

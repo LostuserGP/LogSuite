@@ -1,5 +1,5 @@
 ﻿using LogSuite.Client.Helpers;
-using LogSuite.Client.Serices;
+using LogSuite.Client.Services;
 using LogSuite.Client.Services.IServices;
 using LogSuite.Shared.Authorization;
 using LogSuite.Shared.Models;
@@ -31,7 +31,7 @@ namespace LogSuite.Client.Pages.Authentication
             }
             catch (Exception e)
             {
-                toastService.ToastrError(e.Message);
+                toastService.ToastError(e.Message);
             }
         }
 

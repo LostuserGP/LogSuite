@@ -1,4 +1,4 @@
-﻿using LogSuite.DataAccess.Operativka;
+﻿using LogSuite.DataAccess.DailyReview;
 using LogSuite.DataAccess.References;
 using System.Linq;
 
@@ -18,7 +18,7 @@ namespace LogSuite.Business.Repositories
             return result;
         }
 
-        public static IQueryable<GisCountry> Sort(this IQueryable<GisCountry> source, string columnName, bool ascendind)
+        public static IQueryable<GisCountry> Sort(this IQueryable<GisCountry> source, string columnName, bool ascending)
         {
             if (string.IsNullOrWhiteSpace(columnName))
             {
@@ -26,7 +26,7 @@ namespace LogSuite.Business.Repositories
             } 
             else
             {
-                if (ascendind)
+                if (ascending)
                 {
                     switch (columnName)
                     {

@@ -1,6 +1,6 @@
 ﻿using CurrieTechnologies.Razor.SweetAlert2;
 using LogSuite.Client.Helpers;
-using LogSuite.Client.Serices;
+using LogSuite.Client.Services;
 using LogSuite.Client.Services.IServices;
 using LogSuite.Shared;
 using LogSuite.Shared.Models.References;
@@ -75,7 +75,7 @@ namespace LogSuite.Client.Pages.References
                     result = await service.Update(CountryModel);
                     if (result != null)
                     {
-                        toastrService.ToastrSuccess("Country succesfully updated");
+                        toastrService.ToastSuccess("Country succesfully updated");
                     }
                 }
                 else
@@ -83,14 +83,14 @@ namespace LogSuite.Client.Pages.References
                     result = await service.Create(CountryModel);
                     if (result != null)
                     {
-                        toastrService.ToastrSuccess("Country succesfully created");
+                        toastrService.ToastSuccess("Country succesfully created");
                     }
                 }
             }
             catch (Exception e)
             {
                 CountryModel = null;
-                toastrService.ToastrError(e.Message);
+                toastrService.ToastError(e.Message);
             }
             await Load();
             EditMode = "none";

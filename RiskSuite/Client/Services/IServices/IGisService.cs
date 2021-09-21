@@ -1,11 +1,7 @@
 ﻿using LogSuite.Client.Helpers;
 using LogSuite.Shared;
-using LogSuite.Shared.Models;
-using LogSuite.Shared.Models.Operativka;
-using LogSuite.Shared.Models.References;
-using System;
+using LogSuite.Shared.Models.DailyReview;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace LogSuite.Client.Services.IServices

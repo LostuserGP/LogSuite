@@ -1,9 +1,9 @@
 ﻿using LogSuite.Client.Helpers;
-using LogSuite.Client.Serices;
+using LogSuite.Client.Services;
 using LogSuite.Client.Services.IServices;
 using LogSuite.Shared;
 using LogSuite.Shared.Helpers;
-using LogSuite.Shared.Models.Operativka;
+using LogSuite.Shared.Models.DailyReview;
 using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
 using System;
@@ -43,7 +43,7 @@ namespace LogSuite.Client.Services
             {
                 var result = await response.Content.ReadAsStringAsync();
                 var errorModel = JsonConvert.DeserializeObject<ErrorModel>(result);
-                _toastService.ToastrError(errorModel.ErrorMessage);
+                _toastService.ToastError(errorModel.ErrorMessage);
                 return null;
             }
         }
@@ -59,7 +59,7 @@ namespace LogSuite.Client.Services
             else
             {
                 var errorModel = JsonConvert.DeserializeObject<ErrorModel>(result);
-                _toastService.ToastrError(errorModel.ErrorMessage);
+                _toastService.ToastError(errorModel.ErrorMessage);
                 return false;
             }
         }
@@ -76,7 +76,7 @@ namespace LogSuite.Client.Services
             else
             {
                 var errorModel = JsonConvert.DeserializeObject<ErrorModel>(result);
-                _toastService.ToastrError(errorModel.ErrorMessage);
+                _toastService.ToastError(errorModel.ErrorMessage);
                 return null;
             }
         }
@@ -148,7 +148,7 @@ namespace LogSuite.Client.Services
             {
                 var result = await response.Content.ReadAsStringAsync();
                 var errorModel = JsonConvert.DeserializeObject<ErrorModel>(result);
-                _toastService.ToastrError(errorModel.ErrorMessage);
+                _toastService.ToastError(errorModel.ErrorMessage);
                 return null;
             }
         }

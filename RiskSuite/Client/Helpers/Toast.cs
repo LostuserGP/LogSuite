@@ -1,4 +1,4 @@
-﻿using LogSuite.Client.Serices;
+﻿using LogSuite.Client.Services;
 using Microsoft.AspNetCore.Components;
 using System;
 

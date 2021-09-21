@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LogSuite.Shared.Models.Operativka
+namespace LogSuite.Shared.Models.DailyReview
 {
     public class GisInputValueDTO
     {

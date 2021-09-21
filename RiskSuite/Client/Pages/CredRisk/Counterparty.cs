@@ -1,5 +1,5 @@
 ﻿using LogSuite.Client.Helpers;
-using LogSuite.Client.Serices;
+using LogSuite.Client.Services;
 using LogSuite.Client.Services.IServices;
 using LogSuite.Shared;
 using LogSuite.Shared.Models;
@@ -30,7 +30,7 @@ namespace LogSuite.Client.Pages.CredRisk
             }
             catch (Exception e)
             {
-                toastService.ToastrError(e.Message);
+                toastService.ToastError(e.Message);
             }
         }
 

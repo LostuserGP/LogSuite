@@ -1,10 +1,5 @@
-﻿using LogSuite.DataAccess;
-using LogSuite.DataAccess.References;
-using System;
-using System.Collections.Generic;
+﻿using LogSuite.DataAccess.References;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LogSuite.Business.Repositories
 {
@@ -31,6 +26,7 @@ namespace LogSuite.Business.Repositories
             {
                 if (ascending)
                 {
+                    //source = source.OrderBy(a => a.GetType().GetProperty(columnName).GetValue(a, null));
                     switch (columnName)
                     {
                         case "Id":

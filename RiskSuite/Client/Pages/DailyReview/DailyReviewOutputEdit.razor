@@ -1,0 +1,29 @@
+﻿@using LogSuite.Shared.Helpers;
+
+<tr>
+	<td>
+		<InputDate @bind-Value="Model.DateReport" @bind-Value:format="dd.MM.yyyy" class="form-control form-control-sm" />
+		<ValidationMessage For="(()=>Model.DateReport)" />
+	</td>
+	<td>
+		<InputNumber @bind-Value="Model.RequstedValue" class="form-control form-control-sm" />
+		<ValidationMessage For="(()=>Model.RequstedValue)" />
+	</td>
+	<td>
+		<InputNumber @bind-Value="Model.AllocatedValue" class="form-control form-control-sm" />
+		<ValidationMessage For="(()=>Model.AllocatedValue)" />
+	</td>
+	<td>
+		<InputNumber @bind-Value="Model.EstimatedValue" class="form-control form-control-sm" />
+		<ValidationMessage For="(()=>Model.EstimatedValue)" />
+	</td>
+	<td>
+		<InputNumber @bind-Value="Model.FactValue" class="form-control form-control-sm" />
+		<ValidationMessage For="(()=>Model.FactValue)" />
+	</td>
+	<td>
+		<button class="far fa-save text-success p-0" style="background-color: transparent; border: 0;" type="submit" tooltip="save" />
+		<button class="fas fa-ban text-danger p-0" style="background-color: transparent; border: 0;" type="button" tooltip="cancel" @onclick="()=> Cancel()" />
+	</td>
+</tr>
+

@@ -1,4 +1,4 @@
-﻿using LogSuite.DataAccess.Operativka;
+﻿using LogSuite.DataAccess.DailyReview;
 using System.Linq;
 
 namespace LogSuite.Business.Repositories

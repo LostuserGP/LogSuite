@@ -1,6 +1,6 @@
 ﻿using CurrieTechnologies.Razor.SweetAlert2;
 using LogSuite.Client.Helpers;
-using LogSuite.Client.Serices;
+using LogSuite.Client.Services;
 using LogSuite.Client.Services.IServices;
 using LogSuite.Shared;
 using LogSuite.Shared.Models.References;
@@ -37,7 +37,7 @@ namespace LogSuite.Client.Pages.References
             }
             catch (Exception e)
             {
-                toastrService.ToastrError(e.Message);
+                toastrService.ToastError(e.Message);
             }
         }
 
@@ -74,7 +74,7 @@ namespace LogSuite.Client.Pages.References
                     result = await service.Update(Model);
                     if (result != null)
                     {
-                        toastrService.ToastrSuccess("FileType succesfully updated");
+                        toastrService.ToastSuccess("FileType succesfully updated");
                     }
                 }
                 else
@@ -82,14 +82,14 @@ namespace LogSuite.Client.Pages.References
                     result = await service.Create(Model);
                     if (result != null)
                     {
-                        toastrService.ToastrSuccess("FileType succesfully created");
+                        toastrService.ToastSuccess("FileType succesfully created");
                     }
                 }
             }
             catch (Exception e)
             {
                 Model = new FileTypeSettingDTO();
-                toastrService.ToastrError(e.Message);
+                toastrService.ToastError(e.Message);
             }
             await Load();
             EditMode = "none";

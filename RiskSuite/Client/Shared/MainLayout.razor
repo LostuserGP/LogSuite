@@ -1,11 +1,12 @@
 ﻿@inherits LayoutComponentBase
 
-<NavMenu />
-<Toast></Toast>
+<div class="page">
+    <NavMenu />
 
-<div class="main my-5 p-2 overflow-auto">
-    @Body
+    <div class="main">
+        <Toast></Toast>
+        @Body
+    </div>
 </div>
 
-@*<BottomLine />*@
 

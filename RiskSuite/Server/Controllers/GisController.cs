@@ -1,8 +1,6 @@
 ﻿using Business.Repositories.IRepository;
-using Business.Repositories.IRepository.References;
 using LogSuite.Shared;
-using LogSuite.Shared.Models.Operativka;
-using LogSuite.Shared.Models.References;
+using LogSuite.Shared.Models.DailyReview;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;

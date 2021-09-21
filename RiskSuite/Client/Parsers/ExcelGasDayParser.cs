@@ -1,7 +1,7 @@
-﻿using LogSuite.Client.Serices;
+﻿using LogSuite.Client.Services;
 using LogSuite.Shared.Helpers;
 using LogSuite.Shared.Models;
-using LogSuite.Shared.Models.Operativka;
+using LogSuite.Shared.Models.DailyReview;
 using LogSuite.Shared.Models.References;
 using Microsoft.AspNetCore.Components.Forms;
 using OfficeOpenXml;
@@ -47,20 +47,20 @@ namespace LogSuite.Client.Parsers
             GisDTO gisVelke = _gisList.Where(x => x.Name.ToLower().Equals("велке капушаны")).FirstOrDefault();
             if (gisVelke == null)
             {
-                _toastService.ToastrError("В БД не найден ГИС Велке Капушаны");
+                _toastService.ToastError("В БД не найден ГИС Велке Капушаны");
                 return;
             }
             //находим закачку
             var geoplinInput = gisVelke.Addons.Where(x => x.Name.ToLower().Equals("закачка геоплин")).FirstOrDefault();
             if (geoplinInput == null)
             {
-                _toastService.ToastrError("В БД не найдена Закачка Геоплин");
+                _toastService.ToastError("В БД не найдена Закачка Геоплин");
                 return;
             }
             var geoplinOutput = gisVelke.Addons.Where(x => x.Name.ToLower().Equals("отбор геоплин")).FirstOrDefault();
             if (geoplinOutput == null)
             {
-                _toastService.ToastrError("В БД не найден Отбор Геоплин");
+                _toastService.ToastError("В БД не найден Отбор Геоплин");
                 return;
             }
             var dateReport = StringParser.GetFirstDateFromString(filename);

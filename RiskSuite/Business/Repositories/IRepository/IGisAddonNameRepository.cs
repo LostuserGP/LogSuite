@@ -1,7 +1,7 @@
 ﻿using LogSuite.Business;
 using LogSuite.Shared;
 using LogSuite.Shared.Models;
-using LogSuite.Shared.Models.Operativka;
+using LogSuite.Shared.Models.DailyReview;
 using LogSuite.Shared.Models.References;
 using System;
 using System.Collections.Generic;

@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Business.Repositories.IRepository;
 using LogSuite.DataAccess;
-using LogSuite.DataAccess.Operativka;
+using LogSuite.DataAccess.DailyReview;
 using LogSuite.Shared;
-using LogSuite.Shared.Models.Operativka;
+using LogSuite.Shared.Models.DailyReview;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;

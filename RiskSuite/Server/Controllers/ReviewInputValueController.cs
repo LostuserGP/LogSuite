@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using Business.Repositories.IRepository;
 using LogSuite.DataAccess;
-using LogSuite.DataAccess.Operativka;
+using LogSuite.DataAccess.DailyReview;
 using LogSuite.Shared;
 using LogSuite.Shared.Authorization;
 using LogSuite.Shared.Helpers;
 using LogSuite.Shared.Models;
-using LogSuite.Shared.Models.Operativka;
+using LogSuite.Shared.Models.DailyReview;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -30,6 +30,8 @@ namespace LogSuite.Server.Controllers
         private IGisOutputValueRepository _outputValueRepository;
         private IInputFileLogRepository _logFileRepository;
         private UserManager<ApplicationUser> _userManager;
+        private int created;
+        private int updated;
 
         public ReviewInputValueController(IGisCountryValueRepository gcValueRepository,
                                           IGisAddonValueRepository addonValueRepository,
@@ -49,6 +51,8 @@ namespace LogSuite.Server.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] ReviewValueListDTO list)
         {
+            updated = 0;
+            created = 0;
             //определить параметры лога файла
             //var auth = await _authState.GetAuthenticationStateAsync();
             //var user = await _userManager.GetUserAsync(auth.User);
@@ -75,7 +79,7 @@ namespace LogSuite.Server.Controllers
             }
             if (timeFile != null)
             {
-                TimeFile = dateFile.Value.Date;
+                TimeFile = timeFile.Value;
             }
             else
             {
@@ -98,41 +102,33 @@ namespace LogSuite.Server.Controllers
             {
                 logTime.TimeInput = DateTime.Now;
                 logTime.UserId = user.Id;
+                logTime.TimeFile = TimeFile;
                 logTime = await _logFileRepository.Update(logTime);
             }
-            var countSaved = new int[] { 0, 0 };
             foreach (var value in list.Values)
             {
-                bool created = true;
                 if (value.inType == ReviewValueInputDTO.InputType.Country)
                 {
-                    created = await CreateOrUpdateGcValues(value, logTime);
+                    await CreateOrUpdateGcValues(value, logTime);
                 }
                 else if (value.inType == ReviewValueInputDTO.InputType.Addon)
                 {
-                    created = await CreateOrUpdateAddonValues(value, logTime);
+                    await CreateOrUpdateAddonValues(value, logTime);
                 }
                 else if (value.inType == ReviewValueInputDTO.InputType.Input)
                 {
-                    created = await CreateOrUpdateInputValues(value, logTime);
+                    await CreateOrUpdateInputValues(value, logTime);
                 }
                 else if (value.inType == ReviewValueInputDTO.InputType.Output)
                 {
-                    created = await CreateOrUpdateOutputValues(value, logTime);
-                }
-                if (created)
-                {
-                    countSaved[0]++;
-                }
-                else
-                {
-                    countSaved[1]++;
+                    await CreateOrUpdateOutputValues(value, logTime);
                 }
             }
+            var countSaved = new int[] { created, updated };
             return Ok(countSaved);
         }
 
-        private async Task<bool> CreateOrUpdateGcValues(ReviewValueInputDTO value, InputFileLogDTO logTime)
+        private async Task CreateOrUpdateGcValues(ReviewValueInputDTO value, InputFileLogDTO logTime)
         {
             var dbVal = await _gcValueRepository.GetOnDateByGisCountryId(value.ValueId, logTime.DateFile);
             var val = Convert.ToDecimal(Math.Round(value.Value, 8));
@@ -147,6 +143,7 @@ namespace LogSuite.Server.Controllers
                         RequstedValue = val,
                         RequestedValueTimeId = logTime.Id
                     });
+                    created++;
                 }
                 else if (value.valType == ReviewValueInputDTO.ValueType.Allocated)
                 {
@@ -157,6 +154,7 @@ namespace LogSuite.Server.Controllers
                         AllocatedValue = val,
                         AllocatedValueTimeId = logTime.Id
                     });
+                    created++;
                 }
                 else if (value.valType == ReviewValueInputDTO.ValueType.Estimated)
                 {
@@ -167,6 +165,7 @@ namespace LogSuite.Server.Controllers
                         EstimatedValue = val,
                         EstimatedValueTimeId = logTime.Id
                     });
+                    created++;
                 }
                 else if (value.valType == ReviewValueInputDTO.ValueType.Fact)
                 {
@@ -177,8 +176,8 @@ namespace LogSuite.Server.Controllers
                         FactValue = val,
                         FactValueTimeId = logTime.Id
                     });
+                    created++;
                 }
-                return true;
             }
             else
             {
@@ -186,28 +185,35 @@ namespace LogSuite.Server.Controllers
                 {
                     dbVal.RequstedValue = val;
                     dbVal.RequestedValueTimeId = logTime.Id;
+                    updated++;
+                    await _gcValueRepository.Update(dbVal);
                 }
                 else if (value.valType == ReviewValueInputDTO.ValueType.Allocated && (dbVal.AllocatedValueTime == null || logTime.TimeFile >= dbVal.AllocatedValueTime?.TimeFile))
                 {
                     dbVal.AllocatedValue = val;
                     dbVal.AllocatedValueTimeId = logTime.Id;
+                    updated++;
+                    await _gcValueRepository.Update(dbVal);
                 }
                 else if (value.valType == ReviewValueInputDTO.ValueType.Estimated && (dbVal.EstimatedValueTime == null || logTime.TimeFile >= dbVal.EstimatedValueTime?.TimeFile))
                 {
                     dbVal.EstimatedValue = val;
                     dbVal.EstimatedValueTimeId = logTime.Id;
+                    updated++;
+                    await _gcValueRepository.Update(dbVal);
                 }
                 else if (value.valType == ReviewValueInputDTO.ValueType.Fact && (dbVal.FactValueTime == null ||  logTime.TimeFile >= dbVal.FactValueTime?.TimeFile))
                 {
                     dbVal.FactValue = val;
                     dbVal.FactValueTimeId = logTime.Id;
+                    updated++;
+                    await _gcValueRepository.Update(dbVal);
                 }
-                await _gcValueRepository.Update(dbVal);
-                return false;
+                
             }
         }
 
-        private async Task<bool> CreateOrUpdateAddonValues(ReviewValueInputDTO value, InputFileLogDTO logTime)
+        private async Task CreateOrUpdateAddonValues(ReviewValueInputDTO value, InputFileLogDTO logTime)
         {
             var val = Convert.ToDecimal(Math.Round(value.Value, 8));
             var dbVal = await _addonValueRepository.GetOnDateByGisAddonId(value.ValueId, logTime.DateFile);
@@ -222,6 +228,7 @@ namespace LogSuite.Server.Controllers
                         RequstedValue = val,
                         RequestedValueTimeId = logTime.Id
                     });
+                    created++;
                 }
                 else if (value.valType == ReviewValueInputDTO.ValueType.Allocated)
                 {
@@ -232,6 +239,7 @@ namespace LogSuite.Server.Controllers
                         AllocatedValue = val,
                         AllocatedValueTimeId = logTime.Id
                     });
+                    created++;
                 }
                 else if (value.valType == ReviewValueInputDTO.ValueType.Estimated)
                 {
@@ -242,6 +250,7 @@ namespace LogSuite.Server.Controllers
                         EstimatedValue = val,
                         EstimatedValueTimeId = logTime.Id
                     });
+                    created++;
                 }
                 else if (value.valType == ReviewValueInputDTO.ValueType.Fact)
                 {
@@ -252,8 +261,8 @@ namespace LogSuite.Server.Controllers
                         FactValue = val,
                         FactValueTimeId = logTime.Id
                     });
+                    created++;
                 }
-                return true;
             }
             else
             {
@@ -261,28 +270,34 @@ namespace LogSuite.Server.Controllers
                 {
                     dbVal.RequstedValue = val;
                     dbVal.RequestedValueTimeId = logTime.Id;
+                    await _addonValueRepository.Update(dbVal);
+                    updated++;
                 }
                 else if (value.valType == ReviewValueInputDTO.ValueType.Allocated && (dbVal.AllocatedValueTime == null || logTime.TimeFile >= dbVal.AllocatedValueTime?.TimeFile))
                 {
                     dbVal.AllocatedValue = val;
                     dbVal.AllocatedValueTimeId = logTime.Id;
+                    await _addonValueRepository.Update(dbVal);
+                    updated++;
                 }
                 else if (value.valType == ReviewValueInputDTO.ValueType.Estimated && (dbVal.EstimatedValueTime == null || logTime.TimeFile >= dbVal.EstimatedValueTime?.TimeFile))
                 {
                     dbVal.EstimatedValue = val;
                     dbVal.EstimatedValueTimeId = logTime.Id;
+                    await _addonValueRepository.Update(dbVal);
+                    updated++;
                 }
                 else if (value.valType == ReviewValueInputDTO.ValueType.Fact && (dbVal.FactValueTime == null || logTime.TimeFile >= dbVal.FactValueTime?.TimeFile))
                 {
                     dbVal.FactValue = val;
                     dbVal.FactValueTimeId = logTime.Id;
+                    await _addonValueRepository.Update(dbVal);
+                    updated++;
                 }
-                await _addonValueRepository.Update(dbVal);
-                return false;
             }
         }
 
-        private async Task<bool> CreateOrUpdateInputValues(ReviewValueInputDTO value, InputFileLogDTO logTime)
+        private async Task CreateOrUpdateInputValues(ReviewValueInputDTO value, InputFileLogDTO logTime)
         {
             var val = Convert.ToDecimal(Math.Round(value.Value, 8));
             var dbVal = await _inputValueRepository.GetOnDateByGisId(value.GisId, logTime.DateFile);
@@ -297,6 +312,7 @@ namespace LogSuite.Server.Controllers
                         RequstedValue = val,
                         RequestedValueTimeId = logTime.Id
                     });
+                    created++;
                 }
                 else if (value.valType == ReviewValueInputDTO.ValueType.Allocated)
                 {
@@ -307,6 +323,7 @@ namespace LogSuite.Server.Controllers
                         AllocatedValue = val,
                         AllocatedValueTimeId = logTime.Id
                     });
+                    created++;
                 }
                 else if (value.valType == ReviewValueInputDTO.ValueType.Estimated)
                 {
@@ -317,6 +334,7 @@ namespace LogSuite.Server.Controllers
                         EstimatedValue = val,
                         EstimatedValueTimeId = logTime.Id
                     });
+                    created++;
                 }
                 else if (value.valType == ReviewValueInputDTO.ValueType.Fact)
                 {
@@ -327,8 +345,8 @@ namespace LogSuite.Server.Controllers
                         FactValue = val,
                         FactValueTimeId = logTime.Id
                     });
+                    created++;
                 }
-                return true;
             }
             else
             {
@@ -336,28 +354,34 @@ namespace LogSuite.Server.Controllers
                 {
                     dbVal.RequstedValue = val;
                     dbVal.RequestedValueTimeId = logTime.Id;
+                    await _inputValueRepository.Update(dbVal);
+                    updated++;
                 }
                 else if (value.valType == ReviewValueInputDTO.ValueType.Allocated && (dbVal.AllocatedValueTime == null || logTime.TimeFile >= dbVal.AllocatedValueTime?.TimeFile))
                 {
                     dbVal.AllocatedValue = val;
                     dbVal.AllocatedValueTimeId = logTime.Id;
+                    await _inputValueRepository.Update(dbVal);
+                    updated++;
                 }
                 else if (value.valType == ReviewValueInputDTO.ValueType.Estimated && (dbVal.EstimatedValueTime == null || logTime.TimeFile >= dbVal.EstimatedValueTime?.TimeFile))
                 {
                     dbVal.EstimatedValue = val;
                     dbVal.EstimatedValueTimeId = logTime.Id;
+                    await _inputValueRepository.Update(dbVal);
+                    updated++;
                 }
                 else if (value.valType == ReviewValueInputDTO.ValueType.Fact && (dbVal.FactValueTime == null || logTime.TimeFile >= dbVal.FactValueTime?.TimeFile))
                 {
                     dbVal.FactValue = val;
                     dbVal.FactValueTimeId = logTime.Id;
+                    await _inputValueRepository.Update(dbVal);
+                    updated++;
                 }
-                await _inputValueRepository.Update(dbVal);
-                return false;
             }
         }
 
-        private async Task<bool> CreateOrUpdateOutputValues(ReviewValueInputDTO value, InputFileLogDTO logTime)
+        private async Task CreateOrUpdateOutputValues(ReviewValueInputDTO value, InputFileLogDTO logTime)
         {
             var val = Convert.ToDecimal(Math.Round(value.Value, 8));
             var dbVal = await _outputValueRepository.GetOnDateByGisId(value.GisId, logTime.DateFile);
@@ -372,6 +396,7 @@ namespace LogSuite.Server.Controllers
                         RequstedValue = val,
                         RequestedValueTimeId = logTime.Id
                     });
+                    created++;
                 }
                 else if (value.valType == ReviewValueInputDTO.ValueType.Allocated)
                 {
@@ -382,6 +407,7 @@ namespace LogSuite.Server.Controllers
                         AllocatedValue = val,
                         AllocatedValueTimeId = logTime.Id
                     });
+                    created++;
                 }
                 else if (value.valType == ReviewValueInputDTO.ValueType.Estimated)
                 {
@@ -392,6 +418,7 @@ namespace LogSuite.Server.Controllers
                         EstimatedValue = val,
                         EstimatedValueTimeId = logTime.Id
                     });
+                    created++;
                 }
                 else if (value.valType == ReviewValueInputDTO.ValueType.Fact)
                 {
@@ -402,8 +429,8 @@ namespace LogSuite.Server.Controllers
                         FactValue = val,
                         FactValueTimeId = logTime.Id
                     });
+                    created++;
                 }
-                return true;
             }
             else
             {
@@ -411,24 +438,30 @@ namespace LogSuite.Server.Controllers
                 {
                     dbVal.RequstedValue = val;
                     dbVal.RequestedValueTimeId = logTime.Id;
+                    await _outputValueRepository.Update(dbVal);
+                    updated++;
                 }
                 else if (value.valType == ReviewValueInputDTO.ValueType.Allocated && (dbVal.AllocatedValueTime == null || logTime.TimeFile >= dbVal.AllocatedValueTime?.TimeFile))
                 {
                     dbVal.AllocatedValue = val;
                     dbVal.AllocatedValueTimeId = logTime.Id;
+                    await _outputValueRepository.Update(dbVal);
+                    updated++;
                 }
                 else if (value.valType == ReviewValueInputDTO.ValueType.Estimated && (dbVal.EstimatedValueTime == null || logTime.TimeFile >= dbVal.EstimatedValueTime?.TimeFile))
                 {
                     dbVal.EstimatedValue = val;
                     dbVal.EstimatedValueTimeId = logTime.Id;
+                    await _outputValueRepository.Update(dbVal);
+                    updated++;
                 }
                 else if (value.valType == ReviewValueInputDTO.ValueType.Fact && (dbVal.FactValueTime == null || logTime.TimeFile >= dbVal.FactValueTime?.TimeFile))
                 {
                     dbVal.FactValue = val;
                     dbVal.FactValueTimeId = logTime.Id;
+                    await _outputValueRepository.Update(dbVal);
+                    updated++;
                 }
-                await _outputValueRepository.Update(dbVal);
-                return false;
             }
         }
     }

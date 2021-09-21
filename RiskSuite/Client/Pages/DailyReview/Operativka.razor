@@ -1,0 +1,40 @@
+﻿@page "/operativka"
+
+<div class="m-2">
+    <div class="d-flex">
+        <div class="justify-content-start">
+            <InputFile OnChange="@LoadReview" />
+            @*<div class="btn btn-sm btn-primary" @onclick="@(() => SelectOperFile())">Select file</div>*@
+        </div>
+        <div class="mx-auto justify-content-center">
+            <h3>Counterparties</h3>
+        </div>
+    </div>
+
+    <p>result := @result</p>
+
+    @if (isLoading)
+    {
+        <p>Uploading...</p>
+    }
+    else
+    {
+        <ul>
+            @foreach (var file in loadedFiles)
+            {
+                <li>
+                    <ul>
+                        <li>Name: @file.Name</li>
+                        <li>Last modified: @file.LastModified.ToString()</li>
+                        <li>Size (bytes): @file.Size</li>
+                        <li>Content type: @file.ContentType</li>
+                    </ul>
+                </li>
+            }
+        </ul>
+    }
+
+    <div class="mt-2" style="font-size: small;">
+        
+    </div>
+</div>

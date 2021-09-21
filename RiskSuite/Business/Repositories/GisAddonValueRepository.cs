@@ -4,9 +4,9 @@ using LogSuite.Business;
 using LogSuite.Business.Repositories;
 using LogSuite.Business.Repositories.References;
 using LogSuite.DataAccess;
-using LogSuite.DataAccess.Operativka;
+using LogSuite.DataAccess.DailyReview;
 using LogSuite.Shared;
-using LogSuite.Shared.Models.Operativka;
+using LogSuite.Shared.Models.DailyReview;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -77,9 +77,9 @@ namespace Business.Repositories
             return dto;
         }
 
-        public async Task<PagedList<GisAddonValueDTO>> GetOnDateRangeByGisAddonId(int gisAddonId, DateTime dateStart, DateTime dateEnd, Params parameters)
+        public async Task<List<GisAddonValueDTO>> GetOnDateRangeByGisAddonId(int gisAddonId, DateTime dateStart, DateTime dateEnd)
         {
-            var source = _db.GisAddonValues
+            var source = await _db.GisAddonValues
                     .Include(x => x.RequestedValueTime)
                     .Include(x => x.AllocatedValueTime)
                     .Include(x => x.EstimatedValueTime)
@@ -87,15 +87,13 @@ namespace Business.Repositories
                     .Where(x => x.GisAddonId == gisAddonId
                         && x.DateReport.Date >= dateStart.Date
                         && x.DateReport.Date <= dateEnd.Date)
-                    .AsQueryable();
-            source = source.Search(parameters.Filter);
-            source = source.Sort(parameters.Order, parameters.OrderAsc);
-            var result = await PagedList<GisAddonValue>.ToPagedListAsync(source, parameters.PageNumber, parameters.PageSize);
-            var entities = _mapper.Map<List<GisAddonValueDTO>>(result);
-            return new PagedList<GisAddonValueDTO>(entities, result.MetaData);
+                    .OrderByDescending(x => x.DateReport)
+                    .ToListAsync();
+            var entities = _mapper.Map<List<GisAddonValueDTO>>(source);
+            return entities;
         }
 
-        public async Task<PagedList<GisAddonValueDTO>> GetByGisAddonId(int gisAddonId, Params parameters)
+        public async Task<PagedList<GisAddonValueDTO>> GetPagedByGisAddonId(int gisAddonId, Params parameters)
         {
             var source = _db.GisAddonValues
                     .Include(x => x.RequestedValueTime)

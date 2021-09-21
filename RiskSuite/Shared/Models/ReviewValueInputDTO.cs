@@ -21,6 +21,19 @@ namespace LogSuite.Shared.Models
             Fact
         }
 
+        public bool LikeValue(ReviewValueInputDTO value)
+        {
+            if (GisId == value.GisId
+                && ValueId == value.ValueId
+                && inType == value.inType
+                && valType == value.valType
+                && ReportDate == ReportDate)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public int GisId { get; set; }
         public InputType inType { get; set; }
         public ValueType valType { get; set; }

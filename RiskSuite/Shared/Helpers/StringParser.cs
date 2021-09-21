@@ -268,5 +268,26 @@ namespace LogSuite.Shared.Helpers
                 return 0d;
             }
         }
+
+        public static decimal TryGetDecimal(string value)
+        {
+            try
+            {
+                NumberFormatInfo provider = new NumberFormatInfo();
+                if (value.Contains(","))
+                {
+                    provider.NumberDecimalSeparator = ",";
+                }
+                else
+                {
+                    provider.NumberDecimalSeparator = ".";
+                }
+                return Convert.ToDecimal(value, provider);
+            }
+            catch (Exception e)
+            {
+                return 0;
+            }
+        }
     }
 }

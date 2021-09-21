@@ -10,7 +10,6 @@ a {
     color: #0366d6;
 }
 
-
 .spinner {
     border: 16px solid silver !important;
     border-top: 16px solid #337AB7 !important;
@@ -32,10 +31,6 @@ a {
     100% {
         transform: rotate(360deg)
     }
-}
-
-.content {
-    padding-top: 1.1rem;
 }
 
 .valid.modified:not([type=checkbox]) {
@@ -116,4 +111,35 @@ a {
     to {
         opacity: 1;
     }
+}
+
+.vertical-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100%;
+    overflow-y: auto;
+    padding-top: 3rem;
+    align-content: baseline;
+}
+
+.main {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 250px;
+    height: 100%;
+    overflow-y: auto;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.sort-th {
+    cursor: pointer;
+}
+
+.table td, .table th {
+    vertical-align: middle;
 }

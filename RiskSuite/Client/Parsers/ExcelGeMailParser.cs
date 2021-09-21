@@ -1,7 +1,7 @@
-﻿using LogSuite.Client.Serices;
+﻿using LogSuite.Client.Services;
 using LogSuite.Shared.Helpers;
 using LogSuite.Shared.Models;
-using LogSuite.Shared.Models.Operativka;
+using LogSuite.Shared.Models.DailyReview;
 using LogSuite.Shared.Models.References;
 using Microsoft.AspNetCore.Components.Forms;
 using OfficeOpenXml;

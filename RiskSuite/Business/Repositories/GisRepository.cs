@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Business.Repositories.IRepository;
 using LogSuite.DataAccess;
-using LogSuite.DataAccess.Operativka;
+using LogSuite.DataAccess.DailyReview;
 using LogSuite.Shared;
-using LogSuite.Shared.Models.Operativka;
+using LogSuite.Shared.Models.DailyReview;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -75,7 +75,8 @@ namespace LogSuite.Business.Repositories
                 .Include(x => x.GisInputNames)
                 .Include(x => x.GisOutputNames)
                 .Include(x => x.Addons).ThenInclude(a => a.Names)
-                .Include(x => x.Countries).ThenInclude(gc => gc.Country).ThenInclude(n => n.Names);
+                .Include(x => x.Countries.OrderBy(x => x.Country.Name)).ThenInclude(gc => gc.Country).ThenInclude(n => n.Names)
+                .OrderBy(x => x.Name);
             IEnumerable<GisDTO> dtos = _mapper.Map<IEnumerable<Gis>, IEnumerable<GisDTO>>(entities);
             return dtos;
         }

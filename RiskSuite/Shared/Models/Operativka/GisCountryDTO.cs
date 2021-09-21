@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogSuite.Shared.Models.Operativka
+namespace LogSuite.Shared.Models.DailyReview
 {
 	public class GisCountryDTO
 	{

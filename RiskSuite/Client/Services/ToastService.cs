@@ -2,7 +2,7 @@
 using System;
 using System.Timers;
 
-namespace LogSuite.Client.Serices
+namespace LogSuite.Client.Services
 {
     public class ToastService : IDisposable
     {
@@ -16,13 +16,13 @@ namespace LogSuite.Client.Serices
             StartCountdown();
         }
 
-        public void ToastrSuccess(string message)
+        public void ToastSuccess(string message)
         {
             OnShow?.Invoke(message, ToastLevel.Success);
             StartCountdown();
         }
 
-        public void ToastrError(string message)
+        public void ToastError(string message)
         {
             OnShow?.Invoke(message, ToastLevel.Error);
             StartCountdown();

@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using LogSuite.DataAccess;
 using LogSuite.DataAccess.CredRisk;
-using LogSuite.DataAccess.Operativka;
+using LogSuite.DataAccess.DailyReview;
 using LogSuite.DataAccess.References;
 using LogSuite.Shared.Authorization;
 using LogSuite.Shared.Models;
-using LogSuite.Shared.Models.Operativka;
+using LogSuite.Shared.Models.DailyReview;
 using LogSuite.Shared.Models.References;
 
 namespace Business.Mapper

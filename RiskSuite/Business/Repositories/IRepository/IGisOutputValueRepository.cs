@@ -1,7 +1,8 @@
 ﻿using LogSuite.Business;
 using LogSuite.Shared;
-using LogSuite.Shared.Models.Operativka;
+using LogSuite.Shared.Models.DailyReview;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Business.Repositories.IRepository
@@ -13,8 +14,8 @@ namespace Business.Repositories.IRepository
         Task<GisOutputValueDTO> Get(int id);
         Task<int> Delete(int id);
         Task<GisOutputValueDTO> IsUnique(GisOutputValueDTO dto, int id = 0);
-        Task<PagedList<GisOutputValueDTO>> GetByGisId(int gisId, Params parameters);
+        Task<PagedList<GisOutputValueDTO>> GetPagedByGisId(int gisId, Params parameters);
         Task<GisOutputValueDTO> GetOnDateByGisId(int gisId, DateTime date);
-        Task<PagedList<GisOutputValueDTO>> GetOnDateRangeByGisId(int gisId, DateTime dateStart, DateTime dateEnd, Params parameters);
+        Task<List<GisOutputValueDTO>> GetOnDateRangeByGisId(int gisId, DateTime dateStart, DateTime dateEnd);
     }
 }

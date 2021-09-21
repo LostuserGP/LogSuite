@@ -1,6 +1,6 @@
 ﻿using LogSuite.Business;
 using LogSuite.Shared;
-using LogSuite.Shared.Models.Operativka;
+using LogSuite.Shared.Models.DailyReview;
 using System.Threading.Tasks;
 
 namespace Business.Repositories.IRepository
