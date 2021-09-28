@@ -1,11 +1,9 @@
 ﻿using Business.Repositories.IRepository;
+using LogSuite.Shared;
+using LogSuite.Shared.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using LogSuite.Shared;
-using LogSuite.Shared.Models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 

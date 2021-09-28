@@ -40,6 +40,7 @@ namespace LogSuite.Client.Parsers
         public async Task<List<ReviewValueInputDTO>> GetResult()
         {
             await Parse();
+            GPSdistract();
             return valueList;
         }
 
@@ -64,6 +65,8 @@ namespace LogSuite.Client.Parsers
             {
                 requestedCol = FindColumnEntry(_settings.RequestedValueEntry);
                 allocatedCol = FindColumnEntry(_settings.AllocatedValueEntry);
+                //надо проверить, обычно нет файла для оценки
+                estimatedCol = FindColumnEntry(_settings.EstimatedValueEntry);
             }
             else
             {
@@ -329,7 +332,7 @@ namespace LogSuite.Client.Parsers
                     var cellText = sheet.Cells[row, col].Text;
                     if (!String.IsNullOrEmpty(cellText))
                     {
-                        if (StringParser.NameContainAnyList(names, cellText))
+                        if (StringParser.NameEqualsAnyList(names, cellText))
                         {
                             return col;
                         }
@@ -337,6 +340,42 @@ namespace LogSuite.Client.Parsers
                 }
             }
             return 0;
+        }
+    
+        private void GPSdistract()
+        {
+            foreach (var gis in _gisList)
+            {
+                var distractedId = 0;
+                var sourceId = 0;
+                foreach (var country in gis.Countries)
+                {
+                    if (country.IsCalculated)
+                    {
+                        if (country.Multiplicator == -1)
+                        {
+                            distractedId = country.Id;
+                        }
+                        else if(country.Multiplicator == 0)
+                        {
+                            sourceId = country.Id;
+                        }
+                    }
+                    if (sourceId > 0 && distractedId > 0)
+                    {
+                        Distract(sourceId, distractedId);
+                        break;
+                    }
+                }
+            }
+        }
+
+        private void Distract(int sourceId, int distractedId)
+        {
+            var source = valueList.Where(x => x.inType == ReviewValueInputDTO.InputType.Country && x.ValueId == sourceId).FirstOrDefault();
+            var distracted = valueList.Where(x => x.inType == ReviewValueInputDTO.InputType.Country && x.ValueId == distractedId).FirstOrDefault();
+            if (source == null || distracted == null) return;
+            source.Value = source.Value - distracted.Value;
         }
     }
 }

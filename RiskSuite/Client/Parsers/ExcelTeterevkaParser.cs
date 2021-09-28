@@ -189,7 +189,7 @@ namespace LogSuite.Client.Parsers
                     if (cell == null) continue;
                     if (!String.IsNullOrEmpty(cell.ToString()))
                     {
-                        if (StringParser.NameContainAnyList(names, cell.ToString()))
+                        if (StringParser.NameEqualsAnyList(names, cell.ToString()))
                         {
                             return col;
                         }

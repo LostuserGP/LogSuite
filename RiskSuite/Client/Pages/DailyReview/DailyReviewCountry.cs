@@ -55,7 +55,11 @@ namespace LogSuite.Client.Pages.DailyReview
         private void Create()
         {
             EditMode = "new";
-            Model = new GisCountryValueDTO();
+            Model = new GisCountryValueDTO()
+            {
+                GisCountryId = GisCountry.Id,
+                DateReport = DateTime.Now.Date
+            };
         }
 
         private void Edit(GisCountryValueDTO value)
@@ -125,6 +129,7 @@ namespace LogSuite.Client.Pages.DailyReview
                 Model = new GisCountryValueDTO();
                 toastService.ShowToast(e.Message, ToastLevel.Error);
             }
+            await Load();
             EditMode = "none";
         }
 

@@ -65,7 +65,7 @@ namespace LogSuite.Shared.Helpers
         {
             source = LatinToCyr(source);
             name = LatinToCyr(name);
-            return source.ToLower().Equals(name.ToLower());
+            return source.ToLower().Trim().Equals(name.ToLower().Trim());
         }
 
         public static bool NameContainAnyList(List<string> source, string name)
@@ -75,6 +75,20 @@ namespace LogSuite.Shared.Helpers
             {
                 var val = LatinToCyr(item);
                 if (name.ToLower().Contains(val.ToLower()))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static bool NameEqualsAnyList(List<string> source, string name)
+        {
+            name = LatinToCyr(name);
+            foreach (var item in source)
+            {
+                var val = LatinToCyr(item);
+                if (name.ToLower().Trim().Equals(val.ToLower().Trim()))
                 {
                     return true;
                 }

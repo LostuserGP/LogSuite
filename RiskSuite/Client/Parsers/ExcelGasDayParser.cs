@@ -176,7 +176,7 @@ namespace LogSuite.Client.Parsers
                     var cellText = sheet.Cells[row, col].Text;
                     if (!String.IsNullOrEmpty(cellText))
                     {
-                        if (StringParser.NameContainAnyList(names, cellText))
+                        if (StringParser.NameEqualsAnyList(names, cellText))
                         {
                             return col;
                         }
