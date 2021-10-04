@@ -53,10 +53,10 @@
                                     {
                                         <tr @onclick="() => OnSelectValue(val)">
                                             <td>@val.DateReport.ToString("dd.MM.yy")</td>
-                                            <td>@val.RequstedValue</td>
-                                            <td>@val.AllocatedValue</td>
-                                            <td>@val.EstimatedValue</td>
-                                            <td>@val.FactValue</td>
+                                            <td>@val.RequstedValueString</td>
+                                            <td>@val.AllocatedValueString</td>
+                                            <td>@val.EstimatedValueString</td>
+                                            <td>@val.FactValueString</td>
                                             <td style="width: 50px;">
                                                 <button class="fas fa-edit text-primary p-0" style="background-color: transparent; border: 0;" type="button" tooltip="edit" @onclick="()=> Edit(val)" />
                                                 <button class="far fa-trash-alt text-danger p-0" style="background-color: transparent; border: 0;" type="button" tooltip="delete" @onclick="()=> Delete(val.Id)" />

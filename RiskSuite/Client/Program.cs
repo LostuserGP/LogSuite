@@ -72,6 +72,7 @@ namespace LogSuite.Client
             builder.Services.AddScoped<IGisAddonValueService, GisAddonValueService>();
             builder.Services.AddScoped<IGisInputValueService, GisInputValueService>();
             builder.Services.AddScoped<IGisOutputValueService, GisOutputValueService>();
+            builder.Services.AddScoped<IGisCountryResourceService, GisCountryResourceService>();
 
             //builder.Services.AddScoped<IReferenceService, CommitteeStatusService>();
 

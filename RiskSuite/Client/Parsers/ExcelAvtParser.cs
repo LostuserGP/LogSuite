@@ -160,7 +160,7 @@ namespace LogSuite.Client.Parsers
                 for (int col = startCol; col <= endCol; col++)
                 {
                     var cellText = sheet.Cells[row, col].Text;
-                    if (StringParser.NameEqualsAnyList(_settings.FactValueEntry, cellText))
+                    if (StringParser.NameContainAnyList(_settings.FactValueEntry, cellText))
                     {
                         return col;
                     }

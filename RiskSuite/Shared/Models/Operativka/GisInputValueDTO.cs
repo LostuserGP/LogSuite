@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LogSuite.Shared.Helpers;
+using System;
 
 namespace LogSuite.Shared.Models.DailyReview
 {
@@ -20,5 +21,37 @@ namespace LogSuite.Shared.Models.DailyReview
         public decimal FactValue { get; set; }
         public int? FactValueTimeId { get; set; }
         public InputFileLogDTO FactValueTime { get; set; }
+        public string RequstedValueString
+        {
+            get => StringParser.GetString(RequstedValue);
+            set
+            {
+                RequstedValue = StringParser.TryGetDecimal(value);
+            }
+        }
+        public string AllocatedValueString
+        {
+            get => StringParser.GetString(AllocatedValue);
+            set
+            {
+                AllocatedValue = StringParser.TryGetDecimal(value);
+            }
+        }
+        public string EstimatedValueString
+        {
+            get => StringParser.GetString(EstimatedValue);
+            set
+            {
+                EstimatedValue = StringParser.TryGetDecimal(value);
+            }
+        }
+        public string FactValueString
+        {
+            get => StringParser.GetString(FactValue);
+            set
+            {
+                FactValue = StringParser.TryGetDecimal(value);
+            }
+        }
     }
 }

@@ -14,6 +14,7 @@ namespace Business.Repositories.IRepository
         Task<GisCountryResourceDTO> Get(int id);
         Task<int> Delete(int id);
         Task<GisCountryResourceDTO> IsUnique(GisCountryResourceDTO dto, int id = 0);
-        Task<PagedList<GisCountryResourceDTO>> GetByGisCountryId(int gosCountryId, Params parameters);
+        Task<PagedList<GisCountryResourceDTO>> GetPagedByGisCountryId(int gosCountryId, Params parameters);
+        Task<GisCountryResourceDTO> GetOnDateByGisCountryId(int gisCountryId, DateTime date);
     }
 }

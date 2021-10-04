@@ -24,20 +24,20 @@ namespace LogSuite.Client.Pages.DailyReview
         {
             isReady = false;
             messages = new List<FileMessage>();
-            if (e.FileCount > 100)
+            if (e.FileCount > 300)
             {
                 toastService.ToastError("Слишком много файлов");
                 isReady = true;
                 return;
             }
-            foreach (var file in e.GetMultipleFiles(100))
+            foreach (var file in e.GetMultipleFiles(300))
             {
                 messages.Add(new FileMessage()
                 {
                     Filename = file.Name
                 });
             }
-            foreach (var file in e.GetMultipleFiles(100))
+            foreach (var file in e.GetMultipleFiles(300))
             {
                 currentFile = file.Name;
                 var parser = new DailyReviewExcelParser(file, fileService, gisService, toastService);

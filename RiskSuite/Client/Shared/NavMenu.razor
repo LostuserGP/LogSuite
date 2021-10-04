@@ -18,11 +18,12 @@
         Оперативка
     </div>
     <div class="collapse" id="review">
-        <NavLink class="nav-link text-white" href="/reviewdata">Показатели</NavLink>
-        <NavLink class="nav-link text-white" href="/reviewinput">Загрузка</NavLink>
-        <NavLink class="nav-link text-white" href="/reviewexport">Экспорт</NavLink>
-        <div class="dropdown-divider"></div>
-        <NavLink class="nav-link text-white" href="/dailyreview">Обзор</NavLink>
+        <div class="card card-body bg-dark p-0">
+            <NavLink class="nav-link text-white" href="/reviewdata">Показатели</NavLink>
+            <NavLink class="nav-link text-white" href="/reviewinput">Загрузка</NavLink>
+            <NavLink class="nav-link text-white" href="/reviewexport">Экспорт</NavLink>
+            <NavLink class="nav-link text-white" href="/dailyreview">Обзор</NavLink>
+        </div>
     </div>
     <AuthorizeView Roles=@SD.Role_Admin>
         <Authorized>
@@ -30,11 +31,12 @@
                 Админ
             </div>
             <div class="collapse" id="admin">
-                <NavLink class="nav-link text-white" href="/admin/department">Подразделения</NavLink>
-                <NavLink class="nav-link text-white" href="/admin/account">Пользователи</NavLink>
-                <NavLink class="nav-link text-white" href="/admin/claims">Куки</NavLink>
-                <div class="dropdown-divider"></div>
-                <NavLink class="nav-link text-white" href="/admin/logs">Логи</NavLink>
+                <div class="card card-body bg-dark p-0">
+                    <NavLink class="nav-link text-white" href="/admin/department">Подразделения</NavLink>
+                    <NavLink class="nav-link text-white" href="/admin/account">Пользователи</NavLink>
+                    <NavLink class="nav-link text-white" href="/admin/claims">Куки</NavLink>
+                    <NavLink class="nav-link text-white" href="/admin/logs">Логи</NavLink>
+                </div>
             </div>
         </Authorized>
     </AuthorizeView>
@@ -44,10 +46,13 @@
                 Справочники
             </div>
             <div class="collapse" id="references">
-                <NavLink class="nav-link text-white" href="/references/country">Страны</NavLink>
-                <NavLink class="nav-link text-white" href="/gis">ГИСы</NavLink>
-                <NavLink class="nav-link text-white" href="/gisaddon">ПХГ</NavLink>
-                <NavLink class="nav-link text-white" href="/references/filetypesetting">Типы файлов</NavLink>
+                <div class="card card-body bg-dark p-0">
+                    <NavLink class="nav-link text-white" href="/references/country">Страны</NavLink>
+                    <NavLink class="nav-link text-white" href="/gis">ГИСы</NavLink>
+                    <NavLink class="nav-link text-white" href="/gisaddon">ПХГ</NavLink>
+                    <NavLink class="nav-link text-white" href="/references/resourcefeed">График ГПЭ</NavLink>
+                    <NavLink class="nav-link text-white" href="/references/filetypesetting">Типы файлов</NavLink>
+                </div>
             </div>
         </Authorized>
     </AuthorizeView>

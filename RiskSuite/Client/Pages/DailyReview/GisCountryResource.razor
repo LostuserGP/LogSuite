@@ -1,7 +1,7 @@
-﻿@page "/dailyreview"
+﻿@page "/references/resourcefeed"
 
-<div class="row m-0" style="height: 100%;">
-    <div class="col-3">
+<div class="row m-0 pb-2" style="height: 100%;">
+    <div class="col-4">
         <div class="card h-100">
             <div class="card-body">
                 <div class="d-flex card-title">
@@ -49,7 +49,7 @@
             </div>
         </div>
     </div>
-    <div class="col-3">
+    <div class="col-4">
         <div class="card h-100">
             <div class="card-body">
                 <div class="d-flex card-title">
@@ -62,43 +62,6 @@
                 <div class="card-text" style="font-size: small;">
                     @if (selectedGis?.Id > 0)
                     {
-                        <div class="pb-2">
-                            <table class="table table-sm table-bordered table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>ПХГ</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr @onclick="()=> OnSelectInput()">
-                                        <td>Закачка</td>
-                                    </tr>
-                                    <tr @onclick="()=> OnSelectOutput()">
-                                        <td>Отбор</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        @if (selectedGis.Addons != null && selectedGis.Addons.Count > 0)
-                        {
-                            <div class="pb-2">
-                                <table class="table table-sm table-bordered table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>Услуги ПХГ</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var addon in selectedGis.Addons)
-                                        {
-                                            <tr @onclick="()=> OnSelectAddon(addon)">
-                                                <td>@addon.Name</td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                        }
                         @if (selectedGis.Countries != null && selectedGis.Countries.Count > 0)
                         {
                             <div class="pb-2">
@@ -126,22 +89,10 @@
             </div>
         </div>
     </div>
-    <div class="col-6">
+    <div class="col-4">
         @if (selectedCountry != null)
         {
-            <DailyReviewCountry GisCountry="selectedCountry" />
-        }
-        @if (selectedInput != null)
-        {
-            <DailyReviewInput Gis="selectedInput" />
-        }
-        @if (selectedOutput != null)
-        {
-            <DailyReviewOutput Gis="selectedOutput" />
-        }
-        @if (selectedAddon != null)
-        {
-            <DailyReviewAddon Addon="selectedAddon" />
+            <GisCountryResourceDetail GisCountry="selectedCountry" />
         }
     </div>
 </div>

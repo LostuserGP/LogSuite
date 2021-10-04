@@ -53,7 +53,7 @@ namespace Business.Repositories
             return dto;
         }
 
-        public async Task<PagedList<GisCountryResourceDTO>> GetByGisCountryId(int gisCountryId, Params parameters)
+        public async Task<PagedList<GisCountryResourceDTO>> GetPagedByGisCountryId(int gisCountryId, Params parameters)
         {
             var source = _db.GisCountryResources
                     .Where(x => x.GisCountryId == gisCountryId)
@@ -63,6 +63,15 @@ namespace Business.Repositories
             var result = await PagedList<GisCountryResource>.ToPagedListAsync(source, parameters.PageNumber, parameters.PageSize);
             var entities = _mapper.Map<List<GisCountryResourceDTO>>(result);
             return new PagedList<GisCountryResourceDTO>(entities, result.MetaData);
+        }
+
+        public async Task<GisCountryResourceDTO> GetOnDateByGisCountryId(int gisCountryId, DateTime date)
+        {
+            var fromDb = await _db.GisCountryResources
+                .Where(x => x.GisCountryId == gisCountryId && x.Month.Date == date.Date)
+                .FirstOrDefaultAsync();
+            var dto = _mapper.Map<GisCountryResource, GisCountryResourceDTO>(fromDb);
+            return dto;
         }
 
         public async Task<GisCountryResourceDTO> IsUnique(GisCountryResourceDTO dto, int id = 0)

@@ -375,7 +375,7 @@ namespace LogSuite.Client.Parsers
             var source = valueList.Where(x => x.inType == ReviewValueInputDTO.InputType.Country && x.ValueId == sourceId).FirstOrDefault();
             var distracted = valueList.Where(x => x.inType == ReviewValueInputDTO.InputType.Country && x.ValueId == distractedId).FirstOrDefault();
             if (source == null || distracted == null) return;
-            source.Value = source.Value - distracted.Value;
+            source.Value -= distracted.Value;
         }
     }
 }
