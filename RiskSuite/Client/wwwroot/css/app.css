@@ -131,9 +131,9 @@ a {
     bottom: 10px;
     left: 260px;
     height: 100%;
-    overflow-y: auto;
+    /*overflow-y: auto;*/
     /*padding-top: 0.5rem;*/
-    padding-bottom: 0.5rem;
+    padding-bottom: 15px;
 }
 
 .sort-th {
@@ -142,4 +142,18 @@ a {
 
 .table td, .table th {
     vertical-align: middle;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.card-body {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.scroll {
+    max-height: calc(100vh - 10rem);
+    overflow-y: auto;
 }

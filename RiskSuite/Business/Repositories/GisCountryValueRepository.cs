@@ -81,10 +81,10 @@ namespace Business.Repositories
         public async Task<PagedList<GisCountryValueDTO>> GetPagedByGisCountryId(int gisCountryId, Params parameters)
         {
             var source = _db.GisCountryValues
-                .Include(x => x.RequestedValueTime)
-                .Include(x => x.AllocatedValueTime)
-                .Include(x => x.EstimatedValueTime)
-                .Include(x => x.FactValueTime)
+                //.Include(x => x.RequestedValueTime).ThenInclude(v => v.User)
+                //.Include(x => x.AllocatedValueTime).ThenInclude(v => v.User)
+                //.Include(x => x.EstimatedValueTime).ThenInclude(v => v.User)
+                //.Include(x => x.FactValueTime).ThenInclude(v => v.User)
                 .Where(x => x.GisCountryId == gisCountryId)
                 .AsQueryable();
             source = source.Search(parameters.Filter);

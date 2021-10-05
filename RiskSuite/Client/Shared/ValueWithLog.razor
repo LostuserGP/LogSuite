@@ -1,0 +1,25 @@
+﻿<div class="d-flex justify-content-between">
+    <div class="">
+        @Value
+    </div>
+    @if (Id > 0)
+    {
+        <div class="pointer">
+            <i class="fas fa-question-circle text-info" @onclick="() => ClickEvent()"></i>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public string Value { get; set; }
+    [Parameter] public int? Id { get; set; }
+    [Parameter] public EventCallback<int> ShowInfo { get; set; }
+
+    public async Task ClickEvent()
+    {
+        if (Id > 0)
+        {
+            await ShowInfo.InvokeAsync(Id.Value);
+        }
+    }
+}

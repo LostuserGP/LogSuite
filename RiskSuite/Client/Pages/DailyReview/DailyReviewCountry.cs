@@ -17,6 +17,7 @@ namespace LogSuite.Client.Pages.DailyReview
     {
         [Parameter] public GisCountryDTO GisCountry { get; set; }
         [Inject] public IGisCountryValueService service { get; set; }
+        [Inject] public IInputFileLogService logService { get; set; }
         [Inject] public ToastService toastService { get; set; }
         [Inject] public SweetAlertService Swal { get; set; }
         private MetaData MetaData = new MetaData();
@@ -25,6 +26,7 @@ namespace LogSuite.Client.Pages.DailyReview
         private GisCountryValueDTO Model = new GisCountryValueDTO();
         private bool isProcessing;
         private string EditMode = "none";
+        private string logText = "none";
 
         protected override async Task OnParametersSetAsync()
         {
@@ -49,7 +51,34 @@ namespace LogSuite.Client.Pages.DailyReview
 
         private void OnSelectValue(GisCountryValueDTO value)
         {
+            EditMode = "none";
             Model = value;
+        }
+
+        private async Task ShowInfo(int? logId)
+        {
+            if (logId == null)
+            {
+                logText = "нет данных";
+            }
+            else
+            {
+                int id = logId.Value;
+                var log = await logService.Get(id);
+                logText = "Подшито " + log.User.Name +
+                          " " + log.TimeFile.ToString("dd.MM.yy hh:mm") +
+                          " из файла " + log.Filename;
+            }
+            EditMode = "log";
+        }
+
+        public async Task ShowInfo(int logId)
+        {
+            var log = await logService.Get(logId);
+            logText = "Подшито " + log.User.Name +
+                      " " + log.TimeFile.ToString("dd.MM.yy hh:mm") +
+                      " из файла " + log.Filename;
+            EditMode = "log";
         }
 
         private void Create()

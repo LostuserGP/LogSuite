@@ -77,6 +77,8 @@ namespace LogSuite.Client.Parsers
             DateReport = dateReport.Value;
             var revisionTime = StringParser.GetDateWithTimeFromString(filename);
             factCol = FindColumnEntry(_settings.FactValueEntry);
+            var wasInput = false;
+            var wasOutput = false;
             for (int row = 1; row <= endRow; row++)
             {
                 var cellText = sheet.Cells[row, 1].Text;
@@ -86,14 +88,17 @@ namespace LogSuite.Client.Parsers
                     var isInput = geoplinInput.Names.Where(x => StringParser.StrictLike(x.Name, cellText)).Any();
                     if (isInput)
                     {
+                        wasInput = true;
                         if (GetAddonValue(geoplinInput, row)) continue;
                     }
                     var isOutput = geoplinOutput.Names.Where(x => StringParser.StrictLike(x.Name, cellText)).Any();
                     if (isOutput)
                     {
+                        wasOutput = true;
                         if (GetAddonValue(geoplinOutput, row)) continue;
                     }
                 }
+                if (wasInput == true && wasOutput == true) break;
             }
             excelPackage.Dispose();
         }
