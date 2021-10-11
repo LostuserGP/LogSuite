@@ -78,13 +78,26 @@ namespace LogSuite.Client.Parsers
                 for (int col = startCol; col <= endCol; col++)
                 {
                     var cellText = sheet.Cells[row, col].Text;
-                    if (!String.IsNullOrEmpty(cellText))
+                    if (!String.IsNullOrEmpty(cellText) && !cellText.ToLower().Equals("турция"))
                     {
-                        // проверяем не страна ли нам попалась в ячейке
-                        var country = gisBlue.Countries.Where(c => c.Country.Names.Where(n => n.Name.ToLower().Equals(cellText.ToLower())).Any()).FirstOrDefault();
-                        if (country == null)
+                        GisCountryDTO country = null;
+                        //проверяем, не турецкий ли ГИС нам попался в ячейке
+                        if (gisTurkey.Names.Where(x => x.Name.ToLower().Equals(cellText.ToLower())).Any())
+                        {
+                            //турецкий поток
+                            country = gisTurkey.Countries.Where(c => c.Country.Names.Where(n => n.Name.ToLower().Equals(cellText.ToLower())).Any()).FirstOrDefault();
+                        }
+                        else if (gisBlue.Names.Where(x => x.Name.ToLower().Equals(cellText.ToLower())).Any())
+                        {
+                            country = gisBlue.Countries.Where(c => c.Country.Names.Where(n => n.Name.ToLower().Equals(cellText.ToLower())).Any()).FirstOrDefault();
+                        }
+                        else
                         {
                             country = gisTurkey.Countries.Where(c => c.Country.Names.Where(n => n.Name.ToLower().Equals(cellText.ToLower())).Any()).FirstOrDefault();
+                            if (country == null)
+                            {
+                                country = gisBlue.Countries.Where(c => c.Country.Names.Where(n => n.Name.ToLower().Equals(cellText.ToLower())).Any()).FirstOrDefault();
+                            }
                         }
                         if (country != null)
                         {
@@ -101,13 +114,17 @@ namespace LogSuite.Client.Parsers
                                         break;
                                     }
                                     var date = dateCell.GetValue<DateTime>();
-                                    var valueCell = sheet.Cells[i, valueCol];
-                                    if (String.IsNullOrWhiteSpace(valueCell.Text) || date.Date > DateReport.Date)
+                                    if (date.Date > DateReport.Date)
                                     {
                                         break;
                                     }
-                                    var value = valueCell.GetValue<Double>();
-                                    value = value / 1000d;
+                                    var valueCell = sheet.Cells[i, valueCol];
+                                    double value = 0;
+                                    if (!String.IsNullOrWhiteSpace(valueCell.Text))
+                                    {
+                                        value = valueCell.GetValue<Double>();
+                                        value /= 1000d;
+                                    }
                                     valueList.Add(new ReviewValueInputDTO()
                                     {
                                         GisId = gisBlue.Id,
@@ -155,9 +172,9 @@ namespace LogSuite.Client.Parsers
         {
             int endCol = startCol + 2;
             if (endCol > sheet.Dimension.End.Column) endCol = sheet.Dimension.End.Column;
-            for (int row = startRow; row <= endRow; row++)
+            for (int col = startCol; col <= endCol; col++)
             {
-                for (int col = startCol; col <= endCol; col++)
+                for (int row = startRow; row <= endRow; row++)
                 {
                     var cellText = sheet.Cells[row, col].Text;
                     if (StringParser.NameContainAnyList(_settings.FactValueEntry, cellText))

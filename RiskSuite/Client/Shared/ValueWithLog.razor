@@ -1,6 +1,6 @@
 ﻿<div class="d-flex justify-content-between">
     <div class="">
-        @Value
+        @Math.Round(Value, 4)
     </div>
     @if (Id > 0)
     {
@@ -11,7 +11,7 @@
 </div>
 
 @code {
-    [Parameter] public string Value { get; set; }
+    [Parameter] public decimal Value { get; set; }
     [Parameter] public int? Id { get; set; }
     [Parameter] public EventCallback<int> ShowInfo { get; set; }
 

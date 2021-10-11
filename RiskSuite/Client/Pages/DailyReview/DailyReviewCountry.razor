@@ -56,43 +56,16 @@
                                                 @val.DateReport.ToString("dd.MM.yy")
                                             </td>
                                             <td>
-                                                <ValueWithLog Value="@val.RequstedValueString" Id="@val.RequestedValueTimeId" ShowInfo="ShowInfo" />
+                                                <ValueWithLog Value="@val.RequstedValue" Id="@val.RequestedValueTimeId" ShowInfo="ShowInfo" />
                                             </td>
                                             <td>
-                                                <div class="d-flex justify-content-between">
-                                                    <div class="">
-                                                        @val.AllocatedValueString
-                                                    </div>
-                                                    @if (val.AllocatedValueTimeId > 0)
-                                                    {
-                                                        <div class="pointer">
-                                                            <i class="fas fa-question-circle text-info" @onclick="() => ShowInfo(val.AllocatedValueTimeId)"></i>
-                                                        </div>
-                                                    }
-                                                </div>
+                                                <ValueWithLog Value="@val.AllocatedValue" Id="@val.AllocatedValueTimeId" ShowInfo="ShowInfo" />
                                             </td>
                                             <td>
-                                                <div class="d-flex justify-content-between">
-                                                    <div class="">
-                                                        @val.EstimatedValueString
-                                                    </div>
-                                                    @if (val.EstimatedValueTimeId > 0)
-                                                    {
-                                                        <div class="pointer">
-                                                        <i class="fas fa-question-circle text-info" @onclick="() => ShowInfo(val.EstimatedValueTimeId)"></i>
-                                                    </div>
-                                                    }
-                                                </div>
+                                                <ValueWithLog Value="@val.EstimatedValue" Id="@val.EstimatedValueTimeId" ShowInfo="ShowInfo" />
                                             </td>
                                             <td>
-                                                <div class="d-flex justify-content-between">
-                                                    <div class="">
-                                                        @val.FactValueString
-                                                    </div>
-                                                    <div class="pointer">
-                                                        <i class="fas fa-question-circle text-info" @onclick="() => ShowInfo(val.FactValueTimeId)"></i>
-                                                    </div>
-                                                </div>
+                                                <ValueWithLog Value="@val.FactValue" Id="@val.FactValueTimeId" ShowInfo="ShowInfo" />
                                             </td>
                                             <td style="width: 50px;">
                                                 <button class="fas fa-edit text-primary p-0" style="background-color: transparent; border: 0;" type="button" tooltip="edit" @onclick="()=> Edit(val)" />

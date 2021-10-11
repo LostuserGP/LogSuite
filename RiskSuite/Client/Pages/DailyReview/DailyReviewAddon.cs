@@ -17,6 +17,7 @@ namespace LogSuite.Client.Pages.DailyReview
     {
         [Parameter] public GisAddonDTO Addon { get; set; }
         [Inject] public IGisAddonValueService service { get; set; }
+        [Inject] public IInputFileLogService logService { get; set; }
         [Inject] public ToastService toastService { get; set; }
         [Inject] public SweetAlertService Swal { get; set; }
         private MetaData MetaData = new MetaData();
@@ -25,6 +26,7 @@ namespace LogSuite.Client.Pages.DailyReview
         private GisAddonValueDTO Model = new GisAddonValueDTO();
         private bool isProcessing;
         private string EditMode = "none";
+        private string logText = "none";
 
         protected override async Task OnParametersSetAsync()
         {
@@ -45,6 +47,15 @@ namespace LogSuite.Client.Pages.DailyReview
             valueList = pagingResponse.Items;
             MetaData = pagingResponse.MetaData;
             isProcessing = false;
+        }
+
+        public async Task ShowInfo(int logId)
+        {
+            var log = await logService.Get(logId);
+            logText = "Подшито " + log.User.Name +
+                      " " + log.TimeFile.ToString("dd.MM.yy hh:mm") +
+                      " из файла " + log.Filename;
+            EditMode = "log";
         }
 
         private void OnSelectValue(GisAddonValueDTO value)

@@ -53,15 +53,31 @@
                                     {
                                         <tr @onclick="() => OnSelectValue(val)">
                                             <td>@val.DateReport.ToString("dd.MM.yy")</td>
-                                            <td>@val.RequstedValueString</td>
-                                            <td>@val.AllocatedValueString</td>
-                                            <td>@val.EstimatedValueString</td>
-                                            <td>@val.FactValueString</td>
+                                            <td>
+                                                <ValueWithLog Value="@val.RequstedValue" Id="@val.RequestedValueTimeId" ShowInfo="ShowInfo" />
+                                            </td>
+                                            <td>
+                                                <ValueWithLog Value="@val.AllocatedValue" Id="@val.AllocatedValueTimeId" ShowInfo="ShowInfo" />
+                                            </td>
+                                            <td>
+                                                <ValueWithLog Value="@val.EstimatedValue" Id="@val.EstimatedValueTimeId" ShowInfo="ShowInfo" />
+                                            </td>
+                                            <td>
+                                                <ValueWithLog Value="@val.FactValue" Id="@val.FactValueTimeId" ShowInfo="ShowInfo" />
+                                            </td>
                                             <td style="width: 50px;">
                                                 <button class="fas fa-edit text-primary p-0" style="background-color: transparent; border: 0;" type="button" tooltip="edit" @onclick="()=> Edit(val)" />
                                                 <button class="far fa-trash-alt text-danger p-0" style="background-color: transparent; border: 0;" type="button" tooltip="delete" @onclick="()=> Delete(val.Id)" />
                                             </td>
                                         </tr>
+                                        @if (EditMode == "log" && Model.Id == val.Id)
+                                        {
+                                            <tr>
+                                                <td colspan="6">
+                                                    @logText
+                                                </td>
+                                            </tr>
+                                        }
                                     }
 
                                 }

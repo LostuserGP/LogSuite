@@ -1,0 +1,28 @@
+﻿<div class="card h-100">
+    <div class="card-body">
+        <div class="d-flex card-title">
+            <div class="mx-auto justify-content-center">
+                <h3>Выгрузка оперативной отчётности</h3>
+            </div>
+            <div class="justify-content-end">
+            </div>
+        </div>
+        <div class="card-text scroll">
+            <div class="row">
+                <div class="m-2">
+                    Начало периода
+                    <InputDate @bind-Value="StartDate" DateFormat="d" />
+                </div>
+                <div class="m-2">
+                    Конец периода
+                    <InputDate @bind-Value="FinishDate" DateFormat="d" />
+                </div>
+                <div class="m-2">
+                    <button Click=@(() => Run()) Text="Сформировать" Style="width: 100%" />
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+

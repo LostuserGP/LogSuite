@@ -131,7 +131,7 @@ a {
     bottom: 10px;
     left: 260px;
     height: 100%;
-    /*overflow-y: auto;*/
+    overflow-y: auto;
     /*padding-top: 0.5rem;*/
     padding-bottom: 15px;
 }

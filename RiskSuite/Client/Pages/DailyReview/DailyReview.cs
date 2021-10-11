@@ -44,6 +44,10 @@ namespace LogSuite.Client.Pages.DailyReview
         {
             //gis.Countries = gis.Countries.OrderBy(x => x.Country.Name).ToList();
             selectedGis = gis;
+            selectedCountry = gis.Countries.FirstOrDefault();
+            selectedInput = null;
+            selectedOutput = null;
+            selectedAddon = null;
         }
 
         private void OnSelectInput()

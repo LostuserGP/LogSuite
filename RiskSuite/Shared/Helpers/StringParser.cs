@@ -306,6 +306,7 @@ namespace LogSuite.Shared.Helpers
     
         public static string GetString(decimal value)
         {
+            //return value.ToString();
             return Math.Round(value, 4).ToString();
         }
     }

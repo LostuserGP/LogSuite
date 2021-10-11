@@ -15,20 +15,12 @@ namespace LogSuite.Client.Parsers
     public class ExcelBalanceCpddParser
     {
         private ToastService _toastService { get; set; }
-        private IBrowserFile _file;
         private ExcelWorksheet sheet;
         private string filename;
         private DateTime DateReport;
         private IEnumerable<GisDTO> _gisList;
-        private List<ReviewValueInputDTO> valueList = new List<ReviewValueInputDTO>();
-        private FileTypeSettingDTO _settings;
-        private int requestedCol = 0;
-        private int allocatedCol = 0;
-        private int estimatedCol = 0;
-        private int countryCol = 0;
-        private int gisCol = 0;
 
-        public ExcelBalanceCpddParser(IBrowserFile file, IEnumerable<GisDTO> gisList, FileTypeSettingDTO settings, ToastService toastService)
+        public ExcelBalanceCpddParser(IEnumerable<GisDTO> gisList, ToastService toastService)
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             _file = file;
