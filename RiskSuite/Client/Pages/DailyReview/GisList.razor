@@ -3,7 +3,7 @@
 
 
 <div class="row m-0 pb-2" style="height: 100%;">
-    <div class="col-6">
+    <div class="col-8">
         <div class="card h-100">
             <div class="card-body">
                 <div class="d-flex card-title">
@@ -38,8 +38,11 @@
                                             <TableHeader Params="_parameters" ColumnName="Для оперативки" DbName="DailyReviwName" OnSortChangedSubmit="OnSortChanged" />
                                             <TableHeader Params="_parameters" ColumnName="Скрывать" DbName="IsHidden" OnSortChangedSubmit="OnSortChanged" />
                                             <TableHeader Params="_parameters" ColumnName="Украина" DbName="IsUkraineTransport" OnSortChangedSubmit="OnSortChanged" />
+                                            <TableHeader Params="_parameters" ColumnName="Не учитывать" DbName="IsNotCalculated" OnSortChangedSubmit="OnSortChanged" />
+                                            <TableHeader Params="_parameters" ColumnName="Сверху" DbName="ShowOnTop" OnSortChangedSubmit="OnSortChanged" />
+                                            <TableHeader Params="_parameters" ColumnName="Снизу" DbName="ShowOnBottom" OnSortChangedSubmit="OnSortChanged" />
+                                            <TableHeader Params="_parameters" ColumnName="В одну строку" DbName="IsOneRow" OnSortChangedSubmit="OnSortChanged" />
                                             <TableHeader Params="_parameters" ColumnName="Без ПХГ" DbName="NoPhg" OnSortChangedSubmit="OnSortChanged" />
-                                            <TableHeader Params="_parameters" ColumnName="Без стран" DbName="NoCounry" OnSortChangedSubmit="OnSortChanged" />
                                             <th>
 
                                             </th>
@@ -77,13 +80,31 @@
                                                         }
                                                     </td>
                                                     <td class="align-middle p-1">
-                                                        @if (gis.NoPhg)
+                                                        @if (gis.IsNotCalculated)
                                                         {
                                                             <i class="fa fa-check" aria-hidden="true"></i>
                                                         }
                                                     </td>
                                                     <td class="align-middle p-1">
-                                                        @if (gis.NoCountry)
+                                                        @if (gis.ShowOnTop)
+                                                        {
+                                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                                        }
+                                                    </td>
+                                                    <td class="align-middle p-1">
+                                                        @if (gis.ShowOnBottom)
+                                                        {
+                                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                                        }
+                                                    </td>
+                                                    <td class="align-middle p-1">
+                                                        @if (gis.IsOneRow)
+                                                        {
+                                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                                        }
+                                                    </td>
+                                                    <td class="align-middle p-1">
+                                                        @if (gis.NoPhg)
                                                         {
                                                             <i class="fa fa-check" aria-hidden="true"></i>
                                                         }
@@ -110,7 +131,7 @@
     </div>
     @if (ShowDetail && GisModel?.Id > 0)
     {
-        <div class="col-6">
+        <div class="col-4">
             <GisDetail Gis="GisModel"></GisDetail>
         </div>
     }

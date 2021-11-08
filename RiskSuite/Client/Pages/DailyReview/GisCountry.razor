@@ -31,8 +31,7 @@
 								<TableHeader Params="_parameters" ColumnName="ID" DbName="Id" OnSortChangedSubmit="OnSortChanged" />
 								<TableHeader Params="_parameters" ColumnName="Наименование" DbName="Name" OnSortChangedSubmit="OnSortChanged" />
 								<TableHeader Params="_parameters" ColumnName="Скрывать" DbName="IsHidden" OnSortChangedSubmit="OnSortChanged" />
-								<TableHeader Params="_parameters" ColumnName="Рассчитывается" DbName="IsCalculated" OnSortChangedSubmit="OnSortChanged" />
-								<TableHeader Params="_parameters" ColumnName="Множитель" DbName="Multiplicator" OnSortChangedSubmit="OnSortChanged" />
+								<TableHeader Params="_parameters" ColumnName="Рассчитывается" DbName="IsNotCalculated" OnSortChangedSubmit="OnSortChanged" />
 								<th>
 									@if (EditMode == "none")
 								{
@@ -63,9 +62,8 @@
 											@if (gc.IsHidden) { <i class="fa fa-check" aria-hidden="true"></i> }
 										</td>
 										<td class="align-middle py-0">
-											@if (gc.IsCalculated) { <i class="fa fa-check" aria-hidden="true"></i> }
+											@if (gc.IsNotCalculated) { <i class="fa fa-check" aria-hidden="true"></i> }
 										</td>
-										<td class="align-middle py-0">@gc.Multiplicator</td>
 										<td class="align-middle py-0" style="width: 50px;">
 											<button class="fas fa-edit text-primary p-0" style="background-color: transparent; border: 0;" type="button" tooltip="cancel" @onclick="()=> HandleUpdate(gc)" />
 											<button class="far fa-trash-alt text-danger p-0" style="background-color: transparent; border: 0;" type="button" tooltip="cancel" @onclick="()=> HandleDelete(gc.Id)" />

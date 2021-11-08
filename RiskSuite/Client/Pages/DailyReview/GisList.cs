@@ -53,7 +53,7 @@ namespace LogSuite.Client.Pages.DailyReview
         private async Task Load()
         {
             IsProcessing = true;
-            var pagingResponse = await service.Getall(_parameters);
+            var pagingResponse = await service.GetAll(_parameters);
             Gises = pagingResponse.Items;
             MetaData = pagingResponse.MetaData;
             IsProcessing = false;

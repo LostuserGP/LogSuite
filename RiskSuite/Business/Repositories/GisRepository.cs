@@ -5,6 +5,7 @@ using LogSuite.DataAccess.DailyReview;
 using LogSuite.Shared;
 using LogSuite.Shared.Models.DailyReview;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -78,6 +79,47 @@ namespace LogSuite.Business.Repositories
                 .Include(x => x.Countries.OrderBy(x => x.Country.Name)).ThenInclude(gc => gc.Country).ThenInclude(n => n.Names)
                 .OrderBy(x => x.Name);
             IEnumerable<GisDTO> dtos = _mapper.Map<IEnumerable<Gis>, IEnumerable<GisDTO>>(entities);
+            return dtos;
+        }
+
+        public async Task<List<GisDTO>> GetOnDateRange(DateTime startDate, DateTime finishDate)
+        {
+            var gises = await _db.Gises
+                .Include(x => x.Countries).ThenInclude(c => c.Country)
+                .Include(x => x.Addons)
+                .ToListAsync();
+            foreach (var gis in gises)
+            {
+                foreach (var country in gis.Countries)
+                {
+                    country.Values = await _db.GisCountryValues
+                        .Where(x => x.GisCountryId == country.Id && x.DateReport >= startDate && x.DateReport <= finishDate)
+                        .OrderBy(x => x.DateReport)
+                        .ToListAsync();
+                    var firstDate = new DateTime(startDate.Year, startDate.Month, 1);
+                    var lastDate = new DateTime(finishDate.Year, finishDate.Month, 1);
+                    country.Resources = await _db.GisCountryResources
+                        .Where(x => x.GisCountryId == country.Id && x.Month >= firstDate && x.Month <= lastDate)
+                        .OrderBy(x => x.Month)
+                        .ToListAsync();
+                }
+                foreach (var addon in gis.Addons)
+                {
+                    addon.Values = await _db.GisAddonValues
+                        .Where(x => x.GisAddonId == addon.Id && x.DateReport >= startDate && x.DateReport <= finishDate)
+                        .OrderBy(x => x.DateReport)
+                        .ToListAsync();
+                }
+                gis.GisInputValues = await _db.GisInputValues
+                    .Where(x => x.GisId == gis.Id && x.DateReport >= startDate && x.DateReport <= finishDate)
+                    .OrderBy(x => x.DateReport)
+                    .ToListAsync();
+                gis.GisOutputValues = await _db.GisOutputValues
+                    .Where(x => x.GisId == gis.Id && x.DateReport >= startDate && x.DateReport <= finishDate)
+                    .OrderBy(x => x.DateReport)
+                    .ToListAsync();
+            }
+            List<GisDTO> dtos = _mapper.Map<IEnumerable<Gis>, List<GisDTO>>(gises);
             return dtos;
         }
 

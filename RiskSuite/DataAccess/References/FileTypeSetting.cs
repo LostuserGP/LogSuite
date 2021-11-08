@@ -1,17 +1,20 @@
-﻿namespace LogSuite.DataAccess.References
+﻿using System.Collections.Generic;
+
+namespace LogSuite.DataAccess.References
 {
     public class FileTypeSetting
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string[] MustHave { get; set; }
-        public string[] NotHave { get; set; }
-        public string[] CountryEntry { get; set; }
-        public string[] GisEntry { get; set; }
-        public string[] RequestedValueEntry { get; set; }
-        public string[] AllocatedValueEntry { get; set; }
-        public string[] EstimatedValueEntry { get; set; }
-        public string[] FactValueEntry { get; set; }
-        public string[] DataEntry { get; set; }
+        public string TypeName { get; set; }
+        public List<string> MustHave { get; set; } = new List<string>();
+        public List<string> NotHave { get; set; } = new List<string>();
+        public List<string> CountryEntry { get; set; } = new List<string>();
+        public List<string> GisEntry { get; set; } = new List<string>();
+        public List<string> RequestedValueEntry { get; set; } = new List<string>();
+        public List<string> AllocatedValueEntry { get; set; } = new List<string>();
+        public List<string> EstimatedValueEntry { get; set; } = new List<string>();
+        public List<string> FactValueEntry { get; set; } = new List<string>();
+        public List<string> DataEntry { get; set; } = new List<string>();
     }
 }

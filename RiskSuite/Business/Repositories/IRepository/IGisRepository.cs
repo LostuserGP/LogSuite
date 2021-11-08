@@ -18,6 +18,7 @@ namespace Business.Repositories.IRepository
         Task<GisDTO> Get(int id);
         Task<int> Delete(int id);
         Task<IEnumerable<GisDTO>> GetAll();
+        Task<List<GisDTO>> GetOnDateRange(DateTime startDate, DateTime finishDate);
         Task<GisDTO> IsUnique(GisDTO dto, int id = 0);
         Task<PagedList<GisDTO>> GetPaged(Params parameters);
     }

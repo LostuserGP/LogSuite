@@ -63,7 +63,7 @@ namespace LogSuite.Client.Services
             }
         }
 
-        public async Task<IEnumerable<GisDTO>> Getall()
+        public async Task<IEnumerable<GisDTO>> GetAll()
         {
             var response = await _client.GetAsync($"{_apirUrl}/all");
             var content = await response.Content.ReadAsStringAsync();
@@ -71,7 +71,7 @@ namespace LogSuite.Client.Services
             return answers;
         }
 
-        public async Task<PagingResponse<GisDTO>> Getall(Params parameters)
+        public async Task<PagingResponse<GisDTO>> GetAll(Params parameters)
         {
             var queryStringParam = new Dictionary<string, string>
             {
@@ -130,6 +130,25 @@ namespace LogSuite.Client.Services
                 _toastService.ToastError(errorModel.ErrorMessage);
                 return false;
             }
+        }
+
+        public async Task<List<GisDTO>> GetOnDateRange(DateTime startDate, DateTime finishDate)
+        {
+            var queryStringParam = new Dictionary<string, string>
+            {
+                ["startDate"] = startDate.ToString(),
+                ["finishDate"] = finishDate.ToString(),
+            };
+            var response = await _client.GetAsync(QueryHelpers.AddQueryString($"{_apirUrl}/ondaterange", queryStringParam));
+            var result = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorModel = JsonConvert.DeserializeObject<ErrorModel>(result);
+                _toastService.ToastError(errorModel.ErrorMessage);
+                return null;
+            }
+            var answers = JsonConvert.DeserializeObject<List<GisDTO>>(result);
+            return answers;
         }
     }
 }

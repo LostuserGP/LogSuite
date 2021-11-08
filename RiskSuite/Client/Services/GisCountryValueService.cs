@@ -97,7 +97,7 @@ namespace LogSuite.Client.Services
             return answer;
         }
 
-        public async Task<IEnumerable<GisCountryValueDTO>> GetOnDateRangeByGisCountryId(int gisCountryId, DateTime dateStart, DateTime dateEnd)
+        public async Task<List<GisCountryValueDTO>> GetOnDateRangeByGisCountryId(int gisCountryId, DateTime dateStart, DateTime dateEnd)
         {
             var queryStringParam = new Dictionary<string, string>
             {
@@ -112,7 +112,7 @@ namespace LogSuite.Client.Services
                 _toastService.ToastError(errorModel.ErrorMessage);
                 return null;
             }
-            var answers = JsonConvert.DeserializeObject<IEnumerable<GisCountryValueDTO>>(result);
+            var answers = JsonConvert.DeserializeObject<List<GisCountryValueDTO>>(result);
             return answers;
         }
 

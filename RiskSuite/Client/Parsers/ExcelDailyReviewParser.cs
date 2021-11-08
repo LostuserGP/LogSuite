@@ -4,7 +4,6 @@ using LogSuite.Shared.Helpers;
 using LogSuite.Shared.Models;
 using LogSuite.Shared.Models.DailyReview;
 using LogSuite.Shared.Models.References;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using OfficeOpenXml;
 using System.Collections.Generic;
@@ -13,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace LogSuite.Client.Parsers
 {
-    public class DailyReviewExcelParser
+    public class ExcelDailyReviewParser
     {
         private IFileTypeSettingService _fileService;
         private ToastService _toastService;
@@ -24,7 +23,7 @@ namespace LogSuite.Client.Parsers
         private List<ReviewValueInputDTO> valueList = new List<ReviewValueInputDTO>();
         private string message;
 
-        public DailyReviewExcelParser(IBrowserFile file, IFileTypeSettingService fileService, IGisService gisService, ToastService toastService)
+        public ExcelDailyReviewParser(IBrowserFile file, IFileTypeSettingService fileService, IGisService gisService, ToastService toastService)
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             _file = file;
@@ -43,7 +42,7 @@ namespace LogSuite.Client.Parsers
                 fileSettings = fileTypes.Where(x => StringParser.NameContainAnyList(x.MustHave, filename)).FirstOrDefault();
                 if (fileSettings == null) return;
             }
-            _gisList = await _gisService.Getall();
+            _gisList = await _gisService.GetAll();
             if (fileSettings.Name.Equals("Баланс ЦПДД"))
             {
                 var dateReport = StringParser.GetFirstDateFromString(filename);

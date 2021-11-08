@@ -36,7 +36,7 @@ namespace LogSuite.Client.Pages.DailyReview
         {
             try
             {
-                Gises = await gisService.Getall();
+                Gises = await gisService.GetAll();
                 await Load();
             }
             catch (Exception e)

@@ -6,14 +6,15 @@ namespace LogSuite.Shared.Models.References
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<string> MustHave { get; set; }
-        public List<string> NotHave { get; set; }
-        public List<string> CountryEntry { get; set; }
-        public List<string> GisEntry { get; set; }
-        public List<string> RequestedValueEntry { get; set; }
-        public List<string> AllocatedValueEntry { get; set; }
-        public List<string> EstimatedValueEntry { get; set; }
-        public List<string> FactValueEntry { get; set; }
-        public List<string> DataEntry { get; set; }
+        public string TypeName { get; set; }
+        public List<string> MustHave { get; set; } = new List<string>();
+        public List<string> NotHave { get; set; } = new List<string>();
+        public List<string> CountryEntry { get; set; } = new List<string>();
+        public List<string> GisEntry { get; set; } = new List<string>();
+        public List<string> RequestedValueEntry { get; set; } = new List<string>();
+        public List<string> AllocatedValueEntry { get; set; } = new List<string>();
+        public List<string> EstimatedValueEntry { get; set; } = new List<string>();
+        public List<string> FactValueEntry { get; set; } = new List<string>();
+        public List<string> DataEntry { get; set; } = new List<string>();
     }
 }

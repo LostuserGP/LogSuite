@@ -4,6 +4,7 @@ using LogSuite.Shared.Models.DailyReview;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -163,6 +164,22 @@ namespace LogSuite.Server.Controllers
                 });
             }
             return Ok();
+        }
+
+        [HttpGet("ondaterange")]
+        public async Task<IActionResult> Get([FromQuery] DateTime startDate, [FromQuery] DateTime finishDate)
+        {
+            var entities = await _repository.GetOnDateRange(startDate, finishDate);
+            if (entities == null)
+            {
+                return BadRequest(new ErrorModel()
+                {
+                    Title = "",
+                    ErrorMessage = "Invalid DateRange or values not found",
+                    StatusCode = StatusCodes.Status404NotFound
+                });
+            }
+            return Ok(entities);
         }
     }
 }

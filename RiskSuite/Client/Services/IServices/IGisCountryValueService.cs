@@ -11,7 +11,7 @@ namespace LogSuite.Client.Services.IServices
     {
         Task<PagingResponse<GisCountryValueDTO>> GetPagedByGisCountryId(int gisCountryId, Params parameters);
         Task<GisCountryValueDTO> GetOnDateByGisCountryId(int gisCountryId, DateTime date);
-        Task<IEnumerable<GisCountryValueDTO>> GetOnDateRangeByGisCountryId(int gisCountryId, DateTime dateStart, DateTime dateEnd);
+        Task<List<GisCountryValueDTO>> GetOnDateRangeByGisCountryId(int gisCountryId, DateTime dateStart, DateTime dateEnd);
         Task<GisCountryValueDTO> Get(int id);
         Task<GisCountryValueDTO> Create(GisCountryValueDTO dto);
         Task<GisCountryValueDTO> Update(GisCountryValueDTO dto);

@@ -40,7 +40,7 @@ namespace LogSuite.Client.Pages.DailyReview
             foreach (var file in e.GetMultipleFiles(300))
             {
                 currentFile = file.Name;
-                var parser = new DailyReviewExcelParser(file, fileService, gisService, toastService);
+                var parser = new ExcelDailyReviewParser(file, fileService, gisService, toastService);
                 await parser.ParseFile();
                 var reviewList = parser.GetResult();
                 if (reviewList.Message != null)

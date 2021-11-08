@@ -35,7 +35,7 @@ namespace LogSuite.Client.Pages.DailyReview
         protected override async Task OnInitializedAsync()
         {
             gisProcessing = true;
-            gisList = await _gisService.Getall();
+            gisList = await _gisService.GetAll();
             selectedGis = gisList.FirstOrDefault();
             gisProcessing = false;
         }

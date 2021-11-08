@@ -350,16 +350,9 @@ namespace LogSuite.Client.Parsers
                 var sourceId = 0;
                 foreach (var country in gis.Countries)
                 {
-                    if (country.IsCalculated)
+                    if (country.Country.Name.ToLower().Equals("gazprom schweiz"))
                     {
-                        if (country.Multiplicator == -1)
-                        {
-                            distractedId = country.Id;
-                        }
-                        else if(country.Multiplicator == 0)
-                        {
-                            sourceId = country.Id;
-                        }
+                        distractedId = country.Id;
                     }
                     if (sourceId > 0 && distractedId > 0)
                     {
