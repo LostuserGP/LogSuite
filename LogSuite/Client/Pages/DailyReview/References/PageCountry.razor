@@ -1,0 +1,119 @@
+﻿@page "/references/country"
+@page "/references/country/{Id:int}"
+@using LogSuite.Shared.Models.References
+@using Microsoft.AspNetCore.Components
+@using LogSuite.Shared.Models.DailyReview
+
+<div class="row">
+    <div class="col-6 d-flex justify-content-start">
+        <h1>Страны</h1>
+    </div>
+    <div class="col-6 d-flex justify-content-end">
+        <RadzenButton Icon="add_circle_outline" class="align-self-center" style="margin-bottom: 10px" ButtonStyle="ButtonStyle.Primary" Text="Add" Click="InsertRow" Disabled="_countryToInsert != null" />
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-8">
+
+        <RadzenDataGrid @ref="_countriesGrid" IsLoading="_isProcessing" LoadData="LoadData" AllowColumnResize="true" 
+                        AllowPaging="true" PageSize="10" PageSizeOptions="_pageSizeOptions" 
+                        RowSelect="OnSelect" AllowSorting="true" Count="MetaData.TotalCount" Data="_countries" TItem="CountryDTO"
+                        EditMode="DataGridEditMode.Single" RowUpdate="OnUpdateRow" RowCreate="OnCreateRow" Style="height: calc(100vh - 5rem); overflow-y: auto;">
+            <Columns>
+                <RadzenDataGridColumn Width="70px" TItem="CountryDTO" Property="Id" Title="ID" />
+                <RadzenDataGridColumn TItem="CountryDTO" Property="Name" Title="Наименование">
+                    <EditTemplate Context="country">
+                        <RadzenTextBox @bind-Value="country.Name" Style="width:100%; display: block" Name="наименование..." />
+                    </EditTemplate>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="CountryDTO" Property="Name" Title="Оперативка">
+                    <EditTemplate Context="country">
+                        <RadzenTextBox @bind-Value="country.DailyReviewName" Style="width:100%; display: block" />
+                    </EditTemplate>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="CountryDTO" Property="NameEn" Title="Name">
+                    <EditTemplate Context="country">
+                        <RadzenTextBox @bind-Value="country.NameEn" Style="width:100%; display: block" />
+                    </EditTemplate>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="CountryDTO" Property="ShortName" Title="Кратко">
+                    <EditTemplate Context="country">
+                        <RadzenTextBox @bind-Value="country.ShortName" Style="width:100%; display: block" Name="кратко..." />
+                    </EditTemplate>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="CountryDTO" Context="sampleBlazorModelsSampleOrder" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px">
+                    <Template Context="country">
+                        <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => EditRow(country))" @onclick:stopPropagation="true">
+                        </RadzenButton>
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(args => DeleteRow(country))" @onclick:stopPropagation="true">
+                        </RadzenButton>
+                    </Template>
+                    <EditTemplate Context="country">
+                        <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => SaveRow(country))" @onclick:stopPropagation="true">
+                        </RadzenButton>
+                        <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Secondary" Click="@((args) => CancelEdit(country))" @onclick:stopPropagation="true">
+                        </RadzenButton>
+                    </EditTemplate>
+                </RadzenDataGridColumn>
+            </Columns>
+        </RadzenDataGrid>
+    </div>
+    <div class="col-4">
+        @if (_selectedCountry != null)
+        {
+            <RadzenCard Style="margin-bottom:20px;" class="">
+                Страна:
+                <b>@_selectedCountry.Name</b>
+            </RadzenCard>
+            <RadzenTabs>
+                <Tabs>
+                    <RadzenTabsItem Text="Распределение в ГИС">
+                        <RadzenDataGrid AllowFiltering="true" AllowPaging="true" PageSize="20" AllowColumnResize="true" AllowSorting="true" Data="@(_selectedCountry.GisCountries)" TItem="GisCountryDTO">
+                            <Columns>
+                                <RadzenDataGridColumn TItem="GisCountryDTO" Property="Gis.Name" Title="ГИС" />
+                                <RadzenDataGridColumn Width="70px" TItem="GisCountryDTO" Property="Id" Title="ID" />
+                                <RadzenDataGridColumn Width="100px" TItem="GisCountryDTO" Property="IsHidden" Title="Скрыто">
+                                    <Template Context="gisCountry">
+                                        @if (gisCountry.IsHidden)
+                                        {
+                                            <RadzenIcon Icon="done" />
+                                        }
+                                    </Template>
+                                </RadzenDataGridColumn>
+                            </Columns>
+                        </RadzenDataGrid>
+                    </RadzenTabsItem>
+                    <RadzenTabsItem Text="Наименования">
+                        <RadzenButton Icon="add_circle_outline" class="align-self-center" style="margin-bottom: 10px" ButtonStyle="ButtonStyle.Primary" Text="Add" Click="@InsertCountryName" Disabled="_countryNameToInsert != null || _countryToInsert != null" />
+                        <RadzenDataGrid @ref="_countryNamesGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowColumnResize="true" AllowSorting="true"
+                                    Data="_names" TItem="NameObject"
+                                    EditMode="DataGridEditMode.Single" RowUpdate="@OnUpdateRow" RowCreate="@OnCreateRow">
+                            <Columns>
+                                <RadzenDataGridColumn TItem="NameObject" Property="Name" Title="Наименование">
+                                    <EditTemplate Context="cName">
+                                        <RadzenTextBox @bind-Value="cName.Name" Style="width:100%; display: block" Name="наименование..." />
+                                    </EditTemplate>
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn TItem="NameObject" Context="sampleBlazorModelsSampleOrder" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px">
+                                    <Template Context="cName">
+                                        <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => EditRow(cName))" @onclick:stopPropagation="true">
+                                        </RadzenButton>
+                                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(args => DeleteRow(cName))" @onclick:stopPropagation="true">
+                                        </RadzenButton>
+                                    </Template>
+                                    <EditTemplate Context="cName">
+                                        <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => SaveRow(cName))" @onclick:stopPropagation="true">
+                                        </RadzenButton>
+                                        <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Secondary" Click="@((args) => CancelEdit(cName))" @onclick:stopPropagation="true">
+                                        </RadzenButton>
+                                    </EditTemplate>
+                                </RadzenDataGridColumn>
+                            </Columns>
+                        </RadzenDataGrid>
+                    </RadzenTabsItem>
+                </Tabs>
+            </RadzenTabs>
+        }
+    </div>
+</div>

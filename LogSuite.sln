@@ -3,21 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31612.314
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogSuite.Server", "RiskSuite\Server\LogSuite.Server.csproj", "{E8BFB310-3D31-4471-BE56-B09DE3800760}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogSuite.Server", "LogSuite\Server\LogSuite.Server.csproj", "{E8BFB310-3D31-4471-BE56-B09DE3800760}"
 	ProjectSection(ProjectDependencies) = postProject
 		{1D16B27C-AFFF-4E40-B236-3B1159257268} = {1D16B27C-AFFF-4E40-B236-3B1159257268}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogSuite.Client", "RiskSuite\Client\LogSuite.Client.csproj", "{E40AD38A-B463-47AA-9887-11216E21318B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogSuite.Client", "LogSuite\Client\LogSuite.Client.csproj", "{E40AD38A-B463-47AA-9887-11216E21318B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogSuite.Shared", "RiskSuite\Shared\LogSuite.Shared.csproj", "{7042E12F-014E-4B9D-874C-C6092B6CBDE7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogSuite.Shared", "LogSuite\Shared\LogSuite.Shared.csproj", "{7042E12F-014E-4B9D-874C-C6092B6CBDE7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogSuite.DataAccess", "RiskSuite\DataAccess\LogSuite.DataAccess.csproj", "{1D16B27C-AFFF-4E40-B236-3B1159257268}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogSuite.DataAccess", "LogSuite\DataAccess\LogSuite.DataAccess.csproj", "{1D16B27C-AFFF-4E40-B236-3B1159257268}"
 	ProjectSection(ProjectDependencies) = postProject
 		{7042E12F-014E-4B9D-874C-C6092B6CBDE7} = {7042E12F-014E-4B9D-874C-C6092B6CBDE7}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogSuite.Business", "RiskSuite\Business\LogSuite.Business.csproj", "{5B0A1D68-D276-464A-B11E-F423D63AC58F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogSuite.Business", "LogSuite\Business\LogSuite.Business.csproj", "{5B0A1D68-D276-464A-B11E-F423D63AC58F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

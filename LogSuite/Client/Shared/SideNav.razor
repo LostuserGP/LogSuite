@@ -1,0 +1,55 @@
+﻿@if (Theme != "default.css")
+{
+    <link href="_content/Radzen.Blazor/css/@(Theme)" rel="stylesheet" />
+}
+
+<style>
+    .vertical-nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 250px;
+        height: 100%;
+        overflow-y: auto;
+        padding: 0;
+        align-content: baseline;
+    }
+</style>
+
+<RadzenCard class="vertical-nav">
+    <RadzenPanelMenu>
+        <RadzenPanelMenuItem Text="General" Icon="home"></RadzenPanelMenuItem>
+        <AuthorizeView>
+            <Authorized>
+                <RadzenPanelMenuItem Text="@context.User.Identity.Name?.Split('@')[0]">
+                    <RadzenPanelMenuItem Text="Logout" Path="/auth/logout" Icon="check_circle"></RadzenPanelMenuItem>
+                    <RadzenPanelMenuItem Text="Сменить пароль" Path="changepassword"></RadzenPanelMenuItem>
+                </RadzenPanelMenuItem>
+            </Authorized>
+            <NotAuthorized>
+                <RadzenPanelMenuItem Text="Login" Path="/auth/login"></RadzenPanelMenuItem>
+            </NotAuthorized>
+        </AuthorizeView>
+        <RadzenPanelMenuItem Text="Справочники" Icon="payment">
+            <RadzenPanelMenuItem Text="Страны" Path="references/country" Icon="check_circle"></RadzenPanelMenuItem>
+            <RadzenPanelMenuItem Text="Страны допы" Path="references/giscountryaddon" Icon="check_circle"></RadzenPanelMenuItem>
+            <RadzenPanelMenuItem Text="ГИСы" Path="references/gis" Icon="input"></RadzenPanelMenuItem>
+            <RadzenPanelMenuItem Text="ПХГ допы" Path="references/gisaddon" Icon="input"></RadzenPanelMenuItem>
+            <RadzenPanelMenuItem Text="Настройки" Path="references/reviewfiletype" Icon="input"></RadzenPanelMenuItem>
+            <RadzenPanelMenuItem Text="График" Path="references/giscountryresource" Icon="input"></RadzenPanelMenuItem>
+            <RadzenPanelMenuItem Text="Типы файлов" Path="references/filetypesetting" Icon="input"></RadzenPanelMenuItem>
+        </RadzenPanelMenuItem>
+        <RadzenPanelMenuItem Text="Оперативка" Icon="save">
+            <RadzenPanelMenuItem Text="Свод" Path="dailyreviewreport" Icon="grid_on"></RadzenPanelMenuItem>
+            <RadzenPanelMenuItem Text="Обзор" Path="dailyreview" Icon="grid_on"></RadzenPanelMenuItem>
+            <RadzenPanelMenuItem Text="Подшивка" Path="dailyreviewinput" Icon="list"></RadzenPanelMenuItem>
+        </RadzenPanelMenuItem>
+        <RadzenPanelMenuItem Text="Админ" Icon="account_box">
+            <RadzenPanelMenuItem Text="Подразделения" Path="admin/department" Icon="tab"></RadzenPanelMenuItem>
+            <RadzenPanelMenuItem Text="Пользователи" Path="admin/account" Icon="content_paste"></RadzenPanelMenuItem>
+            <RadzenPanelMenuItem Text="Роли" Path="admin/claims" Icon="account_balance_wallet"></RadzenPanelMenuItem>
+            <RadzenPanelMenuItem Text="Журнал" Path="admin/logs" Icon="line_style"></RadzenPanelMenuItem>
+        </RadzenPanelMenuItem>
+        <RadzenDropDown style="width: 100%" TValue="string" TextProperty="Text" ValueProperty="Value" Data="@themes" Value="@ThemeState.CurrentTheme" Change="@ChangeTheme" />
+    </RadzenPanelMenu>
+</RadzenCard>
